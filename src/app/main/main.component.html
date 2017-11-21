@@ -1,0 +1,80 @@
+<nav class="navbar sticky-top navbar-light bg-light">
+  <a class="navbar-brand" href="#">Transcript Auditor</a>
+  <i class="fa fa-bars" aria-hidden="true" (click)="openDialog()"></i>
+</nav>
+
+<div class="container-fluid">
+
+  <div class="row">
+    <div class="col-4">
+      LIST OF CONVERSATIONS
+      <div class="row">
+        <div class="col-4">
+          <strong>id</strong>
+        </div>
+        <div class="col-8">
+          <strong>firstMessage</strong>
+        </div>
+      </div>
+      <div *ngFor="let row of (apiData$ | async)?.conversationHistoryRecords" class="row" style="cursor:pointer" (click)="selectConversation(row.info.conversationId)">
+        <div class="col-4 text-truncate text-nowrap">{{row.info?.conversationId}}</div>
+        <div class="col-8 text-truncate text-nowrap">{{row.messageRecords[0]?.messageData?.msg?.text}}</div>
+      </div>
+    </div>
+
+    <div class="col-4 scroll-container">
+      MESSAGES
+      <div class="row">
+        <div class="col-4">
+          <strong>sentBy</strong>
+        </div>
+        <div class="col-8">
+          <strong>message</strong>
+        </div>
+      </div>
+
+      <div *ngFor="let row of findMessages((apiData$ | async))" class="row">
+        <div class="col-4">
+          <strong>{{row?.sentBy}}</strong>
+        </div>
+        <div class="col-8">{{row?.messageData?.msg?.text}}</div>
+      </div>
+
+    </div>
+
+    <div class="col-4">
+      CONVERSATION NOTES
+      <form>
+        <div class="row">
+          <div class="col-12">
+            <strong>
+              <label for="outcomeSelect">Outcome Select</label>
+            </strong>
+            <select class="form-control" id="outcomeSelect" [(ngModel)]="select" value="{{(afData$ | async)?.conversations[conversationId]?.select}}" name="outcomeSelect" (ngModelChange)="updateSelect(select)">
+              <option [value]="1">1</option>
+              <option [value]="2">2</option>
+              <option [value]="3">3</option>
+              <option [value]="4">4</option>
+              <option [value]="5">5</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <strong>
+              <label for="notesTextarea">Notes</label>
+            </strong>
+            <textarea id="notesTextarea" class="col-12 form-control" value="{{(afData$ | async)?.conversations[conversationId]?.note}}"
+              [(ngModel)]="note" name="notesTextarea" (ngModelChange)="updateNote(note)"></textarea>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<nav class="navbar fixed-bottom navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <small>&copy; 2017 LivePerson, Inc. All rights reserved.</small>
+  </a>
+</nav>
