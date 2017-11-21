@@ -2,5 +2,16 @@
 body {
   background-color: #e9ecef;
 }
+.loading {
+  font-size: 25px;
+  position: fixed;
+  display: block;
+  left: 45%;
+  top: 35%;
+}
 
+/* angular material theme */
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+/* ngx-datatable */
+@import './styles/ngx-datatable.css';

@@ -1,3 +1,7 @@
+export interface AfUsers {
+  [key: string]: AfConversations;
+}
+
 export interface AfConversations {
   conversations: AfConversation;
 }
@@ -22,13 +26,31 @@ export interface LoginEvents {
   loggingIn: boolean;
 }
 
-export interface ApiConversationHistoryRecords {
+export interface ApiMessageRecord {
+  device: string;
+  dialogId: string;
+  messageData: {
+    msg: {
+      text: string;
+    }
+  };
+  messageId: string;
+  participantId: string;
+  sentBy: string;
+  seq: number;
+  source: string;
+  time: string;
+  timeL: number;
+  type: string;
+}
+
+export interface ApiConversationHistoryRecord {
   agentParticipants: any[];
   consumerParticipants: any[];
   conversationSurveys: any[];
   info: any;
   interactions: any[];
-  messageRecords: any[];
+  messageRecords: ApiMessageRecord[];
   messageScores: any[];
   messageStatuses: any[];
   sdes: any;
@@ -38,5 +60,5 @@ export interface ApiConversationHistoryRecords {
 
 export interface ApiData {
   _metadata: any;
-  conversationHistoryRecords: ApiConversationHistoryRecords[];
+  conversationHistoryRecords: ApiConversationHistoryRecord[];
 }

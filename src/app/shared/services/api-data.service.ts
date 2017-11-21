@@ -41,9 +41,14 @@ export class ApiDataService {
       .set('Content-Type', 'application/json')
       .set('Authorization', 'Bearer ' + this.apiLoginService.bearer);
     const params: HttpParams = new HttpParams().set('limit', '20').set('offset', '0');
-    this.http.post<any>(url, body, { headers, params }).subscribe(response => {
-      console.log('Response: ', response);
-      this.apiData$.next(response);
-    });
+    this.http.post<any>(url, body, { headers, params }).subscribe(
+      response => {
+        console.log('Response: ', response);
+        this.apiData$.next(response);
+      },
+      error => {
+        this.apiData$.next(null);
+      }
+    );
   }
 }

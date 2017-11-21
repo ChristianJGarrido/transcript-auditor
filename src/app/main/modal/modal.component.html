@@ -9,26 +9,28 @@
 
     <!-- LE account number -->
     <mat-form-field class="col">
-      <input matInput placeholder="LiveEngage Account" name="lpSite" [(ngModel)]="user.account">
+      <input matInput placeholder="LiveEngage Account" name="lpSite" [(ngModel)]="leUser.account">
     </mat-form-field>
 
     <!-- LE user name -->
     <mat-form-field class="col">
-      <input matInput placeholder="LiveEngage Username" name="lpUser" [(ngModel)]="user.username">
+      <input matInput placeholder="LiveEngage Username" name="lpUser" [(ngModel)]="leUser.username">
     </mat-form-field>
 
     <!-- LE password -->
     <mat-form-field class="col">
-      <input matInput type="password" placeholder="LiveEngage Password" name="lpPass" [(ngModel)]="user.password">
+      <input matInput type="password" placeholder="LiveEngage Password" name="lpPass" [(ngModel)]="leUser.password">
     </mat-form-field>
 
     <!-- LiveEngage login/logout buttons -->
     <button class="col btn btn-primary btn-sm" (click)="lelogin()" [hidden]="(events$ | async).isLoggedIn" [disabled]="(events$ | async).loggingIn">{{(events$ | async).loggingIn ? 'Logging in...' : 'Login to LiveEngage'}}</button>
     <button class="col btn btn-danger btn-sm" (click)="lelogout()" [hidden]="!(events$ | async).isLoggedIn">Logout of LiveEngage</button>
   </form>
+  
 </div>
 
 <!-- Logout of Auditor -->
 <div class="modal-footer">
+  <button *ngIf="(afUser$ | async)?.uid === 'iJnwQEvv6VTgnuJmSBpmYE3w0ef1'" type="submit" class="btn btn-success" (click)="getAll()">Export all Audit Data</button>
   <button type="submit" class="btn btn-danger" (click)="logout()">Sign out of Auditor</button>
 </div>

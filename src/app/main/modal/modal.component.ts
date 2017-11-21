@@ -11,6 +11,10 @@ import { MatDialogRef } from '@angular/material';
 // services
 import { AfAuthService } from '../../shared/services/af-auth.service';
 import { ApiLoginService } from '../../shared/services/api-login.service';
+import { AfDataService } from '../../shared/services/af-data.service';
+
+// 3rd party
+import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-modal',
@@ -18,26 +22,30 @@ import { ApiLoginService } from '../../shared/services/api-login.service';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent implements OnInit {
-  user: LeUser;
+  leUser: LeUser;
   events$: Observable<LoginEvents>;
+  afUser$: Observable<firebase.User>;
 
   constructor(
     private apiLoginService: ApiLoginService,
+    private afDataService: AfDataService,
     private afAuthService: AfAuthService,
     public dialogRef: MatDialogRef<ModalComponent>
   ) {
     // bind to login service events
     this.events$ = this.apiLoginService.events$;
-    // update user from login service || set defaults
+    // update LE user from login service || set defaults
     if (this.apiLoginService.user) {
-      this.user = this.apiLoginService.user;
+      this.leUser = this.apiLoginService.user;
     } else {
-      this.user = {
+      this.leUser = {
         account: '',
         username: '',
         password: ''
       };
     }
+    // bind to firebase user
+    this.afUser$ = this.afAuthService.getAuthState();
   }
 
   /**
@@ -45,7 +53,7 @@ export class ModalComponent implements OnInit {
    * @param {NgForm} form
    */
   lelogin(): void {
-    this.apiLoginService.login(this.user);
+    this.apiLoginService.login(this.leUser);
   }
 
   /**
@@ -61,6 +69,13 @@ export class ModalComponent implements OnInit {
   logout(): void {
     this.dialogRef.close();
     this.afAuthService.logout();
+  }
+
+  /**
+   * Get all users
+   */
+  getAll(): void {
+    // this.afDataService.getAllData().subscribe(data => console.log(data));
   }
 
   ngOnInit() {}

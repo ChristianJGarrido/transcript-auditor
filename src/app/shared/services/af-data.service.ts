@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { AfAuthService } from './af-auth.service';
 
 // interfaces
-import { AfConversations, AfConversation, AfConversationData } from '../interfaces/interfaces';
+import { AfConversations, AfConversation, AfConversationData, AfUsers } from '../interfaces/interfaces';
 
 // 3rd party
 import {
@@ -46,4 +46,21 @@ export class AfDataService {
     };
     this.afData.set(payload, { merge: true });
   }
+
+  /**
+   * If admin, get all user data
+   * This will be blocked by firebase if user is not authorised
+   * @return {Observable<AfUsers>}
+   */
+  getAllData(): Observable<AfUsers> {
+    return this.afAuthService.afUser$.switchMap(user => {
+      if (user.uid === 'iJnwQEvv6VTgnuJmSBpmYE3w0ef1') {
+        const afData = this.afStore.collection<AfUsers>(`users`);
+        return afData.valueChanges();
+      } else {
+        return Observable.of(null);
+      }
+    });
+  }
+
 }

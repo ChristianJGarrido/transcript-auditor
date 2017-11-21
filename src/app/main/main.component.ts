@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ModalComponent } from './modal/modal.component';
 
 // interfaces
-import { AfConversations, ApiData, ApiConversationHistoryRecords } from '../shared/interfaces/interfaces';
+import { AfConversations, ApiData, ApiConversationHistoryRecord } from '../shared/interfaces/interfaces';
 
 // material
 import { MatDialog } from '@angular/material';
@@ -23,14 +23,14 @@ import { ApiDataService } from '../shared/services/api-data.service';
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit, OnDestroy {
-  apiDataSub: Subscription;
-  conversations: ApiConversationHistoryRecords[] = [];
-  messages: any[] = [];
 
+  // subscripitions & observables
+  apiDataSub: Subscription;
   afData$: Observable<AfConversations>;
-  conversationId = '';
-  note = '';
-  select = '1';
+
+  // properties
+  conversation: ApiConversationHistoryRecord;
+  conversations: ApiConversationHistoryRecord[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -39,40 +39,25 @@ export class MainComponent implements OnInit, OnDestroy {
   ) {}
 
   /**
+   * assigns conversation property from event emission
+   * @param {ApiConversationHistoryRecord} conversation
+   */
+  getConversation(conversation: ApiConversationHistoryRecord) {
+    this.conversation = conversation;
+  }
+
+  /**
    * Opens the material dialog modal
    */
   openDialog(): void {
     this.dialog.open(ModalComponent);
   }
 
-  /**
-   * selects an individual conversation
-   * @param {string} id
-   */
-  selectConversation(id: string): void {
-    this.conversationId = id;
-    const conversation = this.conversations.find(record => record.info.conversationId === this.conversationId);
-    this.messages = conversation ? conversation.messageRecords : [];
-  }
-
-  /**
-   * Updates the conversations note
-   * @param {string} note
-   */
-  updateNote(note: string) {
-    this.afDataService.updateConversation(this.conversationId, { note });
-  }
-
-  /**
-   * Updates the conversations select
-   * @param {string} select
-   */
-  updateSelect(select: string) {
-    this.afDataService.updateConversation(this.conversationId, {select });
-  }
-
   ngOnInit() {
+    // stream from angularFire
     this.afData$ = this.afDataService.afData$;
+
+    // stream from api
     this.apiDataSub = this.apiDataService.apiData$.subscribe(data => {
       this.conversations = data ? data.conversationHistoryRecords : [];
     });

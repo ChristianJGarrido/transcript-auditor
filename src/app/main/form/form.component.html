@@ -1,0 +1,34 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Conversation Notes</h5>
+    <h6 class="card-subtitle mb-2 text-muted">{{conversation?.info?.conversationId}}</h6>
+
+    <form *ngIf="formReady">
+      <div class="row">
+        <div class="col-12">
+          <strong>
+            <label for="outcomeSelect">Outcome Select</label>
+          </strong>
+          <select class="form-control" id="outcomeSelect" [(ngModel)]="select"
+            name="outcomeSelect" (ngModelChange)="updateSelect(select)">
+            <option [value]="1">1</option>
+            <option [value]="2">2</option>
+            <option [value]="3">3</option>
+            <option [value]="4">4</option>
+            <option [value]="5">5</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <strong>
+            <label for="notesTextarea">Notes</label>
+          </strong>
+          <textarea id="notesTextarea" class="col-12 form-control"
+            [(ngModel)]="note" name="notesTextarea" (ngModelChange)="updateNote(note)"></textarea>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>

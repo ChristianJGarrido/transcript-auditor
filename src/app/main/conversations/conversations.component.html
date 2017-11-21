@@ -1,0 +1,8 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Conversation List</h5>
+    <ngx-datatable #table style="cursor: pointer;" [limit]="10" class="material" [columnMode]="'flex'" [rowHeight]="30" [headerHeight]="50" [footerHeight]="50"
+      [rows]="rows" [columns]="columns" (activate)="clickDatatable($event)">
+    </ngx-datatable>
+  </div>
+</div>

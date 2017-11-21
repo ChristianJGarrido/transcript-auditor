@@ -1,0 +1,27 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Conversation Messages</h5>
+    <span *ngIf="conversation">
+      <h6 class="card-subtitle mb-2 text-muted" placement="top" matTooltip="Export to CSV" (click)="downloadCsv()" style="cursor: pointer;">{{conversation?.info.conversationId}}
+        <i class="p-1 fa fa-download" aria-hidden="true"></i>
+      </h6>
+    </span>
+    <div class="row">
+      <div class="col-4">
+        <strong>sentBy</strong>
+      </div>
+      <div class="col-8">
+        <strong>message</strong>
+      </div>
+    </div>
+
+    <div class="row scroll-container">
+      <ng-container *ngFor="let row of conversation?.messageRecords">
+        <div class="col-4">
+          {{row?.sentBy}}
+        </div>
+        <div class="col-8">{{row?.messageData?.msg?.text}}</div>
+      </ng-container>
+    </div>
+  </div>
+</div>
