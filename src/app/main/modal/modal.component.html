@@ -14,17 +14,17 @@
 
     <!-- LE user name -->
     <mat-form-field class="col">
-      <input matInput placeholder="LiveEngage User" name="lpUser" [(ngModel)]="user.username">
+      <input matInput placeholder="LiveEngage Username" name="lpUser" [(ngModel)]="user.username">
     </mat-form-field>
 
     <!-- LE password -->
     <mat-form-field class="col">
-      <input matInput type="password" placeholder="LiveEngage Pass" name="lpPass" [(ngModel)]="user.password">
+      <input matInput type="password" placeholder="LiveEngage Password" name="lpPass" [(ngModel)]="user.password">
     </mat-form-field>
 
     <!-- LiveEngage login/logout buttons -->
-    <button class="col" md-raised-button (click)="lelogin()" color="primary" [hidden]="(events$ | async).isLoggedIn" [disabled]="(events$ | async).loggingIn">{{(events$ | async).loggingIn ? 'Logging in...' : 'Login to LiveEngage'}}</button>
-    <button class="col" md-raised-button (click)="lelogout()" color="warn" [hidden]="!(events$ | async).isLoggedIn">Logout of LiveEngage</button>
+    <button class="col btn btn-primary btn-sm" (click)="lelogin()" [hidden]="(events$ | async).isLoggedIn" [disabled]="(events$ | async).loggingIn">{{(events$ | async).loggingIn ? 'Logging in...' : 'Login to LiveEngage'}}</button>
+    <button class="col btn btn-danger btn-sm" (click)="lelogout()" [hidden]="!(events$ | async).isLoggedIn">Logout of LiveEngage</button>
   </form>
 </div>
 

@@ -30,6 +30,7 @@ import { MatButtonModule } from '@angular/material/button';
 // 3rd party
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 
 @NgModule({
@@ -39,6 +40,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireDatabaseModule,
     AngularFireAuthModule,
     AppRoutingModule,
     MatDialogModule,

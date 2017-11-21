@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
 
 // components
 import { ModalComponent } from './modal/modal.component';
 
 // interfaces
-import { AfConversations, ApiData } from '../shared/interfaces/interfaces';
+import { AfConversations, ApiData, ApiConversationHistoryRecords } from '../shared/interfaces/interfaces';
 
 // material
 import { MatDialog } from '@angular/material';
@@ -21,8 +22,11 @@ import { ApiDataService } from '../shared/services/api-data.service';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit {
-  apiData$: BehaviorSubject<ApiData>;
+export class MainComponent implements OnInit, OnDestroy {
+  apiDataSub: Subscription;
+  conversations: ApiConversationHistoryRecords[] = [];
+  messages: any[] = [];
+
   afData$: Observable<AfConversations>;
   conversationId = '';
   note = '';
@@ -42,26 +46,13 @@ export class MainComponent implements OnInit {
   }
 
   /**
-   * Takes the api data and returns an array of messages
-   * @param {ApiData} data data from api
-   * @return {any[]}
-   */
-  findMessages(data: ApiData): any[] {
-    if (data) {
-      const conversaton = data.conversationHistoryRecords.find(record => record.info.conversationId === this.conversationId);
-      if (conversaton) {
-        return conversaton.messageRecords;
-      }
-    }
-    return [];
-  }
-
-  /**
    * selects an individual conversation
    * @param {string} id
    */
   selectConversation(id: string): void {
     this.conversationId = id;
+    const conversation = this.conversations.find(record => record.info.conversationId === this.conversationId);
+    this.messages = conversation ? conversation.messageRecords : [];
   }
 
   /**
@@ -82,6 +73,13 @@ export class MainComponent implements OnInit {
 
   ngOnInit() {
     this.afData$ = this.afDataService.afData$;
-    this.apiData$ = this.apiDataService.apiData$;
+    this.apiDataSub = this.apiDataService.apiData$.subscribe(data => {
+      this.conversations = data ? data.conversationHistoryRecords : [];
+    });
   }
+
+  ngOnDestroy() {
+    this.apiDataSub.unsubscribe();
+  }
+
 }

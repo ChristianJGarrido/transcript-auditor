@@ -16,7 +16,7 @@
           <strong>firstMessage</strong>
         </div>
       </div>
-      <div *ngFor="let row of (apiData$ | async)?.conversationHistoryRecords" class="row" style="cursor:pointer" (click)="selectConversation(row.info.conversationId)">
+      <div *ngFor="let row of conversations" class="row" style="cursor:pointer" (click)="selectConversation(row.info.conversationId)">
         <div class="col-4 text-truncate text-nowrap">{{row.info?.conversationId}}</div>
         <div class="col-8 text-truncate text-nowrap">{{row.messageRecords[0]?.messageData?.msg?.text}}</div>
       </div>
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <div *ngFor="let row of findMessages((apiData$ | async))" class="row">
+      <div *ngFor="let row of messages" class="row">
         <div class="col-4">
           <strong>{{row?.sentBy}}</strong>
         </div>
@@ -44,7 +44,7 @@
 
     <div class="col-4">
       CONVERSATION NOTES
-      <form>
+      <form *ngIf="conversationId">
         <div class="row">
           <div class="col-12">
             <strong>

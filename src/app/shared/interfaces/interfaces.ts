@@ -22,19 +22,21 @@ export interface LoginEvents {
   loggingIn: boolean;
 }
 
+export interface ApiConversationHistoryRecords {
+  agentParticipants: any[];
+  consumerParticipants: any[];
+  conversationSurveys: any[];
+  info: any;
+  interactions: any[];
+  messageRecords: any[];
+  messageScores: any[];
+  messageStatuses: any[];
+  sdes: any;
+  summary: any;
+  transfers: any[];
+}
+
 export interface ApiData {
   _metadata: any;
-  conversationHistoryRecords: {
-    agentParticipants: any[];
-    consumerParticipants: any[];
-    conversationSurveys: any[];
-    info: any;
-    interactions: any[];
-    messageRecords: any[];
-    messageScores: any[];
-    messageStatuses: any[];
-    sdes: any;
-    summary: any;
-    transfers: any[];
-  }[];
+  conversationHistoryRecords: ApiConversationHistoryRecords[];
 }

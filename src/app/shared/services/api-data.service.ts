@@ -19,6 +19,7 @@ export class ApiDataService {
         this.getData();
       } else {
         console.log('logged out!');
+        this.apiData$.next(null);
       }
     });
   }
