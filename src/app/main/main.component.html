@@ -1,28 +1,22 @@
-<nav class="navbar sticky-top navbar-light bg-light">
+<nav class="navbar sticky-top navbar-dark bg-dark">
   <a class="navbar-brand" href="#">Transcript Auditor</a>
-  <i class="fa fa-bars" aria-hidden="true" (click)="openDialog()"></i>
+  <i class="fa fa-bars fa-2x" style="color: white;" aria-hidden="true" (click)="openDialog()"></i>
 </nav>
 
 <div class="container-fluid">
 
   <div class="row no-gutters mt-2">
 
-    <div class="col-4 pr-1">
+    <div class="col-12 col-md-6 col-lg-4 pr-1">
       <app-conversations [conversations]="conversations" (selectConversation)="getConversation($event)"></app-conversations>
     </div>
 
-    <div class="col-4 pr-1">
-      <app-messages [conversation]="conversation"></app-messages>
+    <div class="col-12 col-md-6 col-lg-4 pr-1">
+      <app-messages [conversation]="conversation" (nextConversation)="cycleConversations($event)"></app-messages>
     </div>
 
-    <div class="col-4">
+    <div class="col-12 col-lg-4">
       <app-form [conversation]="conversation" [afData]="(afData$ | async)"></app-form>
     </div>
   </div>
 </div>
-
-<nav class="navbar fixed-bottom navbar-light bg-light">
-  <a class="navbar-brand" href="#">
-    <small>&copy; 2017 LivePerson, Inc. All rights reserved.</small>
-  </a>
-</nav>

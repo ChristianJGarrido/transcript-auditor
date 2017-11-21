@@ -2,6 +2,7 @@
 * ngx-datatable themes
 */
 @import './ngx-material.css';
+@import '~@swimlane/ngx-datatable/release/assets/icons.css';
 
 .datatable-font-header,
 .datatable-font-row {
@@ -42,4 +43,8 @@
 
 .ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
   padding: 0.2rem;
+}
+
+.datatable-cells {
+  color: #9c9c9c!important;
 }

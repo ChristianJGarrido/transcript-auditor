@@ -58,6 +58,20 @@ export interface ApiConversationHistoryRecord {
   transfers: any[];
 }
 
+export interface ApiOptions {
+  start?: {
+    from: number;
+    to: number;
+  };
+  summary?: string;
+  keyword?: string;
+  sdeSearch?: {
+    personalInfo?: string;
+    customerInfo?: string;
+    userUpdate?: string;
+  };
+}
+
 export interface ApiData {
   _metadata: any;
   conversationHistoryRecords: ApiConversationHistoryRecord[];

@@ -14,10 +14,10 @@ export class FormComponent implements OnInit, OnChanges {
   @Input() afData: AfConversations;
 
   formReady = false;
-  note;
-  select;
+  note = '';
+  select = '';
 
-  constructor(private afDataService: AfDataService) { }
+  constructor(private afDataService: AfDataService) {}
 
   /**
    * Updates the conversations note
@@ -32,23 +32,25 @@ export class FormComponent implements OnInit, OnChanges {
    * @param {string} select
    */
   updateSelect(select: string) {
-    this.afDataService.updateConversation(this.conversation.info.conversationId, {select });
+    this.afDataService.updateConversation(this.conversation.info.conversationId, { select });
   }
 
   /**
    * Update form data when inputs change
    */
   getFormData() {
-    if (this.conversation && this.afData) {
+    if (this.conversation) {
       this.formReady = true;
       const id: string = this.conversation.info.conversationId;
-      const data = this.afData.conversations[id];
+      const data = this.afData && this.afData.conversations && this.afData.conversations[id];
       if (data) {
         this.note = data.note;
         this.select = data.select;
+      } else {
+        this.note = '';
+        this.select = '';
       }
     }
-
   }
 
   ngOnInit() {
@@ -58,5 +60,4 @@ export class FormComponent implements OnInit, OnChanges {
   ngOnChanges() {
     this.getFormData();
   }
-
 }

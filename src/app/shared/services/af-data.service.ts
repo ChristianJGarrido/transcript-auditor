@@ -24,8 +24,11 @@ export class AfDataService {
     // bind angular firebase to service variable
     this.afData$ = this.afAuthService.afUser$.switchMap(user => {
       if (user) {
+
+        // select user data
         this.afData = this.afStore.doc<AfConversations>(`users/${user.uid}`);
         return this.afData.valueChanges();
+
       } else {
         this.afData = null;
         return Observable.of(null);

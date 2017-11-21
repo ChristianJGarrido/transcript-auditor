@@ -10,8 +10,71 @@ body {
   top: 35%;
 }
 
+/* bootstrap overrided */
+.card, .card-title, .card-subtitle, .navbar, .font-primary, .font-secondary {
+  font-family: MyriadPro, 'sans-serif';
+}
+.font-primary, .font-secondary {
+  font-size: 1rem;
+}
+.font-primary {
+  color: black;
+}
+.font-secondary {
+  color: #9c9c9c;
+}
+.font-agent {
+  color: blueviolet;
+}
+.navbar-brand {
+  font-weight: lighter;
+  font-size: 24px;
+}
+.card-title {
+  font-weight: normal;
+}
+
+/* drop downs */
+.dropdown-item > a {
+  color: #5d5e60;
+}
+
 /* angular material theme */
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 /* ngx-datatable */
 @import './styles/ngx-datatable.css';
+
+/*
+* Custom styles
+*/
+@font-face {
+  font-family: MyriadPro;
+  src: url('/assets/MyriadPro-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: MyriadPro;
+  src: url('/assets/MyriadPro-Semibold.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: MyriadPro;
+  src: url('/assets/MyriadPro-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: MyriadPro;
+  src: url('/assets/MyriadPro-It.otf') format('opentype');
+  font-weight: normal;
+  font-style: italic;
+}
+@font-face {
+  font-family: MyriadPro;
+  src: url('/assets/MyriadPro-Light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+}

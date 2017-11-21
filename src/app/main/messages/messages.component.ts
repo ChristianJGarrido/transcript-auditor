@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { ApiConversationHistoryRecord } from '../../shared/interfaces/interfaces';
 import { ExportService } from '../../shared/services/export.service';
 
@@ -9,9 +9,13 @@ import { ExportService } from '../../shared/services/export.service';
 })
 export class MessagesComponent implements OnInit {
   @Input() conversation: ApiConversationHistoryRecord;
+  @Output() nextConversation = new EventEmitter<boolean>();
 
   constructor(private exportService: ExportService) {}
 
+  /**
+   * Download message data to CSV
+   */
   downloadCsv() {
     // prepare message records
     const messages = this.conversation.messageRecords.map(record => {
@@ -23,6 +27,14 @@ export class MessagesComponent implements OnInit {
       };
     });
     this.exportService.downloadCsvFile(messages);
+  }
+
+  /**
+   * toggle through conversations (true is forward, false is back)
+   * @param {boolean} next
+   */
+  cycleConversations(next: boolean) {
+    this.nextConversation.emit(next);
   }
 
   ngOnInit() {}

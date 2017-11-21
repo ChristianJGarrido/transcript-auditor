@@ -2,7 +2,7 @@ import { environment } from '../environments/environment';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 // app components
@@ -31,13 +31,18 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material';
 
-// 3rd party
+// angular fire
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+
+// 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 
 @NgModule({
   declarations: [
@@ -54,7 +59,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireDatabaseModule,
+    // AngularFireDatabaseModule,
     AngularFireAuthModule,
     AppRoutingModule,
     MatDialogModule,
@@ -62,9 +67,13 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
     MatFormFieldModule,
     MatButtonModule,
     MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpClientModule,
-    NgxDatatableModule
+    NgxDatatableModule,
+    MultiselectDropdownModule
   ],
   providers: [
     AfAuthService,

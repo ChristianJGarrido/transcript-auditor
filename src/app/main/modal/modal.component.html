@@ -31,6 +31,6 @@
 
 <!-- Logout of Auditor -->
 <div class="modal-footer">
-  <button *ngIf="(afUser$ | async)?.uid === 'iJnwQEvv6VTgnuJmSBpmYE3w0ef1'" type="submit" class="btn btn-success" (click)="getAll()">Export all Audit Data</button>
-  <button type="submit" class="btn btn-danger" (click)="logout()">Sign out of Auditor</button>
+  <button *ngIf="(afUser$ | async)?.uid === 'iJnwQEvv6VTgnuJmSBpmYE3w0ef1'" type="submit" class="btn btn-outline-success" (click)="getAll()">Export User Data</button>
+  <button type="submit" class="btn btn-outline-danger" (click)="logout()">Sign out</button>
 </div>
