@@ -71,11 +71,15 @@ export class ModalComponent implements OnInit {
     this.afAuthService.logout();
   }
 
+  isAdmin(): Observable<boolean> {
+    return this.afDataService.isAdmin$;
+  }
+
   /**
    * Get all users
    */
   getAll(): void {
-    // this.afDataService.getAllData().subscribe(data => console.log(data));
+    // this.afDataService.getAllData();
   }
 
   ngOnInit() {}

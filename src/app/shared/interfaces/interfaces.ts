@@ -1,9 +1,10 @@
 export interface AfUsers {
-  [key: string]: AfConversations;
+  [key: string]: AfUser;
 }
 
-export interface AfConversations {
-  conversations: AfConversation;
+export interface AfUser {
+  conversations?: AfConversation;
+  createdAt?: Date;
 }
 
 export interface AfConversation {

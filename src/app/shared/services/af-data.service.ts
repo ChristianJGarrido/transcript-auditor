@@ -3,9 +3,10 @@ import { Observable } from 'rxjs/Observable';
 
 // services
 import { AfAuthService } from './af-auth.service';
+import { ExportService } from './export.service';
 
 // interfaces
-import { AfConversations, AfConversation, AfConversationData, AfUsers } from '../interfaces/interfaces';
+import { AfUser, AfConversation, AfConversationData, AfUsers } from '../interfaces/interfaces';
 
 // 3rd party
 import {
@@ -17,18 +18,41 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class AfDataService {
-  afData: AngularFirestoreDocument<AfConversations>;
-  afData$: Observable<AfConversations>;
+  afData: AngularFirestoreDocument<AfUser>;
+  afData$: Observable<AfUser>;
+  afAllData$: Observable<any>;
+  isAdmin$: Observable<boolean>;
 
-  constructor(private afStore: AngularFirestore, private afAuthService: AfAuthService) {
+  constructor(
+    private afStore: AngularFirestore,
+    private afAuthService: AfAuthService,
+    private exportService: ExportService
+  ) {
     // bind angular firebase to service variable
     this.afData$ = this.afAuthService.afUser$.switchMap(user => {
       if (user) {
-
         // select user data
-        this.afData = this.afStore.doc<AfConversations>(`users/${user.uid}`);
-        return this.afData.valueChanges();
+        this.afData = this.afStore.doc<AfUser>(`users/${user.uid}`);
+        this.afData.snapshotChanges().subscribe(action => {
+          if (!action.payload.exists) {
+            this.afData.set({ createdAt: new Date() }, { merge: true });
+          }
+        });
 
+        // check if admin
+        this.isAdmin$ = this.afStore
+          .doc(`admins/${user.uid}`)
+          .snapshotChanges()
+          .switchMap(action => {
+            if (action.payload.exists) {
+              this.afAllData$ = this.afStore.collection('/users').valueChanges();
+            } else {
+              this.afAllData$ = Observable.of(null);
+            }
+            return Observable.of(action.payload.exists);
+          });
+
+        return this.afData.valueChanges();
       } else {
         this.afData = null;
         return Observable.of(null);
@@ -48,22 +72,6 @@ export class AfDataService {
       }
     };
     this.afData.set(payload, { merge: true });
-  }
-
-  /**
-   * If admin, get all user data
-   * This will be blocked by firebase if user is not authorised
-   * @return {Observable<AfUsers>}
-   */
-  getAllData(): Observable<AfUsers> {
-    return this.afAuthService.afUser$.switchMap(user => {
-      if (user.uid === 'iJnwQEvv6VTgnuJmSBpmYE3w0ef1') {
-        const afData = this.afStore.collection<AfUsers>(`users`);
-        return afData.valueChanges();
-      } else {
-        return Observable.of(null);
-      }
-    });
   }
 
 }

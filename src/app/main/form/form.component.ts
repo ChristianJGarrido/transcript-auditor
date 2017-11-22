@@ -1,5 +1,5 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
-import { ApiConversationHistoryRecord, AfConversations } from '../../shared/interfaces/interfaces';
+import { ApiConversationHistoryRecord, AfUser } from '../../shared/interfaces/interfaces';
 
 // services
 import { AfDataService } from '../../shared/services/af-data.service';
@@ -11,7 +11,7 @@ import { AfDataService } from '../../shared/services/af-data.service';
 })
 export class FormComponent implements OnInit, OnChanges {
   @Input() conversation: ApiConversationHistoryRecord;
-  @Input() afData: AfConversations;
+  @Input() afData: AfUser;
 
   formReady = false;
   note = '';

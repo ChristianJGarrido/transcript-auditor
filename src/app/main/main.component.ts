@@ -8,13 +8,13 @@ import { ModalComponent } from './modal/modal.component';
 
 // interfaces
 import {
-  AfConversations,
+  AfUser,
   ApiData,
   ApiConversationHistoryRecord
 } from '../shared/interfaces/interfaces';
 
 // material
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 
 // services
 import { AfDataService } from '../shared/services/af-data.service';
@@ -29,11 +29,14 @@ import { ApiDataService } from '../shared/services/api-data.service';
 export class MainComponent implements OnInit, OnDestroy {
   // subscripitions & observables
   apiDataSub: Subscription;
-  afData$: Observable<AfConversations>;
+  afData$: Observable<AfUser>;
 
   // properties
   conversation: ApiConversationHistoryRecord;
   conversations: ApiConversationHistoryRecord[] = [];
+
+  // ref
+  dialogRef: MatDialogRef<ModalComponent>;
 
   constructor(
     public dialog: MatDialog,
@@ -82,7 +85,7 @@ export class MainComponent implements OnInit, OnDestroy {
    * Opens the material dialog modal
    */
   openDialog(): void {
-    this.dialog.open(ModalComponent, { maxWidth: 400 });
+    this.dialogRef = this.dialog.open(ModalComponent, { maxWidth: 400 });
   }
 
   ngOnInit() {
@@ -95,7 +98,8 @@ export class MainComponent implements OnInit, OnDestroy {
     });
 
     if (!this.apiLoginService.bearer) {
-      this.openDialog();
+      // timeout required due to known angular bug with opening dialog during change detection
+      setTimeout(() => this.openDialog(), 100);
     }
   }
 
