@@ -39,6 +39,14 @@ export interface LoginEvents {
   loggingIn: boolean;
 }
 
+export interface ApiMessageScore {
+  mcs: number;
+  messageId: string;
+  messageRawScore: number;
+  time: string;
+  timeL: number;
+}
+
 export interface ApiMessageRecord {
   device: string;
   dialogId: string;
@@ -93,7 +101,7 @@ export interface ApiConversationHistoryRecord {
   info: ApiConversationInfo;
   interactions: any[];
   messageRecords: ApiMessageRecord[];
-  messageScores: any[];
+  messageScores: ApiMessageScore[];
   messageStatuses: any[];
   sdes: any;
   summary: any;

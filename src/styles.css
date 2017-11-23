@@ -9,12 +9,6 @@ body {
   left: 45%;
   top: 35%;
 }
-.scroll-container {
-  overflow-y: scroll; 
-  overflow-x: hidden; 
-  height: 600px;
-  position: relative;
-}
 
 /* bootstrap overrided */
 .card, .card-title, .card-subtitle, .navbar, .font-primary, .font-secondary {

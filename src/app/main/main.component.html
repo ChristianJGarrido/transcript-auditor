@@ -10,16 +10,24 @@
 
     <div class="row no-gutters mt-2">
 
-      <div class="col-12 col-md-8 pr-md-1">
+      <div class="col-12 col-md-4 mt-1 mt-md-0 pr-md-1">
+        <app-conversations [conversations]="conversations" (selectConversation)="getConversation($event)"></app-conversations>
+      </div>
+
+      <div class="col-12 col-md-4 mt-1 mt-md-0 pr-md-1">
         <div class="row no-gutters">
-          <div class="col-12 col-md-6 pr-md-1">
-            <app-conversations [conversations]="conversations" (selectConversation)="getConversation($event)"></app-conversations>
+          <div class="col-12">
+            <app-conversation-chart [conversation]="conversation"></app-conversation-chart>
           </div>
-          <div class="col-12 col-md-6 mt-1 mt-md-0">
+        </div>
+        <div class="row no-gutters mt-1">
+          <div class="col-12">
             <app-messages [conversation]="conversation" (nextConversation)="cycleConversations($event)"></app-messages>
           </div>
         </div>
       </div>
+
+
 
       <div class="col-12 col-md-4 mt-1 mt-md-0">
         <div class="row no-gutters">

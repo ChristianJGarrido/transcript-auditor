@@ -17,6 +17,11 @@ import { FormSaveComponent } from './main/form/form-save/form-save.component';
 import { FormNotesComponent } from './main/form/form-notes/form-notes.component';
 import { FormSelectComponent } from './main/form/form-select/form-select.component';
 import { ConversationsFilterComponent } from './main/conversations/conversations-filter/conversations-filter.component';
+import { NoResultsComponent } from './shared/components/no-results/no-results.component';
+import { SideNavComponent } from './main/side-nav/side-nav.component';
+import { ConversationStatsComponent } from './main/conversation-stats/conversation-stats.component';
+import { ConversationStatsWidgetComponent } from './main/conversation-stats/conversation-stats-widget/conversation-stats-widget.component';
+import { ConversationChartComponent } from './main/conversation-chart/conversation-chart.component';
 
 // services
 import { AfAuthService } from './shared/services/af-auth.service';
@@ -48,10 +53,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 // 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
-import { NoResultsComponent } from './shared/components/no-results/no-results.component';
-import { SideNavComponent } from './main/side-nav/side-nav.component';
-import { ConversationStatsComponent } from './main/conversation-stats/conversation-stats.component';
-import { ConversationStatsWidgetComponent } from './main/conversation-stats/conversation-stats-widget/conversation-stats-widget.component';
+import { ChartsModule } from 'ng2-charts/ng2-charts';
 
 @NgModule({
   declarations: [
@@ -69,7 +71,8 @@ import { ConversationStatsWidgetComponent } from './main/conversation-stats/conv
     NoResultsComponent,
     SideNavComponent,
     ConversationStatsComponent,
-    ConversationStatsWidgetComponent
+    ConversationStatsWidgetComponent,
+    ConversationChartComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +94,8 @@ import { ConversationStatsWidgetComponent } from './main/conversation-stats/conv
     ReactiveFormsModule,
     HttpClientModule,
     NgxDatatableModule,
-    MultiselectDropdownModule
+    MultiselectDropdownModule,
+    ChartsModule
   ],
   providers: [
     AfAuthService,
