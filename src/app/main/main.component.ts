@@ -80,6 +80,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
       // set new conversation
       this.conversation = this.conversations[targetIndex];
+    } else {
+      this.conversation = this.conversations[0];
     }
   }
 
