@@ -103,6 +103,7 @@ export class AfDataService {
     const payload: AfUser = {
       conversations: {
         [id]: {
+          conversationId: id,
           createdBy: this.user.displayName,
           lastUpdateTime: new Date(),
           ...data

@@ -11,15 +11,17 @@
   <div *ngIf="(apiLoading$ | async)" class="font-secondary">
     <i class="fa fa-spinner fa-pulse text-center"></i> Loading...</div>
   <div class="scroll-container">
-    <div *ngFor="let key of afKeys" class="row mt-2" (click)="selectNote(key)" style="cursor: pointer;">
+    <div *ngFor="let data of afCollection" class="row mt-2" (click)="selectNote(data.conversationId)" style="cursor: pointer;">
       <div class="col-12 font-primary">
-        {{afData?.conversations[key]?.lastUpdateTime | date}}
+        {{data.lastUpdateTime | date}}
       </div>
+      <small>
+        <div class="col-12 font-secondary">
+          {{data.conversationId}}
+        </div>
+      </small>
       <div class="col-12 font-secondary">
-        {{key}}
-      </div>
-      <div class="col-12 font-secondary">
-        {{afData?.conversations[key]?.note}}
+        {{data.note}}
       </div>
     </div>
   </div>

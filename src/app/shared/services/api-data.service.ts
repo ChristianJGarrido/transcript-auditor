@@ -122,7 +122,6 @@ export class ApiDataService {
         this.apiLoading$.next(false);
       },
       error => {
-        this.apiConversation$.next(null);
         this.apiLoading$.next(false);
       }
     );

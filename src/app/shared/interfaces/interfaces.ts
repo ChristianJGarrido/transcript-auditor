@@ -16,6 +16,7 @@ export interface AfConversation {
 }
 
 export interface AfConversationData {
+  conversationId?: string;
   lastUpdateTime?: Date;
   createdBy?: string;
   note?: string;
@@ -57,6 +58,7 @@ export interface ApiConversationInfo {
   closeReason: string;
   closeReasonDescription: string;
   conversationId: string;
+  csatRate?: number;
   device: string;
   duration: number;
   endTime: string;
