@@ -1,3 +1,10 @@
-.jumbotron {
-  background-color: #e9ecef;
+.google {
+  cursor: pointer;
+  width: 191px;
+  height: 46px;
+  background: transparent url('/assets/google.png') center top no-repeat;
+}
+
+.google:hover {
+  background-image: url('/assets/google_focus.png');
 }
