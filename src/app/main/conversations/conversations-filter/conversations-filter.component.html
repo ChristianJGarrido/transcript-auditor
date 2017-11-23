@@ -1,4 +1,3 @@
-
 <!-- date picker -->
 <div class="row no-gutters">
   <div class="col">
@@ -19,15 +18,17 @@
 
 <div class="row">
 
-  <!-- keyword options -->
-  <div class="col-auto pr-0">
-    <ss-multiselect-dropdown [settings]="searchSettings" [texts]="searchTexts" [options]="searchOptions"
-      [(ngModel)]="searchSelect"></ss-multiselect-dropdown>
+  <div class="col">
+    <div class="input-group">
+      <!-- keyword options -->
+      <ss-multiselect-dropdown [settings]="searchSettings" [texts]="searchTexts" [options]="searchOptions" [(ngModel)]="searchSelect"></ss-multiselect-dropdown>
+      <!-- keyword search -->
+      <input type="text" class="form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword" (keyup.enter)="getData()"
+        placeholder="Keywords">
+      <!-- search button -->
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-outline-success btn-sm" (click)="getData()" [disabled]="(apiLoading$ | async)">{{(apiLoading$ | async) ? 'Loading...' : 'Search'}}</button>
+      </span>
+    </div>
   </div>
-
-  <!-- keyword search -->
-  <input class="col form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword" (keyup.enter)="getData()">
-
-  <!-- search button -->
-  <button class="col-2 mr-3 btn btn-outline-success btn-sm" (click)="getData()" [disabled]="(apiLoading$ | async)">{{(apiLoading$ | async) ? 'Loading...' : 'Search'}}</button>
 </div>

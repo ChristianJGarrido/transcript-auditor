@@ -15,12 +15,17 @@ export interface AfConversation {
   [key: string]: AfConversationData;
 }
 
+export interface AfConversationForm {
+  note?: string;
+  select?: string;
+  check?: { key: string; value: boolean }[];
+}
+
 export interface AfConversationData {
   conversationId?: string;
   lastUpdateTime?: Date;
   createdBy?: string;
-  note?: string;
-  select?: string;
+  data?: AfConversationForm;
 }
 
 export interface LeUser {
@@ -40,7 +45,7 @@ export interface ApiMessageRecord {
   messageData: {
     msg: {
       text: string;
-    }
+    };
   };
   messageId: string;
   participantId: string;

@@ -1,6 +1,6 @@
 <div class="row mt-2">
   <div class="col-12">
     <label for="notesTextarea">Notes</label>
-    <textarea id="notesTextarea" class="col-12 form-control" [(ngModel)]="note" name="notes" (ngModelChange)="changeNote(note)"></textarea>
+    <textarea id="notesTextarea" class="col-12 form-control" [(ngModel)]="formData.note" name="notes" (ngModelChange)="changeNote(formData.note)"></textarea>
   </div>
 </div>

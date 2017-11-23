@@ -7,7 +7,7 @@ import { AfAuthService } from './af-auth.service';
 import { ExportService } from './export.service';
 
 // interfaces
-import { AfUser, AfConversation, AfConversationData, AfUsers } from '../interfaces/interfaces';
+import { AfUser, AfConversation, AfConversationData, AfUsers, AfConversationForm } from '../interfaces/interfaces';
 
 // 3rd party
 import {
@@ -97,7 +97,7 @@ export class AfDataService {
    * @param {string} id
    * @param {string} select
    */
-  updateConversation(id: string, data: AfConversationData): void {
+  updateConversation(id: string, data: AfConversationForm): void {
     clearTimeout(this.updateTimeout);
     // prepare payload
     const payload: AfUser = {
@@ -106,7 +106,9 @@ export class AfDataService {
           conversationId: id,
           createdBy: this.user.displayName,
           lastUpdateTime: new Date(),
-          ...data
+          data: {
+            ...data
+          }
         }
       }
     };

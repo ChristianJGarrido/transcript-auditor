@@ -11,10 +11,10 @@
     <form *ngIf="formReady">
 
       <!-- row for selectors -->
-      <app-form-select [select]="select" [id]="conversation?.info.conversationId"></app-form-select>
+      <app-form-select [formData]="formData" [id]="conversation?.info.conversationId"></app-form-select>
 
       <!-- Row for notes -->
-      <app-form-notes [note]="note" [id]="conversation?.info.conversationId"></app-form-notes>
+      <app-form-notes [formData]="formData" [id]="conversation?.info.conversationId"></app-form-notes>
 
       <!-- row for saved notification -->
       <app-form-save></app-form-save>
