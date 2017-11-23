@@ -26,7 +26,7 @@
   </div>
 
   <!-- keyword search -->
-  <input class="col form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword">
+  <input class="col form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword" (keyup.enter)="getData()">
 
   <!-- search button -->
   <button class="col-2 mr-3 btn btn-outline-success btn-sm" (click)="getData()" [disabled]="(apiLoading$ | async)">{{(apiLoading$ | async) ? 'Loading...' : 'Search'}}</button>
