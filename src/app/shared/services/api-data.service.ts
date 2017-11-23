@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpResponse, HttpParams } from '@angular/comm
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 // interfaces
-import { ApiData, ApiOptions } from '../interfaces/interfaces';
+import { ApiData, ApiOptions, ApiIds } from '../interfaces/interfaces';
 
 // services
 import { ApiLoginService } from './api-login.service';
@@ -39,9 +39,16 @@ export class ApiDataService {
   /**
    * Get data from messaging history API
    */
-  getData(options?: ApiOptions) {
+  getData(options?: ApiOptions, ids?: ApiIds) {
     // emit loading event
     this.apiLoading$.next(true);
+
+    // if ids includes
+    if (ids) {
+      if (ids.conversationId) {
+        this.getConversationById(ids.conversationId);
+      }
+    }
 
     // prepare URL
     const url = `https://${this.apiLoginService.domains.msgHist}/messaging_history/api/account/${
@@ -97,7 +104,7 @@ export class ApiDataService {
    * method to get a single conversation from API
    * @param {string} conversationId
    */
-  getConversation(conversationId: string) {
+  getConversationById(conversationId: string) {
     // emit loading event
     this.apiLoading$.next(true);
 

@@ -95,6 +95,17 @@ export interface ApiConversationHistoryRecord {
   transfers: any[];
 }
 
+export interface ApiIds {
+  conversationId: string;
+  consumerId: string;
+}
+
+export interface ApiSearchSdes {
+  personalInfo: string;
+  customerInfo: string;
+  userUpdate: string;
+}
+
 export interface ApiOptions {
   start?: {
     from: number;

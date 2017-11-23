@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ApiDataService } from '../../../shared/services/api-data.service';
-import { ApiOptions } from '../../../shared/interfaces/interfaces';
+import { ApiOptions, ApiIds, ApiSearchSdes } from '../../../shared/interfaces/interfaces';
 
 // 3rd party
 import {
@@ -17,7 +17,6 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   styleUrls: ['./conversations-filter.component.css']
 })
 export class ConversationsFilterComponent implements OnInit {
-
   apiLoading$: BehaviorSubject<boolean>;
 
   to = new Date();
@@ -30,7 +29,9 @@ export class ConversationsFilterComponent implements OnInit {
     { id: 'sdeSearch', name: 'SDE Search', isLabel: true },
     { id: 'personalInfo', name: 'Personal Info' },
     { id: 'customerInfo', name: 'Customer Info' },
-    { id: 'userUpdate', name: 'User Update' }
+    { id: 'userUpdate', name: 'User Update' },
+    { id: 'idSearch', name: 'ID Search', isLabel: true },
+    { id: 'conversationId', name: 'Conversation ID' }
   ];
   searchSelect: any[] = [this.searchOptions[0].id];
   searchSettings: IMultiSelectSettings = {
@@ -54,15 +55,15 @@ export class ConversationsFilterComponent implements OnInit {
   };
   searchKeyword = '';
 
-  constructor(private apiDataService: ApiDataService) { }
-
+  constructor(private apiDataService: ApiDataService) {}
 
   /**
    * request new data from API with optional search params
    */
   getData() {
     let options: ApiOptions;
-    let sdeSearch;
+    let sdeSearch: ApiSearchSdes;
+    let ids: ApiIds = null;
 
     // assign searcgh params to options
     if (this.searchKeyword) {
@@ -73,6 +74,13 @@ export class ConversationsFilterComponent implements OnInit {
           case 'userUpdate':
             sdeSearch = {
               ...sdeSearch,
+              [key]: this.searchKeyword
+            };
+            break;
+          case 'conversationId':
+          case 'consumerId':
+            ids = {
+              ...ids,
               [key]: this.searchKeyword
             };
             break;
@@ -104,11 +112,10 @@ export class ConversationsFilterComponent implements OnInit {
     };
 
     // get new data from API
-    this.apiDataService.getData(options);
+    this.apiDataService.getData(options, ids);
   }
 
   ngOnInit() {
     this.apiLoading$ = this.apiDataService.apiLoading$;
   }
-
 }

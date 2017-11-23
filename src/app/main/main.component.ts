@@ -7,11 +7,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { ModalComponent } from './modal/modal.component';
 
 // interfaces
-import {
-  AfUser,
-  ApiData,
-  ApiConversationHistoryRecord
-} from '../shared/interfaces/interfaces';
+import { AfUser, ApiData, ApiConversationHistoryRecord } from '../shared/interfaces/interfaces';
 
 // material
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -59,9 +55,8 @@ export class MainComponent implements OnInit, OnDestroy {
    * @param {boolean} next
    */
   cycleConversations(next: boolean) {
-
     // select first conversation if none selected
-    if (!this.conversation || !this.conversation.info && this.conversations.length > 0) {
+    if (!this.conversation || (!this.conversation.info && this.conversations.length > 0)) {
       this.conversation = this.conversations[0];
       return;
     }
@@ -111,7 +106,10 @@ export class MainComponent implements OnInit, OnDestroy {
 
     // setup stream for individual api conversation
     this.apiConversationSub = this.apiDataService.apiConversation$.subscribe(data => {
-      this.conversation = data ? data.conversationHistoryRecords[0] : null;
+      this.conversation =
+        data && data.conversationHistoryRecords && data.conversationHistoryRecords[0]
+          ? data.conversationHistoryRecords[0]
+          : null;
     });
 
     // open dialog on login if no token found

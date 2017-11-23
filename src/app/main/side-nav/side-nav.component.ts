@@ -33,7 +33,7 @@ export class SideNavComponent implements OnInit, OnChanges {
    */
   selectNote(id: string) {
     if (id) {
-      this.apiDataService.getConversation(id);
+      this.apiDataService.getConversationById(id);
     }
   }
 
