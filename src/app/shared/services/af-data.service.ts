@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 // services
 import { AfAuthService } from './af-auth.service';
@@ -18,10 +19,22 @@ import * as firebase from 'firebase/app';
 
 @Injectable()
 export class AfDataService {
+  // streams
   afData: AngularFirestoreDocument<AfUser>;
   afData$: Observable<AfUser>;
   afAllData$: Observable<any>;
   isAdmin$: Observable<boolean>;
+
+  // timeout for save
+  afSave$: BehaviorSubject<string | null> = new BehaviorSubject(null);
+  updateTimeout;
+
+  // user details
+  user: {
+    createdAt: Date;
+    email: string;
+    displayName: string;
+  };
 
   constructor(
     private afStore: AngularFirestore,
@@ -31,11 +44,23 @@ export class AfDataService {
     // bind angular firebase to service variable
     this.afData$ = this.afAuthService.afUser$.switchMap(user => {
       if (user) {
+        // save user
+        this.user = {
+          createdAt: new Date(),
+          email: user.email,
+          displayName: user.displayName
+        };
+
         // select user data
         this.afData = this.afStore.doc<AfUser>(`users/${user.uid}`);
         this.afData.snapshotChanges().subscribe(action => {
           if (!action.payload.exists) {
-            this.afData.set({ createdAt: new Date() }, { merge: true });
+            this.afData.set(
+              {
+                user: this.user
+              },
+              { merge: true }
+            );
           }
         });
 
@@ -61,17 +86,35 @@ export class AfDataService {
   }
 
   /**
+   * Emit new saved value
+   */
+  toggleSave(save: string | null) {
+    this.afSave$.next(save);
+  }
+
+  /**
    * Modify firebase with new data for given conversation
    * @param {string} id
    * @param {string} select
    */
   updateConversation(id: string, data: AfConversationData): void {
-    const payload = {
+    clearTimeout(this.updateTimeout);
+    // prepare payload
+    const payload: AfUser = {
       conversations: {
-        [id]: data
+        [id]: {
+          createdBy: this.user.displayName,
+          lastUpdateTime: new Date(),
+          ...data
+        }
       }
     };
-    this.afData.set(payload, { merge: true });
+    // send data to firebase
+    this.afData.set(payload, { merge: true }).then(() => {
+      // emit saved
+      this.toggleSave('saved');
+      // reset saved
+      this.updateTimeout = setTimeout(() => this.toggleSave(null), 5000);
+    });
   }
-
 }

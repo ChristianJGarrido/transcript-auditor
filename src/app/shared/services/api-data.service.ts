@@ -11,6 +11,8 @@ import { ApiLoginService } from './api-login.service';
 @Injectable()
 export class ApiDataService {
   apiData$: BehaviorSubject<ApiData> = new BehaviorSubject(null);
+  apiConversation$: BehaviorSubject<ApiData> = new BehaviorSubject(null);
+  apiLoading$: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
   constructor(private http: HttpClient, private apiLoginService: ApiLoginService) {
     this.apiLoginService.events$.subscribe(event => {
@@ -38,10 +40,13 @@ export class ApiDataService {
    * Get data from messaging history API
    */
   getData(options?: ApiOptions) {
+    // emit loading event
+    this.apiLoading$.next(true);
+
     // prepare URL
-    const url = `https://${this.apiLoginService.domains
-      .msgHist}/messaging_history/api/account/${this.apiLoginService.user
-      .account}/conversations/search`;
+    const url = `https://${this.apiLoginService.domains.msgHist}/messaging_history/api/account/${
+      this.apiLoginService.user.account
+    }/conversations/search`;
 
     // get start
     let start: { from: number; to: number };
@@ -75,14 +80,52 @@ export class ApiDataService {
       .set('sort', 'start:desc');
 
     // make request
-    this.http.post<any>(url, body, { headers, params }).subscribe(
+    this.http.post<ApiData>(url, body, { headers, params }).subscribe(
       response => {
         console.log('Response: ', response);
         this.apiData$.next(response);
+        this.apiLoading$.next(false);
       },
       error => {
         this.apiData$.next(null);
+        this.apiLoading$.next(false);
       }
     );
+  }
+
+  /**
+   * method to get a single conversation from API
+   * @param {string} conversationId
+   */
+  getConversation(conversationId: string) {
+    // emit loading event
+    this.apiLoading$.next(true);
+
+    // prepare URL
+    const url = `https://${this.apiLoginService.domains.msgHist}/messaging_history/api/account/${
+      this.apiLoginService.user.account
+    }/conversations/conversation/search`;
+
+    // prepare body
+    const body = { conversationId };
+
+    // set headers
+    const headers: HttpHeaders = new HttpHeaders()
+    .set('Content-Type', 'application/json')
+    .set('Authorization', 'Bearer ' + this.apiLoginService.bearer);
+
+    // make request
+    this.http.post<ApiData>(url, body, { headers }).subscribe(
+      response => {
+        console.log('Conversation: ', response);
+        this.apiConversation$.next(response);
+        this.apiLoading$.next(false);
+      },
+      error => {
+        this.apiConversation$.next(null);
+        this.apiLoading$.next(false);
+      }
+    );
+
   }
 }

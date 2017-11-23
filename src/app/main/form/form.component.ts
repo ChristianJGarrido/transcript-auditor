@@ -1,8 +1,16 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, OnDestroy } from '@angular/core';
 import { ApiConversationHistoryRecord, AfUser } from '../../shared/interfaces/interfaces';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 // services
 import { AfDataService } from '../../shared/services/af-data.service';
+
+// material
+import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-form',
@@ -12,6 +20,7 @@ import { AfDataService } from '../../shared/services/af-data.service';
 export class FormComponent implements OnInit, OnChanges {
   @Input() conversation: ApiConversationHistoryRecord;
   @Input() afData: AfUser;
+  @Input() sidenav: MatDrawer;
 
   formReady = false;
   note = '';
@@ -20,29 +29,16 @@ export class FormComponent implements OnInit, OnChanges {
   constructor(private afDataService: AfDataService) {}
 
   /**
-   * Updates the conversations note
-   * @param {string} note
-   */
-  updateNote(note: string) {
-    this.afDataService.updateConversation(this.conversation.info.conversationId, { note });
-  }
-
-  /**
-   * Updates the conversations select
-   * @param {string} select
-   */
-  updateSelect(select: string) {
-    this.afDataService.updateConversation(this.conversation.info.conversationId, { select });
-  }
-
-  /**
    * Update form data when inputs change
    */
   getFormData() {
     if (this.conversation) {
+      // show form
       this.formReady = true;
+      // get id and data
       const id: string = this.conversation.info.conversationId;
       const data = this.afData && this.afData.conversations && this.afData.conversations[id];
+      // show data
       if (data) {
         this.note = data.note;
         this.select = data.select;
@@ -51,6 +47,10 @@ export class FormComponent implements OnInit, OnChanges {
         this.select = '';
       }
     }
+  }
+
+  openSidenav() {
+    this.sidenav.open();
   }
 
   ngOnInit() {

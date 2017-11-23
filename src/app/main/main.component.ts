@@ -29,6 +29,7 @@ import { ApiDataService } from '../shared/services/api-data.service';
 export class MainComponent implements OnInit, OnDestroy {
   // subscripitions & observables
   apiDataSub: Subscription;
+  apiConversationSub: Subscription;
   afData$: Observable<AfUser>;
 
   // properties
@@ -58,6 +59,12 @@ export class MainComponent implements OnInit, OnDestroy {
    * @param {boolean} next
    */
   cycleConversations(next: boolean) {
+
+    // select first conversation if none selected
+    if (!this.conversation || !this.conversation.info && this.conversations.length > 0) {
+      this.conversation = this.conversations[0];
+      return;
+    }
 
     // find current index
     const index = this.conversations.findIndex(
@@ -89,16 +96,27 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // stream from angularFire
+    // setup stream from angularFire
     this.afData$ = this.afDataService.afData$;
 
-    // stream from api
+    // setup stream for api data
     this.apiDataSub = this.apiDataService.apiData$.subscribe(data => {
       this.conversations = data ? data.conversationHistoryRecords : [];
+
+      // after data is collected, get first conversation
+      if (!this.conversation && this.conversations.length > 0) {
+        this.conversation = this.conversations[0];
+      }
     });
 
+    // setup stream for individual api conversation
+    this.apiConversationSub = this.apiDataService.apiConversation$.subscribe(data => {
+      this.conversation = data ? data.conversationHistoryRecords[0] : null;
+    });
+
+    // open dialog on login if no token found
+    // timeout required due to known angular bug with opening dialog during change detection
     if (!this.apiLoginService.bearer) {
-      // timeout required due to known angular bug with opening dialog during change detection
       setTimeout(() => this.openDialog(), 100);
     }
   }

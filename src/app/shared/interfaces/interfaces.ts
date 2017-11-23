@@ -4,7 +4,11 @@ export interface AfUsers {
 
 export interface AfUser {
   conversations?: AfConversation;
-  createdAt?: Date;
+  user?: {
+    createdAt: Date;
+    email: string;
+    displayName: string;
+  };
 }
 
 export interface AfConversation {
@@ -12,6 +16,8 @@ export interface AfConversation {
 }
 
 export interface AfConversationData {
+  lastUpdateTime?: Date;
+  createdBy?: string;
   note?: string;
   select?: string;
 }
@@ -45,11 +51,39 @@ export interface ApiMessageRecord {
   type: string;
 }
 
+export interface ApiConversationInfo {
+  alertedMCS: number;
+  brandId: string;
+  closeReason: string;
+  closeReasonDescription: string;
+  conversationId: string;
+  device: string;
+  duration: number;
+  endTime: string;
+  endTimeL: number;
+  firstConversation: boolean;
+  isPartial: boolean;
+  latestAgentFullName: string;
+  latestAgentGroupId: number;
+  latestAgentGroupName: string;
+  latestAgentId: string;
+  latestAgentLoginName: string;
+  latestAgentNickname: string;
+  latestQueueState: string;
+  latestSkillId: number;
+  latestSkillName: string;
+  mcs: number;
+  source: string;
+  startTime: string;
+  startTimeL: number;
+  status: string;
+}
+
 export interface ApiConversationHistoryRecord {
   agentParticipants: any[];
   consumerParticipants: any[];
   conversationSurveys: any[];
-  info: any;
+  info: ApiConversationInfo;
   interactions: any[];
   messageRecords: ApiMessageRecord[];
   messageScores: any[];

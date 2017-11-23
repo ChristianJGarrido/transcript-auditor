@@ -1,0 +1,21 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row">
+      <h5 class="card-title col-auto">Conversation KPIs</h5>
+      <div class="col text-right">
+
+      </div>
+    </div>
+    <!-- <span class="card-subtitle mb-2 text-muted">{{conversation?.info?.conversationId}}</span> -->
+    <div class="row no-gutters">
+      <app-conversation-stats-widget [metricName]="'Close Reason'" [metricValue]="conversation?.info.closeReason"></app-conversation-stats-widget>
+      <app-conversation-stats-widget [metricName]="'Duration Hrs'" [metricValue]="(conversation?.info.duration / 1000 / 3600 || 0) | number:1.0-1"></app-conversation-stats-widget>
+      <app-conversation-stats-widget [metricName]="'MCS'" [metricValue]="conversation?.info.mcs"></app-conversation-stats-widget>
+      <app-conversation-stats-widget [metricName]="'Source'" [metricValue]="conversation?.info.source"></app-conversation-stats-widget>
+      <app-conversation-stats-widget [metricName]="'Status'" [metricValue]="conversation?.info.status"></app-conversation-stats-widget>
+      <app-conversation-stats-widget [metricName]="'Transfers'" [metricValue]="conversation?.transfers.length"></app-conversation-stats-widget>
+      <app-conversation-stats-widget [metricName]="'Participants'" [metricValue]="conversation?.agentParticipants.length"></app-conversation-stats-widget>
+      <app-conversation-stats-widget [metricName]="'Assignments'" [metricValue]="conversation?.interactions.length"></app-conversation-stats-widget>
+    </div>
+  </div>
+</div>

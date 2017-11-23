@@ -1,27 +1,23 @@
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Conversation Notes</h5>
+    <div class="row">
+      <h5 class="card-title col-auto">Conversation Notes</h5>
+      <div class="col text-right">
+        <i class="fa fa-sticky-note" matTooltip="Previous notes" style="cursor: pointer;" aria-hidden="true" (click)="openSidenav()"></i>
+      </div>
+    </div>
     <span class="card-subtitle mb-2 text-muted">{{conversation?.info?.conversationId}}</span>
 
     <form *ngIf="formReady">
-      <div class="row">
-        <div class="col-12">
-          <label for="outcomeSelect">Outcome Select</label>
-          <select class="form-control" id="outcomeSelect" [(ngModel)]="select" name="outcomeSelect" (ngModelChange)="updateSelect(select)">
-            <option [value]="1">1</option>
-            <option [value]="2">2</option>
-            <option [value]="3">3</option>
-            <option [value]="4">4</option>
-            <option [value]="5">5</option>
-          </select>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12">
-          <label for="notesTextarea">Notes</label>  
-          <textarea id="notesTextarea" class="col-12 form-control" [(ngModel)]="note" name="notesTextarea" (ngModelChange)="updateNote(note)"></textarea>
-        </div>
-      </div>
+
+      <!-- row for selectors -->
+      <app-form-select [select]="select" [id]="conversation.info.conversationId"></app-form-select>
+
+      <!-- Row for notes -->
+      <app-form-notes [note]="note" [id]="conversation.info.conversationId"></app-form-notes>
+
+      <!-- row for saved notification -->
+      <app-form-save></app-form-save>
     </form>
 
   </div>

@@ -31,6 +31,6 @@
 
 <!-- Logout of Auditor -->
 <div class="modal-footer">
-  <button *ngIf="isAdmin() | async" type="submit" class="btn btn-outline-success" (click)="getAll()">Export User Data</button>
+  <button *ngIf="(isAdmin() | async)" type="submit" class="btn btn-outline-success" (click)="getAll()">Export User Data</button>
   <button type="submit" class="btn btn-outline-danger" (click)="logout()">Sign out</button>
 </div>

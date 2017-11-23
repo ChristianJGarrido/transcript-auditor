@@ -1,0 +1,33 @@
+
+<!-- date picker -->
+<div class="row no-gutters">
+  <div class="col">
+    <mat-form-field>
+      <input matInput [matDatepicker]="pickerFrom" placeholder="From" [formControl]="dateFrom">
+      <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
+      <mat-datepicker #pickerFrom></mat-datepicker>
+    </mat-form-field>
+  </div>
+  <div class="col">
+    <mat-form-field>
+      <input matInput [matDatepicker]="pickerTo" placeholder="To" [formControl]="dateTo">
+      <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
+      <mat-datepicker #pickerTo></mat-datepicker>
+    </mat-form-field>
+  </div>
+</div>
+
+<div class="row">
+
+  <!-- keyword options -->
+  <div class="col-auto pr-0">
+    <ss-multiselect-dropdown [settings]="searchSettings" [texts]="searchTexts" [options]="searchOptions"
+      [(ngModel)]="searchSelect"></ss-multiselect-dropdown>
+  </div>
+
+  <!-- keyword search -->
+  <input class="col form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword">
+
+  <!-- search button -->
+  <button class="col-2 mr-3 btn btn-outline-success btn-sm" (click)="getData()" [disabled]="(apiLoading$ | async)">{{(apiLoading$ | async) ? 'Loading...' : 'Search'}}</button>
+</div>

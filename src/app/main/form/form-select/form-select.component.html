@@ -1,0 +1,12 @@
+<div class="row mt-2">
+  <div class="col-12">
+    <label for="outcomeSelect">Outcome Select</label>
+    <select class="form-control" id="outcomeSelect" [(ngModel)]="select" name="outcome" (ngModelChange)="changeSelect(select)">
+      <option [value]="1">1</option>
+      <option [value]="2">2</option>
+      <option [value]="3">3</option>
+      <option [value]="4">4</option>
+      <option [value]="5">5</option>
+    </select>
+  </div>
+</div>

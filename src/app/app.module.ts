@@ -13,6 +13,10 @@ import { ModalComponent } from './main/modal/modal.component';
 import { ConversationsComponent } from './main/conversations/conversations.component';
 import { MessagesComponent } from './main/messages/messages.component';
 import { FormComponent } from './main/form/form.component';
+import { FormSaveComponent } from './main/form/form-save/form-save.component';
+import { FormNotesComponent } from './main/form/form-notes/form-notes.component';
+import { FormSelectComponent } from './main/form/form-select/form-select.component';
+import { ConversationsFilterComponent } from './main/conversations/conversations-filter/conversations-filter.component';
 
 // services
 import { AfAuthService } from './shared/services/af-auth.service';
@@ -32,6 +36,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNativeDateModule } from '@angular/material';
 
 // angular fire
@@ -43,6 +48,10 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 // 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
+import { NoResultsComponent } from './shared/components/no-results/no-results.component';
+import { SideNavComponent } from './main/side-nav/side-nav.component';
+import { ConversationStatsComponent } from './main/conversation-stats/conversation-stats.component';
+import { ConversationStatsWidgetComponent } from './main/conversation-stats/conversation-stats-widget/conversation-stats-widget.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +61,15 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
     ModalComponent,
     ConversationsComponent,
     MessagesComponent,
-    FormComponent
+    FormComponent,
+    FormSaveComponent,
+    FormNotesComponent,
+    FormSelectComponent,
+    ConversationsFilterComponent,
+    NoResultsComponent,
+    SideNavComponent,
+    ConversationStatsComponent,
+    ConversationStatsWidgetComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +86,7 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
     MatTooltipModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    MatSidenavModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

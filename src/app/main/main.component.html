@@ -2,21 +2,44 @@
   <a class="navbar-brand" href="#">Transcript Auditor</a>
   <i class="fa fa-bars fa-2x" style="color: white;" aria-hidden="true" (click)="openDialog()"></i>
 </nav>
+<mat-sidenav-container class="example-container">
+  <div class="container-fluid">
 
-<div class="container-fluid">
+    <div class="row no-gutters mt-2">
 
-  <div class="row no-gutters mt-2">
+      <div class="col-8 pr-1">
+        <div class="row no-gutters">
+          <div class="col-12 col-md-6 pr-1">
+            <app-conversations [conversations]="conversations" (selectConversation)="getConversation($event)"></app-conversations>
+          </div>
+          <div class="col-12 col-md-6">
+            <app-messages [conversation]="conversation" (nextConversation)="cycleConversations($event)"></app-messages>
+          </div>
+        </div>
+      </div>
 
-    <div class="col-12 col-md-6 col-lg-4 pr-1">
-      <app-conversations [conversations]="conversations" (selectConversation)="getConversation($event)"></app-conversations>
-    </div>
+      <div class="col-4">
+        <div class="row no-gutters">
+          <div class="col-12">
+            <app-conversation-stats [conversation]="conversation"></app-conversation-stats>
+          </div>
+        </div>
+        <div class="row no-gutters mt-1">
+          <div class="col-12">
+            <app-form [conversation]="conversation" [afData]="(afData$ | async)" [sidenav]="sidenav"></app-form>
+          </div>
+        </div>
+      </div>
 
-    <div class="col-12 col-md-6 col-lg-4 pr-1">
-      <app-messages [conversation]="conversation" (nextConversation)="cycleConversations($event)"></app-messages>
-    </div>
 
-    <div class="col-12 col-lg-4">
-      <app-form [conversation]="conversation" [afData]="(afData$ | async)"></app-form>
     </div>
   </div>
-</div>
+
+  <!-- side nav -->
+  <mat-sidenav mode="push" position="end" #sidenav>
+
+    <app-side-nav [afData]="(afData$ | async)"></app-side-nav>
+
+  </mat-sidenav>
+
+</mat-sidenav-container>
