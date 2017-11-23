@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -17,10 +18,14 @@ export class ApiDataService {
   constructor(private http: HttpClient, private apiLoginService: ApiLoginService) {
     this.apiLoginService.events$.subscribe(event => {
       if (event.isLoggedIn) {
-        console.log('logged in!');
+        if (!environment.production) {
+          console.log('logged in!');
+        }
         this.getData();
       } else {
-        console.log('logged out!');
+        if (!environment.production) {
+          console.log('logged out!');
+        }
         this.apiData$.next(null);
       }
     });
@@ -89,7 +94,9 @@ export class ApiDataService {
     // make request
     this.http.post<ApiData>(url, body, { headers, params }).subscribe(
       response => {
-        console.log('Response: ', response);
+        if (!environment.production) {
+          console.log('Response: ', response);
+        }
         this.apiData$.next(response);
         this.apiLoading$.next(false);
       },
@@ -118,13 +125,15 @@ export class ApiDataService {
 
     // set headers
     const headers: HttpHeaders = new HttpHeaders()
-    .set('Content-Type', 'application/json')
-    .set('Authorization', 'Bearer ' + this.apiLoginService.bearer);
+      .set('Content-Type', 'application/json')
+      .set('Authorization', 'Bearer ' + this.apiLoginService.bearer);
 
     // make request
     this.http.post<ApiData>(url, body, { headers }).subscribe(
       response => {
-        console.log('Conversation: ', response);
+        if (!environment.production) {
+          console.log('Conversation: ', response);
+        }
         this.apiConversation$.next(response);
         this.apiLoading$.next(false);
       },
@@ -132,6 +141,5 @@ export class ApiDataService {
         this.apiLoading$.next(false);
       }
     );
-
   }
 }
