@@ -12,6 +12,7 @@ import { MatDialogRef } from '@angular/material';
 import { AfAuthService } from '../../shared/services/af-auth.service';
 import { ApiLoginService } from '../../shared/services/api-login.service';
 import { AfDataService } from '../../shared/services/af-data.service';
+import { ExportService } from '../../shared/services/export.service';
 
 // 3rd party
 import * as firebase from 'firebase/app';
@@ -27,6 +28,7 @@ export class ModalComponent implements OnInit {
   afUser$: Observable<firebase.User>;
 
   constructor(
+    private exportService: ExportService,
     private apiLoginService: ApiLoginService,
     private afDataService: AfDataService,
     private afAuthService: AfAuthService,
@@ -71,6 +73,10 @@ export class ModalComponent implements OnInit {
     this.afAuthService.logout();
   }
 
+  /**
+   * Check to see if user is admin
+   * @return {Observable<boolean>}
+   */
   isAdmin(): Observable<boolean> {
     return this.afDataService.isAdmin$;
   }
@@ -79,8 +85,9 @@ export class ModalComponent implements OnInit {
    * Get all users
    */
   getAll(): void {
-    // this.afDataService.getAllData();
+    this.exportService.downloadAllNotes(this.afDataService.afAllData);
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+  }
 }

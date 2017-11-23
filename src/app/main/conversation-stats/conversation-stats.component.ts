@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { ApiConversationHistoryRecord } from '../../shared/interfaces/interfaces';
 
 // 3rd party
@@ -9,8 +9,13 @@ import * as _ from 'lodash';
   templateUrl: './conversation-stats.component.html',
   styleUrls: ['./conversation-stats.component.css']
 })
-export class ConversationStatsComponent implements OnInit {
+export class ConversationStatsComponent implements OnChanges {
   @Input() conversation: ApiConversationHistoryRecord;
+
+  metrics: {
+    value: any;
+    name: any;
+  }[] = [];
 
   constructor() {}
 
@@ -50,5 +55,6 @@ export class ConversationStatsComponent implements OnInit {
   }
 
 
-  ngOnInit() {}
+  ngOnChanges() {
+  }
 }

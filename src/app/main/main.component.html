@@ -1,7 +1,10 @@
+<!-- navbar -->
 <nav class="navbar navbar-dark bg-dark">
   <a class="navbar-brand" href="#">Transcript Auditor</a>
   <i class="fa fa-bars fa-2x" style="color: white;" aria-hidden="true" (click)="openDialog()"></i>
 </nav>
+
+<!-- side nav container -->
 <mat-sidenav-container class="example-container">
   <div class="container-fluid">
 
@@ -37,9 +40,7 @@
 
   <!-- side nav -->
   <mat-sidenav mode="push" position="end" #sidenav>
-
     <app-side-nav [afData]="(afData$ | async)"></app-side-nav>
-
   </mat-sidenav>
 
 </mat-sidenav-container>

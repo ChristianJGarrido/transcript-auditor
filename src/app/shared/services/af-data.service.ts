@@ -22,7 +22,7 @@ export class AfDataService {
   // streams
   afData: AngularFirestoreDocument<AfUser>;
   afData$: Observable<AfUser>;
-  afAllData$: Observable<any>;
+  afAllData: AfUsers[];
   isAdmin$: Observable<boolean>;
 
   // timeout for save
@@ -70,9 +70,9 @@ export class AfDataService {
           .snapshotChanges()
           .switchMap(action => {
             if (action.payload.exists) {
-              this.afAllData$ = this.afStore.collection('/users').valueChanges();
-            } else {
-              this.afAllData$ = Observable.of(null);
+              this.afStore.collection<AfUsers>('/users').valueChanges().subscribe(data => {
+                this.afAllData = data;
+              });
             }
             return Observable.of(action.payload.exists);
           });
