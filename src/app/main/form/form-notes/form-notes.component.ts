@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { AfConversationData } from '../../../shared/interfaces/interfaces';
+import { AfConversationData, AfConversationForm } from '../../../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-form-notes',
@@ -12,7 +12,7 @@ import { AfConversationData } from '../../../shared/interfaces/interfaces';
   styleUrls: ['./form-notes.component.css']
 })
 export class FormNotesComponent implements OnInit, OnDestroy {
-  @Input() formData: AfConversationData;
+  @Input() formData: AfConversationForm;
   @Input() id: string;
 
   note$: Subject<string> = new Subject();
