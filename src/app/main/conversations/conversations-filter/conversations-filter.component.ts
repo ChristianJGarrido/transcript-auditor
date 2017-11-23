@@ -23,7 +23,24 @@ export class ConversationsFilterComponent implements OnInit {
   dateTo = new FormControl(new Date(this.to.setDate(this.to.getDate() - 1)));
   dateFrom = new FormControl(new Date(this.to.setDate(this.to.getDate() - 7)));
 
+  filterOptions: IMultiSelectOption[] = [
+    { id: 'status', name: 'Status', isLabel: true },
+    { id: 'OPEN', name: 'Open' },
+    { id: 'CLOSE', name: 'Closed' },
+    { id: 'source', name: 'Source', isLabel: true },
+    { id: 'APP', name: 'App' },
+    { id: 'WEB', name: 'Web' },
+    { id: 'FACEBOOK', name: 'Facebook' },
+    { id: 'AGENT', name: 'Agent' },
+    { id: 'SMS', name: 'SMS' },
+    { id: 'device', name: 'Device', isLabel: true },
+    { id: 'DESKTOP', name: 'Desktop' },
+    { id: 'TABLET', name: 'Tablet' },
+    { id: 'MOBILE', name: 'Mobile' },
+    { id: 'NA', name: 'NA' }
+  ];
   searchOptions: IMultiSelectOption[] = [
+    { id: 'keywordSearch', name: 'Keyword Search', isLabel: true },
     { id: 'keyword', name: 'Keyword' },
     { id: 'summary', name: 'Summary' },
     { id: 'sdeSearch', name: 'SDE Search', isLabel: true },
@@ -33,23 +50,20 @@ export class ConversationsFilterComponent implements OnInit {
     { id: 'idSearch', name: 'ID Search', isLabel: true },
     { id: 'conversationId', name: 'Conversation ID' }
   ];
-  searchSelect: any[] = [this.searchOptions[0].id];
+  searchSelect: any[] = [this.searchOptions[1].id];
+  filterSelect: any[] = [];
   searchSettings: IMultiSelectSettings = {
-    // showUncheckAll: true,
-    // showCheckAll: true,
-    // enableSearch: true,
     buttonClasses: 'btn btn-outline-secondary btn-sm',
     dynamicTitleMaxItems: 1,
     displayAllSelectedText: true
   };
+  filterTexts: IMultiSelectTexts = {
+    checkedPlural: 'filters',
+    defaultTitle: 'Filter',
+    allSelected: 'All'
+  };
   searchTexts: IMultiSelectTexts = {
-    checkAll: 'Select all',
-    uncheckAll: 'Unselect all',
-    checked: 'item selected',
     checkedPlural: 'selected',
-    searchPlaceholder: 'Search',
-    searchEmptyResult: 'Nothing found...',
-    searchNoRenderText: 'Type in search box to see results...',
     defaultTitle: 'None',
     allSelected: 'All'
   };
@@ -61,11 +75,11 @@ export class ConversationsFilterComponent implements OnInit {
    * request new data from API with optional search params
    */
   getData() {
-    let options: ApiOptions;
+    let options: ApiOptions = null;
     let sdeSearch: ApiSearchSdes;
     let ids: ApiIds = null;
 
-    // assign searcgh params to options
+    // assign search params to options
     if (this.searchKeyword) {
       this.searchSelect.forEach(key => {
         switch (key) {
@@ -93,6 +107,41 @@ export class ConversationsFilterComponent implements OnInit {
         }
       });
     }
+
+    // get filter options
+    this.filterSelect.forEach(key => {
+      switch (key) {
+        case 'OPEN':
+        case 'CLOSE':
+          options = {
+            ...options,
+            status: options && options.status ? [...options.status, key] : [key]
+          };
+          break;
+        case 'APP':
+        case 'WEB':
+        case 'FACEBOOK':
+        case 'AGENT':
+        case 'SMS':
+          options = {
+            ...options,
+            source: options && options.source ? [...options.source, key] : [key]
+          };
+          break;
+
+        case 'DESKTOP':
+        case 'TABLET':
+        case 'MOBILE':
+        case 'NA':
+          options = {
+            ...options,
+            device: options && options.device ? [...options.device, key] : [key]
+          };
+          break;
+        default:
+          break;
+      }
+    });
 
     // attach sdeSearch param
     if (sdeSearch) {

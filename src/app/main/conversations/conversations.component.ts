@@ -23,6 +23,7 @@ import { DatatableComponent } from '@swimlane/ngx-datatable';
 export class ConversationsComponent implements OnInit, OnChanges {
   @ViewChild('table') table: DatatableComponent;
   @Input() conversations: ApiConversationHistoryRecord[] = [];
+  @Input() count: number;
   @Output() selectConversation = new EventEmitter<ApiConversationHistoryRecord>();
 
   rows: any[] = [];

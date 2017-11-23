@@ -16,7 +16,12 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row no-gutters">
+
+  <!-- filter options -->
+  <div class="col-auto pr-2">
+    <ss-multiselect-dropdown [settings]="searchSettings" [texts]="filterTexts" [options]="filterOptions" [(ngModel)]="filterSelect"></ss-multiselect-dropdown>
+  </div>
 
   <div class="col">
     <div class="input-group">
@@ -24,7 +29,7 @@
       <ss-multiselect-dropdown [settings]="searchSettings" [texts]="searchTexts" [options]="searchOptions" [(ngModel)]="searchSelect"></ss-multiselect-dropdown>
       <!-- keyword search -->
       <input type="text" class="form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword" (keyup.enter)="getData()"
-        placeholder="Keywords">
+        placeholder="Keywords...">
       <!-- search button -->
       <span class="input-group-btn">
         <button type="button" class="btn btn-outline-success btn-sm" (click)="getData()" [disabled]="(apiLoading$ | async)">{{(apiLoading$ | async) ? 'Loading...' : 'Search'}}</button>

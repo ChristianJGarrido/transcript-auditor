@@ -11,7 +11,7 @@
     <div class="row no-gutters mt-2">
 
       <div class="col-12 col-md-4 mt-1 mt-md-0 pr-md-1">
-        <app-conversations [conversations]="conversations" (selectConversation)="getConversation($event)"></app-conversations>
+        <app-conversations [count]="count" [conversations]="conversations" (selectConversation)="getConversation($event)"></app-conversations>
       </div>
 
       <div class="col-12 col-md-4 mt-1 mt-md-0 pr-md-1">
@@ -26,8 +26,6 @@
           </div>
         </div>
       </div>
-
-
 
       <div class="col-12 col-md-4 mt-1 mt-md-0">
         <div class="row no-gutters">

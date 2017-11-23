@@ -31,6 +31,7 @@ export class MainComponent implements OnInit, OnDestroy {
   // properties
   conversation: ApiConversationHistoryRecord;
   conversations: ApiConversationHistoryRecord[] = [];
+  count: number;
 
   // ref
   dialogRef: MatDialogRef<ModalComponent>;
@@ -99,6 +100,7 @@ export class MainComponent implements OnInit, OnDestroy {
     // setup stream for api data
     this.apiDataSub = this.apiDataService.apiData$.subscribe(data => {
       this.conversations = data ? data.conversationHistoryRecords : [];
+      this.count = data ? data._metadata && data._metadata.count : 0;
 
       // after data is collected, get first conversation
       if (!this.conversation && this.conversations.length > 0) {

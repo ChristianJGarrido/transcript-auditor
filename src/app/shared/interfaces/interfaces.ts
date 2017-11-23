@@ -131,6 +131,9 @@ export interface ApiOptions {
     customerInfo?: string;
     userUpdate?: string;
   };
+  source?: string[];
+  device?: string[];
+  status?: string[];
 }
 
 export interface ApiData {
