@@ -14,25 +14,18 @@
         <i class="p-1 fa fa-download" aria-hidden="true" matTooltip="Export to CSV" (click)="downloadCsv()" style="cursor: pointer;"></i>
       </span>
     </span>
-    
+
     <!-- No conversation message -->
     <app-no-results [results]="conversation" [messagePrimary]="'Select a conversation'"></app-no-results>
 
     <!-- Message rows -->
     <div class="container-fluid messages-scroll-container p-0" id="messages-scroll-container">
-      <div class="row" *ngFor="let row of conversation?.messageRecords">
+      <div class="row" *ngFor="let event of messageEvents" [ngSwitch]="event.type">
         <div class="col-12 pt-2">
-          <div class="row">
-            <div class="col-auto font-secondary">
-              {{row?.sentBy}}
-            </div>
-            <div class="col font-secondary">
-              {{row?.time | slice:11:19}}
-            </div>
-          </div>
-          <div class="row">
-            <div class="col font-primary" [ngClass]="row?.sentBy === 'Agent' ? 'font-agent' : 'font-consumer'">{{row?.messageData?.msg?.text}}</div>
-          </div>
+          <app-message-text *ngSwitchCase="'TEXT_PLAIN'" [message]="event.message"></app-message-text>
+          <!-- <app-message-link *ngSwitchCase="'LINK'" [message]="event.message"></app-message-link> -->
+          <app-message-participant *ngSwitchCase="'PARTICIPANT'" [participant]="event.participant"></app-message-participant>
+          <app-message-transfer *ngSwitchCase="'TRANSFER'" [transfer]="event.transfer"></app-message-transfer>
         </div>
       </div>
     </div>

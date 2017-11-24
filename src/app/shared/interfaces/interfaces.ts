@@ -39,7 +39,7 @@ export interface LoginEvents {
   loggingIn: boolean;
 }
 
-export interface ApiMessageScore {
+export interface ApiConversationMessageScore {
   mcs: number;
   messageId: string;
   messageRawScore: number;
@@ -47,13 +47,17 @@ export interface ApiMessageScore {
   timeL: number;
 }
 
-export interface ApiMessageRecord {
+export interface ApiConversationMessageRecord {
   device: string;
   dialogId: string;
   messageData: {
-    msg: {
+    msg?: {
       text: string;
     };
+    link?: {
+      externalFileLink: string;
+      fileType: string;
+    }
   };
   messageId: string;
   participantId: string;
@@ -94,18 +98,104 @@ export interface ApiConversationInfo {
   status: string;
 }
 
+export interface ApiConversationTransfers {
+  assignedAgentId: string;
+  by: string;
+  reason: string;
+  sourceAgentFullName: string;
+  sourceAgentId: string;
+  sourceAgentLoginName: string;
+  sourceAgentNickname: string;
+  sourceSkillId: number;
+  sourceSkillName: string;
+  targetSkillId: number;
+  targetSkillName: string;
+  time: string;
+  timeL: number;
+}
+
+export interface ApiConversationStatuses {
+  messageDeliveryStatus: string;
+  messageId: string;
+  participantId: string;
+  participantType: string;
+  seq: number;
+  time: string;
+  timeL: number;
+}
+
+export interface ApiConversationInteractions {
+  assignedAgentFullName: string;
+  assignedAgentId: string;
+  assignedAgentLoginName: string;
+  assignedAgentNickname: string;
+  interactionTime: string;
+  interactionTimeL: number;
+  interactiveSequence: number;
+}
+
+export interface ApiConversationConsumerParticipants {
+  avatarURL: string;
+  consumerName: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  participantId: string;
+  phone: string;
+  time: string;
+  timeL: number;
+  token: string;
+}
+
+export interface ApiConversationAgentParticipants {
+  agentFullName: string;
+  agentGroupId: number;
+  agentGroupName: string;
+  agentId: string;
+  agentLoginName: string;
+  agentNickname: string;
+  agentPid: string;
+  permission: string;
+  role: string;
+  time: string;
+  timeL: number;
+  userType: string;
+  userTypeName: string;
+}
+
 export interface ApiConversationHistoryRecord {
-  agentParticipants: any[];
-  consumerParticipants: any[];
-  conversationSurveys: any[];
+  agentParticipants: ApiConversationAgentParticipants[];
+  consumerParticipants: ApiConversationConsumerParticipants[];
+  conversationSurveys: {
+    surveyData: {
+      question: string;
+      answer: string;
+    }[];
+    surveyStatus: string;
+    surveyType: string;
+  }[];
   info: ApiConversationInfo;
-  interactions: any[];
-  messageRecords: ApiMessageRecord[];
-  messageScores: ApiMessageScore[];
-  messageStatuses: any[];
-  sdes: any;
-  summary: any;
-  transfers: any[];
+  interactions: ApiConversationInteractions[];
+  messageRecords: ApiConversationMessageRecord[];
+  messageScores: ApiConversationMessageScore[];
+  messageStatuses: ApiConversationStatuses[];
+  sdes: {
+    events: any[]
+  };
+  summary: {
+    lastUpdatedTime: number;
+    text: string;
+  };
+  transfers: ApiConversationTransfers[];
+}
+
+export interface MessageEvent {
+  type: string;
+  participant?: ApiConversationAgentParticipants;
+  consumer?: ApiConversationConsumerParticipants;
+  message?: ApiConversationMessageRecord;
+  transfer?: ApiConversationTransfers;
+  interaction?: ApiConversationInteractions;
 }
 
 export interface ApiIds {

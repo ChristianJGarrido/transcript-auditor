@@ -22,6 +22,11 @@ import { SideNavComponent } from './main/side-nav/side-nav.component';
 import { ConversationStatsComponent } from './main/conversation-stats/conversation-stats.component';
 import { ConversationStatsWidgetComponent } from './main/conversation-stats/conversation-stats-widget/conversation-stats-widget.component';
 import { ConversationChartComponent } from './main/conversation-chart/conversation-chart.component';
+import { HeaderComponent } from './main/header/header.component';
+import { MessageTextComponent } from './main/messages/message-text/message-text.component';
+import { MessageLinkComponent } from './main/messages/message-link/message-link.component';
+import { MessageParticipantComponent } from './main/messages/message-participant/message-participant.component';
+import { MessageTransferComponent } from './main/messages/message-transfer/message-transfer.component';
 
 // services
 import { AfAuthService } from './shared/services/af-auth.service';
@@ -54,7 +59,6 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
-import { HeaderComponent } from './main/header/header.component';
 
 @NgModule({
   declarations: [
@@ -74,7 +78,11 @@ import { HeaderComponent } from './main/header/header.component';
     ConversationStatsComponent,
     ConversationStatsWidgetComponent,
     ConversationChartComponent,
-    HeaderComponent
+    HeaderComponent,
+    MessageTextComponent,
+    MessageLinkComponent,
+    MessageParticipantComponent,
+    MessageTransferComponent
   ],
   imports: [
     BrowserModule,
