@@ -10,11 +10,39 @@ body {
   top: 35%;
 }
 
+/* hovers */
+.fa-chevron-left:hover,
+.fa-chevron-right:hover,
+.fa-sticky-note:hover,
+.fa-download:hover {
+  background: #656668;
+  color: #ffffff;
+  border-radius: 4px;
+}
+
+/* sprites */
+.sprite-menu {
+  background: url('/assets/sprite-retina.png') no-repeat -120px 0;
+  width: 26px;
+  height: 26px;
+  display: inline-block;
+  cursor: pointer;
+}
+
 /* bootstrap overrided */
-.card, .card-title, .card-subtitle, .navbar, .font-primary, .font-secondary {
+.card {
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+.card,
+.card-title,
+.card-subtitle,
+.navbar,
+.font-primary,
+.font-secondary {
   font-family: MyriadPro, 'sans-serif';
 }
-.font-primary, .font-secondary {
+.font-primary,
+.font-secondary {
   font-size: 1rem;
 }
 .font-primary {

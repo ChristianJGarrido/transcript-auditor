@@ -54,6 +54,7 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { HeaderComponent } from './main/header/header.component';
 
 @NgModule({
   declarations: [
@@ -72,7 +73,8 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     SideNavComponent,
     ConversationStatsComponent,
     ConversationStatsWidgetComponent,
-    ConversationChartComponent
+    ConversationChartComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input } from '@angular/core';
+import { Component, OnChanges, Input, HostBinding } from '@angular/core';
 import { ApiConversationHistoryRecord } from '../../shared/interfaces/interfaces';
 
 // 3rd party
@@ -10,6 +10,7 @@ import * as _ from 'lodash';
   styleUrls: ['./conversation-stats.component.css']
 })
 export class ConversationStatsComponent implements OnChanges {
+  @HostBinding('class') class = 'col-12';
   @Input() conversation: ApiConversationHistoryRecord;
 
   metrics: {

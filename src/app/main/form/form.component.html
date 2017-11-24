@@ -1,21 +1,18 @@
-<div class="card">
+<div class="card" id="form-container">
   <div class="card-body">
     <div class="row">
       <h5 class="card-title col-auto">Conversation Notes</h5>
       <div class="col text-right">
-        <i class="fa fa-sticky-note" matTooltip="Previous notes" style="cursor: pointer;" aria-hidden="true" (click)="openSidenav()"></i>
+        <i class="fa fa-sticky-note p-1" matTooltip="Previous notes" style="cursor: pointer;" aria-hidden="true" (click)="openSidenav()"></i>
       </div>
     </div>
     <span class="card-subtitle mb-2 text-muted">{{conversation?.info.conversationId}}</span>
 
     <form *ngIf="formReady">
-
       <!-- row for selectors -->
       <app-form-select [formData]="formData" [id]="conversation?.info.conversationId"></app-form-select>
-
       <!-- Row for notes -->
       <app-form-notes [formData]="formData" [id]="conversation?.info.conversationId"></app-form-notes>
-
       <!-- row for saved notification -->
       <app-form-save></app-form-save>
     </form>

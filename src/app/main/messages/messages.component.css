@@ -1,4 +1,4 @@
-.scroll-container {
+.messages-scroll-container {
   overflow-y: scroll; 
   overflow-x: hidden; 
   height: 450px;

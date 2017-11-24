@@ -1,10 +1,10 @@
-<div class="card">
+<div class="card" id="messages-container">
   <div class="card-body">
     <div class="row">
       <h5 class="card-title col-auto">Conversation Messages</h5>
       <div class="col text-right">
-        <i class="fa fa-chevron-left pr-2" matTooltip="Previous conversation" style="cursor: pointer;" aria-hidden="true" (click)="cycleConversations(false)"></i>
-        <i class="fa fa-chevron-right" matTooltip="Next conversation" style="cursor: pointer;" aria-hidden="true" (click)="cycleConversations(true)"></i>
+        <i class="fa fa-chevron-left p-1" matTooltip="Previous conversation" style="cursor: pointer;" aria-hidden="true" (click)="cycleConversations(false)"></i>
+        <i class="fa fa-chevron-right p-1" matTooltip="Next conversation" style="cursor: pointer;" aria-hidden="true" (click)="cycleConversations(true)"></i>
       </div>
     </div>
 
@@ -19,7 +19,7 @@
     <app-no-results [results]="conversation" [messagePrimary]="'Select a conversation'"></app-no-results>
 
     <!-- Message rows -->
-    <div class="container-fluid scroll-container p-0">
+    <div class="container-fluid messages-scroll-container p-0" id="messages-scroll-container">
       <div class="row" *ngFor="let row of conversation?.messageRecords">
         <div class="col-12 pt-2">
           <div class="row">

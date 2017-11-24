@@ -1,20 +1,8 @@
-import { Component, OnInit, OnDestroy, Input } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-
-// components
-import { ModalComponent } from './modal/modal.component';
-
-// interfaces
-import { AfUser, ApiData, ApiConversationHistoryRecord } from '../shared/interfaces/interfaces';
-
-// material
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-
-// services
+import { AfUser, ApiConversationHistoryRecord } from '../shared/interfaces/interfaces';
 import { AfDataService } from '../shared/services/af-data.service';
-import { ApiLoginService } from '../shared/services/api-login.service';
 import { ApiDataService } from '../shared/services/api-data.service';
 
 @Component({
@@ -22,9 +10,9 @@ import { ApiDataService } from '../shared/services/api-data.service';
   templateUrl: './main.component.html',
   styleUrls: ['./main.component.css']
 })
-export class MainComponent implements OnInit, OnDestroy {
+export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   // subscripitions & observables
-  apiDataSub: Subscription;
+  apiConversationsSub: Subscription;
   apiConversationSub: Subscription;
   afData$: Observable<AfUser>;
 
@@ -33,15 +21,7 @@ export class MainComponent implements OnInit, OnDestroy {
   conversations: ApiConversationHistoryRecord[] = [];
   count: number;
 
-  // ref
-  dialogRef: MatDialogRef<ModalComponent>;
-
-  constructor(
-    public dialog: MatDialog,
-    private afDataService: AfDataService,
-    private apiDataService: ApiDataService,
-    private apiLoginService: ApiLoginService
-  ) {}
+  constructor(private afDataService: AfDataService, private apiDataService: ApiDataService) {}
 
   /**
    * assigns conversation property from event emission
@@ -86,19 +66,12 @@ export class MainComponent implements OnInit, OnDestroy {
     }
   }
 
-  /**
-   * Opens the material dialog modal
-   */
-  openDialog(): void {
-    this.dialogRef = this.dialog.open(ModalComponent, { maxWidth: 400 });
-  }
-
   ngOnInit() {
     // setup stream from angularFire
     this.afData$ = this.afDataService.afData$;
 
     // setup stream for api data
-    this.apiDataSub = this.apiDataService.apiData$.subscribe(data => {
+    this.apiConversationsSub = this.apiDataService.apiConversations$.subscribe(data => {
       this.conversations = data ? data.conversationHistoryRecords : [];
       this.count = data ? data._metadata && data._metadata.count : 0;
 
@@ -115,15 +88,47 @@ export class MainComponent implements OnInit, OnDestroy {
           ? data.conversationHistoryRecords[0]
           : null;
     });
+  }
 
-    // open dialog on login if no token found
-    // timeout required due to known angular bug with opening dialog during change detection
-    if (!this.apiLoginService.bearer) {
-      setTimeout(() => this.openDialog(), 100);
-    }
+  ngAfterViewInit() {
+    // when window resizes, extend container height
+    const resize = (window.onresize = () => {
+      let windowHeight = 0;
+
+      // get heights
+      if (typeof window.innerWidth === 'number') {
+        // Non-IE
+        windowHeight = window.innerHeight || 0;
+      }
+
+      // calculate heights
+      const conversationHeight = windowHeight < 790 ? 790 : windowHeight;
+      const messagesHeight = conversationHeight - 200;
+      const messagesScrollHeight = messagesHeight - 115;
+      const formHeight = conversationHeight - 285;
+
+      // set heights
+      if (document.getElementById('conversations-container')) {
+        document.getElementById('conversations-container').style.height =
+          String(conversationHeight) + 'px';
+      }
+      if (document.getElementById('messages-container')) {
+        document.getElementById('messages-container').style.height = String(messagesHeight) + 'px';
+      }
+      if (document.getElementById('messages-scroll-container')) {
+        document.getElementById('messages-scroll-container').style.height =
+          String(messagesScrollHeight) + 'px';
+      }
+      if (document.getElementById('form-container')) {
+        document.getElementById('form-container').style.height = String(formHeight) + 'px';
+      }
+    });
+
+    resize();
   }
 
   ngOnDestroy() {
-    this.apiDataSub.unsubscribe();
+    this.apiConversationsSub.unsubscribe();
+    this.apiConversationSub.unsubscribe();
   }
 }

@@ -1,4 +1,4 @@
-.scroll-container {
+.nav-scroll-container {
   overflow-y: scroll; 
   overflow-x: hidden; 
   height: 700px;

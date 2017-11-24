@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, Input, EventEmitter, HostBinding } from '@angular/core';
 import { ApiConversationHistoryRecord } from '../../shared/interfaces/interfaces';
 import { ExportService } from '../../shared/services/export.service';
 
@@ -8,6 +8,7 @@ import { ExportService } from '../../shared/services/export.service';
   styleUrls: ['./messages.component.css']
 })
 export class MessagesComponent implements OnInit {
+  @HostBinding('class') class = 'col-12';
   @Input() conversation: ApiConversationHistoryRecord;
   @Output() nextConversation = new EventEmitter<boolean>();
 

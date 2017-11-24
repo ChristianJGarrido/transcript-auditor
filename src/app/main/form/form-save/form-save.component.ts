@@ -8,7 +8,6 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./form-save.component.css']
 })
 export class FormSaveComponent implements OnInit {
-
   afSave$: Observable<string|null>;
 
   constructor(private afDataService: AfDataService) { }

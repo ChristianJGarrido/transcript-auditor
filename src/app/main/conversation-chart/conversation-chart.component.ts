@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, Input, HostBinding } from '@angular/core';
 import { ApiConversationHistoryRecord } from '../../shared/interfaces/interfaces';
 
 // 3rd party
@@ -11,6 +11,7 @@ import * as Chart from 'chart.js';
   styleUrls: ['./conversation-chart.component.css']
 })
 export class ConversationChartComponent implements OnInit, OnChanges {
+  @HostBinding('class') class = 'col-12';
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
   @Input() conversation: ApiConversationHistoryRecord;
 

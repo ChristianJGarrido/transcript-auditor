@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ApiDataService } from '../../../shared/services/api-data.service';
 import { ApiOptions, ApiIds, ApiSearchSdes } from '../../../shared/interfaces/interfaces';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 // 3rd party
 import {
@@ -9,7 +10,6 @@ import {
   IMultiSelectSettings,
   IMultiSelectTexts
 } from 'angular-2-dropdown-multiselect';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Component({
   selector: 'app-conversations-filter',

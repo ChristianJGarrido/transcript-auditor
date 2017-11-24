@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
-// services
 import { AfAuthService } from './af-auth.service';
 import { ExportService } from './export.service';
-
-// interfaces
 import { AfUser, AfConversation, AfConversationData, AfUsers, AfConversationForm } from '../interfaces/interfaces';
 
 // 3rd party

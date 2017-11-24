@@ -1,11 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-
-// interfaces
 import { LeUser, LoginEvents } from '../interfaces/interfaces';
-
-// services
 import { AfAuthService } from './af-auth.service';
 
 // 3rd party
@@ -18,12 +14,6 @@ export class ApiLoginService {
   private _services = ['agentVep', 'msgHist'];
   private _loginTimer;
   private _loginTimeout;
-
-  // events
-  events$: BehaviorSubject<LoginEvents> = new BehaviorSubject({
-    loggingIn: false,
-    isLoggedIn: false
-  });
 
   // public properties
   user: LeUser = {
@@ -39,20 +29,24 @@ export class ApiLoginService {
         agentVep: ''
       };
 
-  constructor(private http: HttpClient, private afAuthService: AfAuthService) {
-    this.events$.subscribe(event => {
-      if (event.isLoggedIn) {
-        this._timerToggle(false);
-      } else {
-        this._timerToggle(true);
-      }
-    });
-  }
+  // events
+  events$: BehaviorSubject<LoginEvents> = new BehaviorSubject({
+    loggingIn: false,
+    isLoggedIn:
+      this.bearer && sessionStorage.getItem('transcriptAuditorLoggedIn') === 'true' ? true : false
+  });
+
+  constructor(private http: HttpClient, private afAuthService: AfAuthService) {}
 
   /**
    * Helper to manage events
    */
-  private _manageEvents(isLoggedIn: boolean = false, loggingIn: boolean = false) {
+  manageEvents(isLoggedIn: boolean = false, loggingIn: boolean = false) {
+    sessionStorage.setItem('transcriptAuditorLoggedIn', isLoggedIn ? 'true' : 'false');
+    this.bearer = isLoggedIn ? this.bearer : null;
+    if (!isLoggedIn) {
+      sessionStorage.removeItem('transcriptAuditorBearer');
+    }
     this.events$.next({
       isLoggedIn,
       loggingIn
@@ -118,13 +112,13 @@ export class ApiLoginService {
         if (response.bearer) {
           this.bearer = response.bearer;
           sessionStorage.setItem('transcriptAuditorBearer', this.bearer);
-          this._manageEvents(true);
+          this.manageEvents(true);
         } else {
-          this._reset();
+          this.manageEvents();
         }
       },
       error => {
-        this._reset();
+        this.manageEvents();
       }
     );
   }
@@ -159,7 +153,7 @@ export class ApiLoginService {
       // clear interval/timeout
       clearTimeout(this._loginTimeout);
       clearInterval(this._loginTimer);
-      this._manageEvents(true);
+      this.manageEvents(true);
     }
   }
 
@@ -168,25 +162,15 @@ export class ApiLoginService {
    * @param account
    */
   login(user): void {
-    this._manageEvents(false, true);
-    this._configureTransport(user);
-  }
-
-  /**
-   * Helper method to reset events and timer
-   */
-  private _reset() {
-    this.user = null;
-    this._manageEvents();
     this._timerToggle(true);
+    this.manageEvents(false, true);
+    this._configureTransport(user);
   }
 
   /**
    * Logout of LiveEngage
    */
   logout(): void {
-    this.bearer = null;
-    sessionStorage.removeItem('transcriptAuditorBearer');
-    this._reset();
+    this.manageEvents();
   }
 }

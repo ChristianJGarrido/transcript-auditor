@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-
-// interfaces
 import { LeUser, LoginEvents } from '../../shared/interfaces/interfaces';
-
-// material
 import { MatDialogRef } from '@angular/material';
-
-// services
 import { AfAuthService } from '../../shared/services/af-auth.service';
 import { ApiLoginService } from '../../shared/services/api-login.service';
 import { AfDataService } from '../../shared/services/af-data.service';
@@ -24,7 +19,7 @@ import * as firebase from 'firebase/app';
 })
 export class ModalComponent implements OnInit {
   leUser: LeUser;
-  events$: Observable<LoginEvents>;
+  events$: BehaviorSubject<LoginEvents>;
   afUser$: Observable<firebase.User>;
 
   constructor(
@@ -33,22 +28,7 @@ export class ModalComponent implements OnInit {
     private afDataService: AfDataService,
     private afAuthService: AfAuthService,
     public dialogRef: MatDialogRef<ModalComponent>
-  ) {
-    // bind to login service events
-    this.events$ = this.apiLoginService.events$;
-    // update LE user from login service || set defaults
-    if (this.apiLoginService.user) {
-      this.leUser = this.apiLoginService.user;
-    } else {
-      this.leUser = {
-        account: '',
-        username: '',
-        password: ''
-      };
-    }
-    // bind to firebase user
-    this.afUser$ = this.afAuthService.getAuthState();
-  }
+  ) {}
 
   /**
    * Login to LiveEngage with account/username/password
@@ -89,5 +69,20 @@ export class ModalComponent implements OnInit {
   }
 
   ngOnInit() {
+    // bind to login service events
+    this.events$ = this.apiLoginService.events$;
+    // update LE user from login service || set defaults
+    if (this.apiLoginService.user) {
+      this.leUser = this.apiLoginService.user;
+    } else {
+      this.leUser = {
+        account: '',
+        username: '',
+        password: ''
+      };
+    }
+    // bind to firebase user
+    this.afUser$ = this.afAuthService.getAuthState();
   }
+
 }

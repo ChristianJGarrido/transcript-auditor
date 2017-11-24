@@ -8,8 +8,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { ApiConversationHistoryRecord, ApiOptions } from '../../shared/interfaces/interfaces';
-
-// services
 import { ApiDataService } from '../../shared/services/api-data.service';
 
 // 3rd party
@@ -47,6 +45,7 @@ export class ConversationsComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    // set columns
     this.columns = [
       { prop: 'startTime', name: 'Start', flexGrow: 1, cellClass: 'datatable-cells' },
       { prop: 'message', name: 'Message', flexGrow: 3 }
@@ -55,6 +54,7 @@ export class ConversationsComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     if (this.conversations) {
+      // update rows when conversations change
       this.rows = this.conversations.map(conversation => {
         const message =
           conversation.messageRecords[0] &&
