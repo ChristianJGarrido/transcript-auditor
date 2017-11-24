@@ -17,6 +17,7 @@ export class SideNavComponent implements OnInit, OnChanges {
 
   afCollection: AfConversationData[] = [];
   apiLoading$: BehaviorSubject<boolean>;
+  selected: string;
 
   constructor(private apiDataService: ApiDataService, private exportService: ExportService) { }
 
@@ -33,6 +34,7 @@ export class SideNavComponent implements OnInit, OnChanges {
    */
   selectNote(id: string) {
     if (id) {
+      this.selected = id;
       this.apiDataService.getConversationById(id);
     }
   }

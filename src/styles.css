@@ -14,10 +14,14 @@ body {
 .fa-chevron-left:hover,
 .fa-chevron-right:hover,
 .fa-sticky-note:hover,
-.fa-download:hover {
-  background: #656668;
+.fa-download:hover,
+.note-row:hover>.font-primary,
+.note-row:hover>.font-secondary,
+.note-select>.font-primary,
+.note-select>.font-secondary {
+  background: #9c9ea0;
   color: #ffffff;
-  border-radius: 4px;
+  border-radius: 5px;
 }
 
 /* sprites */
@@ -27,6 +31,18 @@ body {
   height: 26px;
   display: inline-block;
   cursor: pointer;
+}
+.sprite-positive-green {
+  background: url('/assets/mcs_sprite.png') no-repeat -259px -19px;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+}
+.sprite-negative-red {
+  background: url('/assets/mcs_sprite.png') no-repeat -259px 0;
+  width: 18px;
+  height: 17px;
+  display: inline-block;
 }
 
 /* bootstrap overrided */
