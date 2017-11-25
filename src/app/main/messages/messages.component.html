@@ -10,7 +10,7 @@
 
     <!-- Conversation subtitle & download button -->
     <span *ngIf="conversation">
-      <span class="card-subtitle mb-2 text-muted">{{conversation?.info.conversationId}}
+      <span class="card-subtitle mb-2 text-muted">ID: {{conversation?.info.conversationId}}
         <i class="p-1 fa fa-download" aria-hidden="true" matTooltip="Export to CSV" (click)="downloadCsv()" style="cursor: pointer;"></i>
       </span>
     </span>
