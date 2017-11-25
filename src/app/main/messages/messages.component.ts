@@ -39,15 +39,16 @@ export class MessagesComponent implements OnInit, OnChanges {
    */
   downloadCsv() {
     // prepare message records
-    const messages = this.conversation.messageRecords.map(record => {
+    const messages = this.messageEvents.map(event => {
       return {
-        sentBy: record.sentBy,
-        time: record.time,
-        device: record.device,
-        text: record.messageData && record.messageData.msg && record.messageData.msg.text
+        event: event.key,
+        sentBy: event.sentBy,
+        agentFullName: event.agentFullName,
+        time: event.time,
+        text: event.messageData && event.messageData.msg && event.messageData.msg.text
       };
     });
-    this.exportService.downloadCsvFile(messages);
+    this.exportService.downloadCsvFile(messages, 'Conversation');
   }
 
   /**
