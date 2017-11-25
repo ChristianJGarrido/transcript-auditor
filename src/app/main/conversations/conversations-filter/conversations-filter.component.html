@@ -20,15 +20,15 @@
 
   <!-- filter options -->
   <div class="col-auto pr-2">
-    <ss-multiselect-dropdown [settings]="searchSettings" [texts]="filterTexts" [options]="filterOptions" [(ngModel)]="filterSelect"></ss-multiselect-dropdown>
+    <ss-multiselect-dropdown [settings]="searchSettings" [texts]="filterTexts" [options]="filterOptions" [(ngModel)]="filterSelect" (ngModelChange)="getData()"></ss-multiselect-dropdown>
   </div>
 
   <div class="col">
     <div class="input-group">
       <!-- keyword options -->
-      <ss-multiselect-dropdown [settings]="searchSettings" [texts]="searchTexts" [options]="searchOptions" [(ngModel)]="searchSelect"></ss-multiselect-dropdown>
+      <ss-multiselect-dropdown [settings]="searchSettings" [texts]="searchTexts" [options]="searchOptions" [(ngModel)]="searchSelect" (ngModelChange)="getData()"></ss-multiselect-dropdown>
       <!-- keyword search -->
-      <input type="text" class="form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword" (keyup.enter)="getData()"
+      <input [disabled]="!searchSelect.length" type="text" class="form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword" (keyup.enter)="getData()"
         placeholder="Keywords...">
       <!-- search button -->
       <span class="input-group-btn">

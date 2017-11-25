@@ -1,8 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ApiDataService } from '../../../shared/services/api-data.service';
 import { ApiOptions, ApiIds, ApiSearchSdes } from '../../../shared/interfaces/interfaces';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
+import { debounceTime, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs/Observable';
 
 // 3rd party
 import {
@@ -16,8 +20,11 @@ import {
   templateUrl: './conversations-filter.component.html',
   styleUrls: ['./conversations-filter.component.css']
 })
-export class ConversationsFilterComponent implements OnInit {
+export class ConversationsFilterComponent implements OnInit, OnDestroy {
   apiLoading$: BehaviorSubject<boolean>;
+
+  filterSub: Subscription;
+  filter$: Subject<any> = new Subject();
 
   to = new Date();
   dateTo = new FormControl(new Date(this.to.setDate(this.to.getDate() - 1)));
@@ -69,15 +76,19 @@ export class ConversationsFilterComponent implements OnInit {
   };
   searchKeyword = '';
 
+  options: ApiOptions = null;
+  sdeSearch: ApiSearchSdes;
+  ids: ApiIds;
+
   constructor(private apiDataService: ApiDataService) {}
 
   /**
    * request new data from API with optional search params
    */
   getData() {
-    let options: ApiOptions = null;
-    let sdeSearch: ApiSearchSdes;
-    let ids: ApiIds = null;
+    this.options = null;
+    this.sdeSearch = null;
+    this.ids = null;
 
     // assign search params to options
     if (this.searchKeyword) {
@@ -86,21 +97,21 @@ export class ConversationsFilterComponent implements OnInit {
           case 'personalInfo':
           case 'customerInfo':
           case 'userUpdate':
-            sdeSearch = {
-              ...sdeSearch,
+            this.sdeSearch = {
+              ...this.sdeSearch,
               [key]: this.searchKeyword
             };
             break;
           case 'conversationId':
           case 'consumerId':
-            ids = {
-              ...ids,
+            this.ids = {
+              ...this.ids,
               [key]: this.searchKeyword
             };
             break;
           default:
-            options = {
-              ...options,
+            this.options = {
+              ...this.options,
               [key]: this.searchKeyword
             };
             break;
@@ -113,9 +124,9 @@ export class ConversationsFilterComponent implements OnInit {
       switch (key) {
         case 'OPEN':
         case 'CLOSE':
-          options = {
-            ...options,
-            status: options && options.status ? [...options.status, key] : [key]
+          this.options = {
+            ...this.options,
+            status: this.options && this.options.status ? [...this.options.status, key] : [key]
           };
           break;
         case 'APP':
@@ -123,9 +134,9 @@ export class ConversationsFilterComponent implements OnInit {
         case 'FACEBOOK':
         case 'AGENT':
         case 'SMS':
-          options = {
-            ...options,
-            source: options && options.source ? [...options.source, key] : [key]
+        this.options = {
+            ...this.options,
+            source: this.options && this.options.source ? [...this.options.source, key] : [key]
           };
           break;
 
@@ -133,9 +144,9 @@ export class ConversationsFilterComponent implements OnInit {
         case 'TABLET':
         case 'MOBILE':
         case 'NA':
-          options = {
-            ...options,
-            device: options && options.device ? [...options.device, key] : [key]
+        this.options = {
+            ...this.options,
+            device: this.options && this.options.device ? [...this.options.device, key] : [key]
           };
           break;
         default:
@@ -144,27 +155,49 @@ export class ConversationsFilterComponent implements OnInit {
     });
 
     // attach sdeSearch param
-    if (sdeSearch) {
-      options = {
-        ...options,
-        sdeSearch
+    if (this.sdeSearch) {
+      this.options = {
+        ...this.options,
+        sdeSearch: this.sdeSearch
       };
     }
 
     // attach time
-    options = {
-      ...options,
+    this.options = {
+      ...this.options,
       start: {
         from: this.dateFrom.value,
         to: this.dateTo.value
       }
     };
 
-    // get new data from API
-    this.apiDataService.getData(options, ids);
+    this.filter$.next();
+
+  }
+
+  /**
+   * Method to apply debounce listener to search filter
+   */
+  debounceFilter() {
+    this.filterSub = this.filter$
+      .pipe(
+        debounceTime(700),
+        switchMap(() => {
+          return Observable.of(
+            this.apiDataService.getData(this.options, this.ids)
+          );
+        })
+      )
+      .subscribe();
   }
 
   ngOnInit() {
     this.apiLoading$ = this.apiDataService.apiLoading$;
+    this.debounceFilter();
   }
+
+  ngOnDestroy() {
+    this.filterSub.unsubscribe();
+  }
+
 }
