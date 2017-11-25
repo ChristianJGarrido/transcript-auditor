@@ -6,11 +6,11 @@
 export const environment = {
   production: false,
   firebase: {
-    apiKey: 'AIzaSyBRwPGyxSlnlDWeFhTtROmvFjp9aF5o6wA',
-    authDomain: 'transcript-auditor.firebaseapp.com',
-    databaseURL: 'https://transcript-auditor.firebaseio.com',
-    projectId: 'transcript-auditor',
-    storageBucket: 'transcript-auditor.appspot.com',
-    messagingSenderId: '941457543276'
+    apiKey: 'AIzaSyAh3SsZxuelUUN3ppTQXnjkzhkz0ABxVSI',
+    authDomain: 'conversation-auditor.firebaseapp.com',
+    databaseURL: 'https://conversation-auditor.firebaseio.com',
+    projectId: 'conversation-auditor',
+    storageBucket: 'conversation-auditor.appspot.com',
+    messagingSenderId: '139977105411'
   }
 };
