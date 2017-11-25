@@ -1,6 +1,13 @@
-<div class="row font-primary">
-  <div class="col-12">
-    <span class="text-info">
-      <strong>Link</strong> {{message.messageData.link.externalFileLink}}</span>
+<div class="row">
+  <div class="col-auto font-secondary">
+    {{message.sentBy}}
+  </div>
+  <div class="col font-secondary">
+    {{message.time | slice:11:19}}
+  </div>
+</div>
+<div class="row">
+  <div class="col font-primary" [ngClass]="message.sentBy === 'Agent' ? 'font-agent' : 'font-consumer'">
+    <img [src]="message.messageData.link.externalFileLink">
   </div>
 </div>

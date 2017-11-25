@@ -17,6 +17,9 @@ import {
 } from '../../shared/interfaces/interfaces';
 import { ExportService } from '../../shared/services/export.service';
 
+// 3rd party
+import * as _ from 'lodash';
+
 @Component({
   selector: 'app-messages',
   templateUrl: './messages.component.html',
@@ -27,7 +30,7 @@ export class MessagesComponent implements OnInit, OnChanges {
   @Input() conversation: ApiConversationHistoryRecord;
   @Output() nextConversation = new EventEmitter<boolean>();
 
-  messageEvents: MessageEvent[] = [];
+  messageEvents: any[] = [];
 
   constructor(private exportService: ExportService) {}
 
@@ -58,51 +61,25 @@ export class MessagesComponent implements OnInit, OnChanges {
   /**
    * Function to recreate time series of message events
    */
-  prepareMessageEvents(): MessageEvent[] {
-
+  prepareMessageEvents(): any[] {
     // proceed only if we have data
     if (!this.conversation || !this.conversation.messageRecords) {
       return [];
     }
-    const messageEvents: MessageEvent[] = [];
 
-    // iterate over each message
-    this.conversation.messageRecords.forEach((message, index, messages) => {
-      // place the current message in first
-      messageEvents.push({ type: message.type, message });
+    // combine all events
+    const events = [
+      ...this.conversation.messageRecords.map(item => ({ ...item, key: item.type })),
+      ...this.conversation.agentParticipants.map(item => ({ ...item, key: 'PARTICIPANT' })),
+      ...this.conversation.transfers.map(item => ({ ...item, key: 'TRANSFER' })),
+      // ...this.conversation.interactions.map(item => ({
+      //   ...item,
+      //   timeL: item.interactionTimeL,
+      //   key: 'INTERACTION'
+      // }))
+    ];
 
-      // push participant events
-      this.conversation.agentParticipants.forEach(participant => {
-        if (
-          participant.timeL >= message.timeL &&
-          (index === messages.length - 1 || participant.timeL <= messages[index + 1].timeL)
-        ) {
-          messageEvents.push({ type: 'PARTICIPANT', participant });
-        }
-      });
-
-      // push interactions events
-      // this.conversation.interactions.forEach(interaction => {
-      //   if (
-      //     interaction.interactionTimeL >= message.timeL &&
-      //     (index === messages.length - 1 || interaction.interactionTimeL <= messages[index + 1].timeL)
-      //   ) {
-      //     messageEvents.push({ type: 'INTERACTION', interaction });
-      //   }
-      // });
-
-      // push transfer events
-      this.conversation.transfers.forEach(transfer => {
-        if (
-          transfer.timeL >= message.timeL &&
-          (index === messages.length - 1 || transfer.timeL <= messages[index + 1].timeL)
-        ) {
-          messageEvents.push({ type: 'TRANSFER', transfer });
-        }
-      });
-    });
-
-    return messageEvents;
+    return _.orderBy(events, 'timeL', 'asc');
   }
 
   ngOnInit() {}

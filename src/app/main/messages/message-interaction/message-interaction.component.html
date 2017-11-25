@@ -3,14 +3,12 @@
     System
   </div>
   <div class="col font-secondary">
-    {{participant.time | slice:11:19}}
+    {{interaction.interactionTime | slice:11:19}}
   </div>
 </div>
 <div class="row font-primary">
   <div class="col-12">
     <span class="text-info">
-      <strong>Participant</strong> {{participant.agentFullName}} </span>
-      <span class="font-secondary">with role </span>
-      <span class="text-info">{{participant.role}}</span>
+      <strong>Assigned</strong> {{interaction.assignedAgentFullName}}</span>
   </div>
 </div>

@@ -27,6 +27,7 @@ import { MessageTextComponent } from './main/messages/message-text/message-text.
 import { MessageLinkComponent } from './main/messages/message-link/message-link.component';
 import { MessageParticipantComponent } from './main/messages/message-participant/message-participant.component';
 import { MessageTransferComponent } from './main/messages/message-transfer/message-transfer.component';
+import { MessageInteractionComponent } from './main/messages/message-interaction/message-interaction.component';
 
 // services
 import { AfAuthService } from './shared/services/af-auth.service';
@@ -82,7 +83,8 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     MessageTextComponent,
     MessageLinkComponent,
     MessageParticipantComponent,
-    MessageTransferComponent
+    MessageTransferComponent,
+    MessageInteractionComponent
   ],
   imports: [
     BrowserModule,

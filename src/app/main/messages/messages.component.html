@@ -20,12 +20,13 @@
 
     <!-- Message rows -->
     <div class="container-fluid messages-scroll-container p-0" id="messages-scroll-container">
-      <div class="row" *ngFor="let event of messageEvents" [ngSwitch]="event.type">
+      <div class="row" *ngFor="let event of messageEvents" [ngSwitch]="event.key">
         <div class="col-12 pt-2">
-          <app-message-text *ngSwitchCase="'TEXT_PLAIN'" [message]="event.message"></app-message-text>
-          <!-- <app-message-link *ngSwitchCase="'LINK'" [message]="event.message"></app-message-link> -->
-          <app-message-participant *ngSwitchCase="'PARTICIPANT'" [participant]="event.participant"></app-message-participant>
-          <app-message-transfer *ngSwitchCase="'TRANSFER'" [transfer]="event.transfer"></app-message-transfer>
+          <app-message-text *ngSwitchCase="'TEXT_PLAIN'" [message]="event"></app-message-text>
+          <app-message-interaction *ngSwitchCase="'INTERACTION'" [interaction]="event"></app-message-interaction>
+          <app-message-link *ngSwitchCase="'LINK'" [message]="event"></app-message-link>
+          <app-message-participant *ngSwitchCase="'PARTICIPANT'" [participant]="event"></app-message-participant>
+          <app-message-transfer *ngSwitchCase="'TRANSFER'" [transfer]="event"></app-message-transfer>
         </div>
       </div>
     </div>
