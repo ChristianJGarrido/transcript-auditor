@@ -1,14 +1,4 @@
 /* You can add global styles to this file, and also import other style files */
-body {
-  background-color: #e9ecef;
-}
-.loading {
-  font-size: 25px;
-  position: fixed;
-  display: block;
-  left: 45%;
-  top: 35%;
-}
 
 /* hovers */
 .fa-chevron-left:hover,
