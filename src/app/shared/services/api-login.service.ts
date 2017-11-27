@@ -21,7 +21,7 @@ export class ApiLoginService {
     password: ''
   };
   bearer: string = sessionStorage.getItem('transcriptAuditorBearer') || null;
-  isLPA = false;
+  isLPA: boolean = sessionStorage.getItem('transcriptAuditorLPA') === 'true' ? true : false;
   domains = sessionStorage.getItem('transcriptAuditorDomains')
     ? JSON.parse(sessionStorage.getItem('transcriptAuditorDomains'))
     : {
@@ -113,6 +113,7 @@ export class ApiLoginService {
           this.bearer = response.bearer;
           this.isLPA = response.config.isLPA;
           sessionStorage.setItem('transcriptAuditorBearer', this.bearer);
+          sessionStorage.setItem('transcriptAuditorLPA', this.isLPA ? 'true' : 'false');
           this.manageEvents(true);
         } else {
           this.manageEvents();

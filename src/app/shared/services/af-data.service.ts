@@ -1,3 +1,4 @@
+import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -27,15 +28,18 @@ import { Subscription } from 'rxjs/Subscription';
 @Injectable()
 export class AfDataService {
   // streams
-  afConversationData: AngularFirestoreCollection<AfConversationData>;
+  afConversationRef: AngularFirestoreCollection<AfConversationData>;
   afConversationData$: BehaviorSubject<AfConversationData[]> = new BehaviorSubject(null);
-  afAccountsData: AngularFirestoreCollection<AfAccount>;
-  afAccountsData$: Observable<AfAccount[]>;
-  afUsersData: AngularFirestoreDocument<AfUser>;
+  afAccountsRef: AngularFirestoreCollection<AfAccount>;
+  afAccountsData$: BehaviorSubject<AfAccount[]> = new BehaviorSubject(null);
+
+  // user streams
+  afUserReady$: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  afUsersRef: AngularFirestoreDocument<AfUser>;
   afUsersData$: Observable<AfUser>;
-  isAdmin$: Observable<boolean>;
 
   // subscriptions
+  afAccountsDataSub: Subscription;
   afConversationDataSub: Subscription;
 
   // timeout for save
@@ -51,6 +55,31 @@ export class AfDataService {
     private afStore: AngularFirestore,
     private exportService: ExportService
   ) {
+    // wait for user to be ready, then subscribe to data store
+    this.afUserReady$.subscribe(ready => {
+      if (ready) {
+        // subscribe to data store
+        if (!environment.production) {
+          console.log('Subscribing to data');
+        }
+        this.afConversationDataSub = this.getAfData().subscribe(data => {
+          this.afConversationData$.next(data);
+        });
+        this.afAccountsDataSub = this.getAfAllData().subscribe(data => {
+          this.afAccountsData$.next(data);
+        });
+      } else {
+        // unsubscribe to data store
+        if (this.afConversationDataSub) {
+          this.afConversationDataSub.unsubscribe();
+        }
+        if (this.afAccountsDataSub) {
+          this.afAccountsDataSub.unsubscribe();
+        }
+      }
+    });
+
+    // subscribe to AF and API auth events
     this.afAuthService.afUser$
       .pipe(combineLatest(this.apiLoginService.events$))
       .subscribe(([user, loginEvents]) => {
@@ -58,23 +87,30 @@ export class AfDataService {
           // save user
           this.user = this.createUser(user);
           // bind to uid
-          this.afUsersData = this.afStore.collection(`users`).doc(user.uid);
+          this.afUsersRef = this.afStore.collection(`users`).doc(user.uid);
           // check user exists and bind to database
-          this.afUsersData$ = this.checkUserExists(user);
-          // subscribe to data store
-          this.afConversationDataSub = this.getAfData().subscribe(data => {
-            this.afConversationData$.next(data);
-          });
+          this.checkUserExists();
         } else {
           // clear observables if not signed into firebase
-          this.afConversationData$.next(null);
-          if (this.afConversationDataSub) {
-            this.afConversationDataSub.unsubscribe();
-          }
-          this.afAccountsData$ = Observable.of(null);
-          this.afUsersData$ = Observable.of(null);
+          this.clearData();
         }
       });
+  }
+
+  /**
+   * Helper method to clear data
+   */
+  clearData() {
+    if (!environment.production) {
+      console.log('Clearing data');
+    }
+    this.afUserReady$.next(false);
+    // clear firebase refs
+    this.afAccountsRef = null;
+    this.afConversationRef = null;
+    // emit null data
+    this.afConversationData$.next(null);
+    this.afAccountsData$.next(null);
   }
 
   /**
@@ -93,24 +129,34 @@ export class AfDataService {
   }
 
   /**
-   * Check if user exists in database
-   * @param {firebase.User} user
-   * @return {Observable<AfUser>}
+   * Check if user exists in database - create if not
    */
-  checkUserExists(user: firebase.User): Observable<AfUser> {
-    return this.afStore
-      .collection(`users`)
-      .doc(user.uid)
-      .snapshotChanges()
-      .switchMap(action => {
-        if (!action.payload.exists) {
-          this.afUsersData.set(this.user).then(() => {
-            return this.afUsersData.valueChanges();
-          });
-        } else {
-          return this.afUsersData.valueChanges();
+  checkUserExists(): void {
+    this.afUsersRef
+      .update({})
+      .then(() => {
+        if (!environment.production) {
+          console.log('User found');
         }
-      });
+        this.afUsersData$ = this.afUsersRef.valueChanges();
+        this.afUserReady$.next(true);
+      })
+      .catch(() =>
+        this.afUsersRef
+          .set(this.user)
+          .then(() => {
+            if (!environment.production) {
+              console.log('User created');
+            }
+            this.afUsersData$ = this.afUsersRef.valueChanges();
+            this.afUserReady$.next(true);
+          })
+          .catch(() => {
+            if (!environment.production) {
+              console.log('Error creating user');
+            }
+          })
+      );
   }
 
   /**
@@ -121,9 +167,9 @@ export class AfDataService {
     // set account number: depend on token
     const account: string = this.apiLoginService.bearer ? this.apiLoginService.user.account : null;
     // attach af data
-    this.afConversationData = this.afStore.doc(`accounts/${account}`).collection('conversations');
+    this.afConversationRef = this.afStore.doc(`accounts/${account}`).collection('conversations');
     // return observable stream
-    return this.afConversationData.valueChanges();
+    return this.afConversationRef.valueChanges();
   }
 
   /**
@@ -132,9 +178,9 @@ export class AfDataService {
    */
   getAfAllData(): Observable<AfAccount[]> {
     // attach af data
-    this.afAccountsData = this.afStore.collection(`accounts`);
+    this.afAccountsRef = this.afStore.collection(`accounts`);
     // return observable stream
-    return this.afAccountsData.valueChanges();
+    return this.afAccountsRef.valueChanges();
   }
 
   /**
@@ -161,7 +207,7 @@ export class AfDataService {
       }
     };
     // send data to firebase
-    this.afConversationData
+    this.afConversationRef
       .doc(id)
       .set(payload, { merge: true })
       .then(() => {
@@ -171,7 +217,9 @@ export class AfDataService {
         this.updateTimeout = setTimeout(() => this.toggleSave(null), 5000);
       })
       .catch(err => {
-        console.log('Error while saving');
+        if (!environment.production) {
+          console.log('Error while saving');
+        }
         this.toggleSave(null);
       });
   }
