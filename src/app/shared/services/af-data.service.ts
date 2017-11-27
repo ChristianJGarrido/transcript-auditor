@@ -39,6 +39,7 @@ export class AfDataService {
   afUsersData$: Observable<AfUser>;
 
   // subscriptions
+  afUserSub: Subscription;
   afAccountsDataSub: Subscription;
   afConversationDataSub: Subscription;
 
@@ -75,6 +76,9 @@ export class AfDataService {
         }
         if (this.afAccountsDataSub) {
           this.afAccountsDataSub.unsubscribe();
+        }
+        if (this.afUserSub) {
+          this.afUserSub.unsubscribe();
         }
       }
     });
@@ -129,6 +133,18 @@ export class AfDataService {
   }
 
   /**
+   * Add new user account on login
+   */
+  addUserAccount(): void {
+    this.afUserSub = this.afUsersRef.valueChanges().subscribe(user => {
+      const account = this.apiLoginService.user.account;
+      if (!user.accounts.includes(account)) {
+        this.afUsersRef.update({ accounts: [...user.accounts, account] });
+      }
+    });
+  }
+
+  /**
    * Check if user exists in database - create if not
    */
   checkUserExists(): void {
@@ -138,6 +154,7 @@ export class AfDataService {
         if (!environment.production) {
           console.log('User found');
         }
+        this.addUserAccount();
         this.afUsersData$ = this.afUsersRef.valueChanges();
         this.afUserReady$.next(true);
       })
