@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { LeUser, LoginEvents } from '../interfaces/interfaces';
-import { AfAuthService } from './af-auth.service';
 
 // 3rd party
 import '../../../js/lpTransportSDK.js';
@@ -22,6 +21,7 @@ export class ApiLoginService {
     password: ''
   };
   bearer: string = sessionStorage.getItem('transcriptAuditorBearer') || null;
+  isLPA = false;
   domains = sessionStorage.getItem('transcriptAuditorDomains')
     ? JSON.parse(sessionStorage.getItem('transcriptAuditorDomains'))
     : {
@@ -36,7 +36,7 @@ export class ApiLoginService {
       this.bearer && sessionStorage.getItem('transcriptAuditorLoggedIn') === 'true' ? true : false
   });
 
-  constructor(private http: HttpClient, private afAuthService: AfAuthService) {}
+  constructor(private http: HttpClient) {}
 
   /**
    * Helper to manage events
@@ -111,6 +111,7 @@ export class ApiLoginService {
       response => {
         if (response.bearer) {
           this.bearer = response.bearer;
+          this.isLPA = response.config.isLPA;
           sessionStorage.setItem('transcriptAuditorBearer', this.bearer);
           this.manageEvents(true);
         } else {

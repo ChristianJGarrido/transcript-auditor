@@ -1,5 +1,5 @@
 {
-  "name": "transcript-auditor",
+  "name": "conversation-analyzer",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {

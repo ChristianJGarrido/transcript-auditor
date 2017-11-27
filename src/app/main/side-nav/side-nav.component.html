@@ -11,9 +11,9 @@
   <div *ngIf="(apiLoading$ | async)" class="font-secondary">
     <i class="fa fa-spinner fa-pulse text-center"></i> Loading...</div>
   <div class="nav-scroll-container">
-    <div *ngFor="let item of afCollection" class="row note-row pt-2 px-2" [ngClass]="selected === item.conversationId ? 'note-select' : '' " (click)="selectNote(item.conversationId)" style="cursor: pointer;">
+    <div *ngFor="let item of afConversations" class="row note-row pt-2 px-2" [ngClass]="selected === item.conversationId ? 'note-select' : '' " (click)="selectNote(item.conversationId)" style="cursor: pointer;">
       <div class="col-12 font-primary">
-        {{item.lastUpdateTime | date}}
+        <small>{{item.lastUpdateTime | date}} ({{item.lastUpdateBy}})</small>
       </div>
       <div class="col-12 font-secondary text-truncate">
         {{item.data.note}}

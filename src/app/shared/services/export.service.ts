@@ -1,5 +1,11 @@
 import { Injectable } from '@angular/core';
-import { AfUser, AfConversationData, AfConversation } from '../interfaces/interfaces';
+import {
+  AfUser,
+  AfConversationData,
+  AfConversation,
+  AfConversationForm,
+  AfAccount
+} from '../interfaces/interfaces';
 
 import { take } from 'rxjs/operators';
 
@@ -18,30 +24,34 @@ export class ExportService {
    * takes 1 users data and exports to csv
    * @param {AfUser} data
    */
-  downloadNotes(data: AfUser) {
-    if (!data || !data.conversations) {
+  downloadNotes(afConversations: AfConversationData[]) {
+    if (!afConversations.length) {
       return;
     }
-    const keys: string[] = Object.keys(data.conversations);
-    const notes: AfConversationData[] = keys.map(key => data.conversations[key]);
+    const notes: AfConversationForm[] = afConversations.map(conversation => ({
+      conversationId: conversation.conversationId,
+      lastUpdateBy: conversation.lastUpdateBy,
+      lastUpdateTime: conversation.lastUpdateTime,
+      ...conversation.data
+    }));
     this.downloadCsvFile(notes, 'Notes');
   }
 
   /**
    * takes all users data and exports to csv
-   * @param {AfUser[]} data
+   * @param {AfAccount[]} data
    */
-  downloadAllNotes(data: AfUser[]) {
+  downloadAllNotes(data: AfAccount[]) {
     if (!data.length) {
       return;
     }
     const allData: AfConversationData[] = [];
-    const userData = data.forEach(user => {
-      if (user.conversations) {
-        Object.keys(user.conversations).forEach(key => {
-          allData.push(user.conversations[key]);
-        });
-      }
+    const accountData = data.forEach(account => {
+      // if (user.conversations) {
+      //   Object.keys(user.conversations).forEach(key => {
+      //     allData.push(user.conversations[key]);
+      //   });
+      // }
     });
     this.downloadCsvFile(allData, 'AllNotes');
   }

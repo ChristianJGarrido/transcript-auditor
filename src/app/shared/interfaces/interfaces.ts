@@ -1,14 +1,15 @@
-export interface AfUsers {
-  [key: string]: AfUser;
+export interface AfAccount {
+  [key: string]: {
+    conversations: AfConversation[];
+  };
 }
 
 export interface AfUser {
-  conversations?: AfConversation;
-  user?: {
-    createdAt: Date;
-    email: string;
-    displayName: string;
-  };
+  createdAt: Date;
+  email: string;
+  displayName: string;
+  accounts: string[];
+  admin: boolean;
 }
 
 export interface AfConversation {
@@ -24,7 +25,7 @@ export interface AfConversationForm {
 export interface AfConversationData {
   conversationId?: string;
   lastUpdateTime?: Date;
-  createdBy?: string;
+  lastUpdateBy?: string;
   data?: AfConversationForm;
 }
 

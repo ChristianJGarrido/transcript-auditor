@@ -13,7 +13,7 @@ import * as Chart from 'chart.js';
 export class ConversationChartComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
-  @Input() conversation: ApiConversationHistoryRecord;
+  @Input() apiConversation: ApiConversationHistoryRecord;
 
   chartData: Chart.ChartDataSets[] = [{data: [0, 0, 0]}];
   chartLabels: string[] = ['1', '2', '3'];
@@ -79,8 +79,8 @@ export class ConversationChartComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.conversation) {
-      const scores = this.conversation.messageScores;
+    if (this.apiConversation) {
+      const scores = this.apiConversation.messageScores;
       this.chartData = [
         { data: scores.map(score => score.mcs)}
       ];

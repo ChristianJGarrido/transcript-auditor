@@ -27,7 +27,7 @@ import * as _ from 'lodash';
 })
 export class MessagesComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
-  @Input() conversation: ApiConversationHistoryRecord;
+  @Input() apiConversation: ApiConversationHistoryRecord;
   @Output() nextConversation = new EventEmitter<boolean>();
 
   messageEvents: any[] = [];
@@ -64,15 +64,15 @@ export class MessagesComponent implements OnInit, OnChanges {
    */
   prepareMessageEvents(): any[] {
     // proceed only if we have data
-    if (!this.conversation || !this.conversation.messageRecords) {
+    if (!this.apiConversation || !this.apiConversation.messageRecords) {
       return [];
     }
 
     // combine all events
     const events = [
-      ...this.conversation.messageRecords.map(item => ({ ...item, key: item.type })),
-      ...this.conversation.agentParticipants.map(item => ({ ...item, key: 'PARTICIPANT' })),
-      ...this.conversation.transfers.map(item => ({ ...item, key: 'TRANSFER' })),
+      ...this.apiConversation.messageRecords.map(item => ({ ...item, key: item.type })),
+      ...this.apiConversation.agentParticipants.map(item => ({ ...item, key: 'PARTICIPANT' })),
+      ...this.apiConversation.transfers.map(item => ({ ...item, key: 'TRANSFER' })),
       // ...this.conversation.interactions.map(item => ({
       //   ...item,
       //   timeL: item.interactionTimeL,

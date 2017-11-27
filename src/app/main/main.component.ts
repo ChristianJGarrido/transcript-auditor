@@ -1,7 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-import { AfUser, ApiConversationHistoryRecord } from '../shared/interfaces/interfaces';
+import { AfUser, ApiConversationHistoryRecord, AfConversationData } from '../shared/interfaces/interfaces';
 import { AfDataService } from '../shared/services/af-data.service';
 import { ApiDataService } from '../shared/services/api-data.service';
 
@@ -11,15 +12,17 @@ import { ApiDataService } from '../shared/services/api-data.service';
   styleUrls: ['./main.component.css']
 })
 export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
-  // subscripitions & observables
+  // subscripitions
   apiConversationsSub: Subscription;
   apiConversationSub: Subscription;
-  afData$: Observable<AfUser>;
+  afConversationsData$: BehaviorSubject<AfConversationData[]>;
 
   // properties
-  conversation: ApiConversationHistoryRecord;
-  conversations: ApiConversationHistoryRecord[] = [];
+  apiConversation: ApiConversationHistoryRecord;
+  apiConversations: ApiConversationHistoryRecord[] = [];
   count: number;
+
+  test;
 
   constructor(private afDataService: AfDataService, private apiDataService: ApiDataService) {}
 
@@ -27,8 +30,8 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
    * assigns conversation property from event emission
    * @param {ApiConversationHistoryRecord} conversation
    */
-  getConversation(conversation: ApiConversationHistoryRecord) {
-    this.conversation = conversation;
+  selectConversation(conversation: ApiConversationHistoryRecord) {
+    this.apiConversation = conversation;
   }
 
   /**
@@ -37,19 +40,19 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
    */
   cycleConversations(next: boolean) {
     // select first conversation if none selected
-    if (!this.conversation || (!this.conversation.info && this.conversations.length > 0)) {
-      this.conversation = this.conversations[0];
+    if (!this.apiConversation || (!this.apiConversation.info && this.apiConversations.length > 0)) {
+      this.apiConversation = this.apiConversations[0];
       return;
     }
 
     // find current index
-    const index = this.conversations.findIndex(
-      conversation => conversation.info.conversationId === this.conversation.info.conversationId
+    const index = this.apiConversations.findIndex(
+      conversation => conversation.info.conversationId === this.apiConversation.info.conversationId
     );
 
     // find new index
     if (index !== -1) {
-      const length = this.conversations.length;
+      const length = this.apiConversations.length;
       let targetIndex;
       if (next && index + 1 === length) {
         targetIndex = 0;
@@ -60,30 +63,30 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
       }
 
       // set new conversation
-      this.conversation = this.conversations[targetIndex];
+      this.apiConversation = this.apiConversations[targetIndex];
     } else {
-      this.conversation = this.conversations[0];
+      this.apiConversation = this.apiConversations[0];
     }
   }
 
   ngOnInit() {
     // setup stream from angularFire
-    this.afData$ = this.afDataService.afData$;
+    this.afConversationsData$ = this.afDataService.afConversationData$;
 
     // setup stream for api data
     this.apiConversationsSub = this.apiDataService.apiConversations$.subscribe(data => {
-      this.conversations = data ? data.conversationHistoryRecords : [];
+      this.apiConversations = data ? data.conversationHistoryRecords : [];
       this.count = data ? data._metadata && data._metadata.count : 0;
 
       // after data is collected, get first conversation
-      if (!this.conversation && this.conversations.length > 0) {
-        this.conversation = this.conversations[0];
+      if (!this.apiConversation && this.apiConversations.length > 0) {
+        this.apiConversation = this.apiConversations[0];
       }
     });
 
     // setup stream for individual api conversation
     this.apiConversationSub = this.apiDataService.apiConversation$.subscribe(data => {
-      this.conversation =
+      this.apiConversation =
         data && data.conversationHistoryRecords && data.conversationHistoryRecords[0]
           ? data.conversationHistoryRecords[0]
           : null;
