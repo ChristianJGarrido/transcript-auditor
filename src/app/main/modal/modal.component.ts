@@ -2,15 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
-import { LeUser, LoginEvents } from '../../shared/interfaces/interfaces';
+import { LeUser, LoginEvents, AfUser } from '../../shared/interfaces/interfaces';
 import { MatDialogRef } from '@angular/material';
 import { AfAuthService } from '../../shared/services/af-auth.service';
 import { ApiLoginService } from '../../shared/services/api-login.service';
 import { AfDataService } from '../../shared/services/af-data.service';
 import { ExportService } from '../../shared/services/export.service';
-
-// 3rd party
-import * as firebase from 'firebase/app';
 
 @Component({
   selector: 'app-modal',
@@ -20,7 +17,7 @@ import * as firebase from 'firebase/app';
 export class ModalComponent implements OnInit {
   leUser: LeUser;
   events$: BehaviorSubject<LoginEvents>;
-  afUser$: Observable<firebase.User>;
+  afUser$: Observable<AfUser>;
 
   constructor(
     private exportService: ExportService,
@@ -65,7 +62,7 @@ export class ModalComponent implements OnInit {
    * Get all users
    */
   getAll(): void {
-    this.exportService.downloadAllNotes(this.afDataService.afAllData);
+    // this.exportService.downloadAllNotes(this.afDataService.afAccountsData);
   }
 
   ngOnInit() {
@@ -82,7 +79,8 @@ export class ModalComponent implements OnInit {
       };
     }
     // bind to firebase user
-    this.afUser$ = this.afAuthService.getAuthState();
+    this.afUser$ = this.afDataService.afUsersData$;
+    this.afDataService.getAfAllData().subscribe();
   }
 
 }

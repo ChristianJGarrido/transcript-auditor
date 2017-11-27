@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges, EventEmitter, Output } from '@angular/core';
-import { AfUser, AfConversationData } from '../../shared/interfaces/interfaces';
+import { AfUser, AfConversationData, AfConversationForm } from '../../shared/interfaces/interfaces';
 import { ApiDataService } from '../../shared/services/api-data.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ExportService } from '../../shared/services/export.service';
@@ -13,9 +13,9 @@ import * as _ from 'lodash';
   styleUrls: ['./side-nav.component.css']
 })
 export class SideNavComponent implements OnInit, OnChanges {
-  @Input() afData: AfUser;
+  @Input() afConversationsData: AfConversationData[];
 
-  afCollection: AfConversationData[] = [];
+  afConversations: AfConversationData[] = [];
   apiLoading$: BehaviorSubject<boolean>;
   selected: string;
 
@@ -25,7 +25,7 @@ export class SideNavComponent implements OnInit, OnChanges {
    * trigger download of all note data
    */
   downloadCsv() {
-    this.exportService.downloadNotes(this.afData);
+    this.exportService.downloadNotes(this.afConversationsData);
   }
 
   /**
@@ -45,9 +45,8 @@ export class SideNavComponent implements OnInit, OnChanges {
 
   ngOnChanges() {
     // when firebase data updates, get new keys
-    if (this.afData && this.afData.conversations) {
-      const keys = Object.keys(this.afData.conversations);
-      this.afCollection = _.orderBy(keys.map(key => this.afData.conversations[key]), 'lastUpdateTime', 'desc');
+    if (this.afConversationsData) {
+      this.afConversations = _.orderBy(this.afConversationsData, 'lastUpdateTime', 'desc');
     }
   }
 

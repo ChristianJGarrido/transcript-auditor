@@ -1,11 +1,11 @@
 export const environment = {
   production: true,
   firebase: {
-    apiKey: 'AIzaSyAh3SsZxuelUUN3ppTQXnjkzhkz0ABxVSI',
-    authDomain: 'conversation-auditor.firebaseapp.com',
-    databaseURL: 'https://conversation-auditor.firebaseio.com',
-    projectId: 'conversation-auditor',
-    storageBucket: 'conversation-auditor.appspot.com',
-    messagingSenderId: '139977105411'
+    apiKey: 'AIzaSyACRHz0bJjFFrcEC0Ts6FCBMZdPZ0x1BKI',
+    authDomain: 'conversation-analyzer.firebaseapp.com',
+    databaseURL: 'https://conversation-analyzer.firebaseio.com',
+    projectId: 'conversation-analyzer',
+    storageBucket: 'conversation-analyzer.appspot.com',
+    messagingSenderId: '861628240407'
   }
 };

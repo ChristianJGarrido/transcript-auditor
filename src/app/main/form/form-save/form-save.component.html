@@ -1,3 +1,8 @@
+<div *ngIf="afConversationData?.lastUpdateBy" class="row font-secondary">
+  <div class="col">
+    <small>Last Update: {{afConversationData?.lastUpdateBy}} ({{afConversationData?.lastUpdateTime | date:'medium'}})</small>
+  </div>
+</div>
 <div *ngIf="afSave$ | async" class="row mt-2">
   <div [ngSwitch]="afSave$ | async" class="font-secondary col">
     <span *ngSwitchCase="'saved'">

@@ -1,8 +1,8 @@
 import { Component, OnInit, OnChanges, Input, OnDestroy, HostBinding } from '@angular/core';
 import {
   ApiConversationHistoryRecord,
-  AfUser,
-  AfConversationForm
+  AfConversationForm,
+  AfConversationData
 } from '../../shared/interfaces/interfaces';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -21,9 +21,11 @@ import * as _ from 'lodash';
 })
 export class FormComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
-  @Input() conversation: ApiConversationHistoryRecord;
-  @Input() afData: AfUser;
+  @Input() apiConversation: ApiConversationHistoryRecord;
+  @Input() afConversationsData: AfConversationData[];
   @Input() sidenav: MatDrawer;
+
+  afConversationData: AfConversationData;
 
   // form properties
   formReady = false;
@@ -44,18 +46,18 @@ export class FormComponent implements OnInit, OnChanges {
    * Update form data when inputs change
    */
   getFormData() {
-    if (this.conversation) {
+    if (this.apiConversation && this.afConversationsData) {
       // show form
       this.formReady = true;
       // get id and data
-      const id: string = this.conversation.info.conversationId;
-      const data =
-        this.afData &&
-        this.afData.conversations &&
-        this.afData.conversations[id] &&
-        this.afData.conversations[id].data;
+      const conversation = this.afConversationsData.find(
+        afConversation => afConversation.conversationId === this.apiConversation.info.conversationId
+      );
+      // save data
+      this.afConversationData = conversation;
       // show data
-      if (data) {
+      if (conversation) {
+        const data = conversation.data;
         this.formData.note = data.note ? data.note : '';
         this.formData.select = data.select ? data.select : '';
         this.formData.check = data.check

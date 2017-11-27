@@ -20,7 +20,7 @@ import { DatatableComponent } from '@swimlane/ngx-datatable';
 })
 export class ConversationsComponent implements OnInit, OnChanges {
   @ViewChild('table') table: DatatableComponent;
-  @Input() conversations: ApiConversationHistoryRecord[] = [];
+  @Input() apiConversations: ApiConversationHistoryRecord[] = [];
   @Input() count: number;
   @Output() selectConversation = new EventEmitter<ApiConversationHistoryRecord>();
 
@@ -35,7 +35,7 @@ export class ConversationsComponent implements OnInit, OnChanges {
    */
   clickDatatable(event: any): void {
     if (event.type === 'click') {
-      const conversation = this.conversations.find(
+      const conversation = this.apiConversations.find(
         record => record.info.conversationId === event.row.conversationId
       );
       if (conversation) {
@@ -53,9 +53,9 @@ export class ConversationsComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.conversations) {
+    if (this.apiConversations) {
       // update rows when conversations change
-      this.rows = this.conversations.map(conversation => {
+      this.rows = this.apiConversations.map(conversation => {
         const message =
           conversation.messageRecords[0] &&
           conversation.messageRecords[0].messageData &&
