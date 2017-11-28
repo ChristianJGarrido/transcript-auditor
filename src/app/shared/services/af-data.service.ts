@@ -192,7 +192,8 @@ export class AfDataService {
   getAfData(): Observable<AfConversationData[]> {
     // set account number: depend on token
     const account: string = this.apiLoginService.bearer ? this.apiLoginService.user.account : null;
-    // attach af data
+    // create doc for account and attach af data
+    this.afStore.doc(`accounts/${account}`).set({}, { merge: true });
     this.afConversationRef = this.afStore.doc(`accounts/${account}`).collection('conversations');
     // return observable stream
     return this.afConversationRef.valueChanges();
