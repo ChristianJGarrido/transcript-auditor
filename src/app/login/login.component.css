@@ -8,3 +8,7 @@
 .google:hover {
   background-image: url('/assets/google_focus.png');
 }
+
+.login-logo {
+  width: 75%;
+}
