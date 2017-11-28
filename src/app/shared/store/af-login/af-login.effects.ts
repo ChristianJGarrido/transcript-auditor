@@ -22,12 +22,26 @@ export class AfLoginEffects {
     map(auth => {
       if (auth) {
         const user = new AfLoginState(auth.uid, auth.displayName, auth.email);
-        this.router.navigate(['/app']);
         return new AfLoginActions.Authenticated(user);
       } else {
-        this.router.navigate(['/login']);
         return new AfLoginActions.NotAuthenticated();
       }
+    })
+  );
+
+  @Effect({ dispatch: false })
+  authenticated$: Observable<Action> = this.actions$.ofType(AfLoginActions.AUTHENTICATED).pipe(
+    switchMap(auth => {
+      this.router.navigate(['/app']);
+      return Observable.of(null);
+    })
+  );
+
+  @Effect({ dispatch: false })
+  notAuthenticated$: Observable<Action> = this.actions$.ofType(AfLoginActions.NOT_AUTHENTICATED).pipe(
+    switchMap(auth => {
+      this.router.navigate(['/login']);
+      return Observable.of(null);
     })
   );
 
@@ -41,7 +55,7 @@ export class AfLoginEffects {
     );
 
   @Effect()
-  authenticated$: Observable<Action> = this.actions$
+  logout$: Observable<Action> = this.actions$
     .ofType(AfLoginActions.LOGOUT)
     .pipe(
       map((action: AfLoginActions.Logout) => action.payload),

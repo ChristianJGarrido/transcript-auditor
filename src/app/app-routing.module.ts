@@ -16,16 +16,9 @@ const routes: Routes = [
   {
     path: 'app',
     component: MainComponent,
-    canActivate: [AfAuthGuardService],
-    // children: [
-    //   {
-    //     path: 'dashboard',
-    //     component: DashboardComponent
-    //   },
-    //   { path: '', redirectTo: 'dashboard', pathMatch: 'full' }
-    // ]
+    canActivate: [AfAuthGuardService]
   },
-  { path: '**', redirectTo: 'app' }
+  { path: '**', redirectTo: 'login' }
 ];
 
 @NgModule({
