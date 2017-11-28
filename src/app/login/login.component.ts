@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-// services
-import { AfAuthService } from '../shared/services/af-auth.service';
+import { Store } from '@ngrx/store';
+import { StoreModel } from '../app.store';
+import * as AfLoginActions from '../shared/store/af-login/af-login.actions';
 
 @Component({
   selector: 'app-login',
@@ -10,14 +10,16 @@ import { AfAuthService } from '../shared/services/af-auth.service';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private afAuthService: AfAuthService) {}
+  constructor(private store: Store<StoreModel>) {}
 
   /**
    * Login to firebase
    */
   login() {
-    this.afAuthService.login();
+    this.store.dispatch(new AfLoginActions.GoogleLogin());
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.store.dispatch(new AfLoginActions.GetUser());
+  }
 }

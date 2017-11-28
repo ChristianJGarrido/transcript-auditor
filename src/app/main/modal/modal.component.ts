@@ -4,11 +4,13 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import { LeUser, LoginEvents, AfUser, AfAccount } from '../../shared/interfaces/interfaces';
 import { MatDialogRef } from '@angular/material';
-import { AfAuthService } from '../../shared/services/af-auth.service';
 import { ApiLoginService } from '../../shared/services/api-login.service';
 import { AfDataService } from '../../shared/services/af-data.service';
 import { ExportService } from '../../shared/services/export.service';
 import { Subscription } from 'rxjs/Subscription';
+import { Store } from '@ngrx/store';
+import { StoreModel } from '../../app.store';
+import * as AfLoginActions from '../../shared/store/af-login/af-login.actions';
 
 @Component({
   selector: 'app-modal',
@@ -24,10 +26,10 @@ export class ModalComponent implements OnInit, OnDestroy {
   afAccountsData: AfAccount[];
 
   constructor(
+    private store: Store<StoreModel>,
     private exportService: ExportService,
     private apiLoginService: ApiLoginService,
     private afDataService: AfDataService,
-    private afAuthService: AfAuthService,
     public dialogRef: MatDialogRef<ModalComponent>
   ) {}
 
@@ -51,7 +53,7 @@ export class ModalComponent implements OnInit, OnDestroy {
    */
   logout(): void {
     this.dialogRef.close();
-    this.afAuthService.logout();
+    this.store.dispatch(new AfLoginActions.Logout());
   }
 
   /**

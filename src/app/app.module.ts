@@ -30,7 +30,6 @@ import { MessageTransferComponent } from './main/messages/message-transfer/messa
 import { MessageInteractionComponent } from './main/messages/message-interaction/message-interaction.component';
 
 // services
-import { AfAuthService } from './shared/services/af-auth.service';
 import { AfAuthGuardService } from './shared/services/af-auth-guard.service';
 import { AfDataService } from './shared/services/af-data.service';
 import { ApiDataService } from './shared/services/api-data.service';
@@ -55,6 +54,12 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+
+// store
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers, metaReducers } from './app.store';
+import { AfLoginEffects } from './shared/store/af-login/af-login.effects';
 
 // 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -107,10 +112,11 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     HttpClientModule,
     NgxDatatableModule,
     MultiselectDropdownModule,
-    ChartsModule
+    ChartsModule,
+    StoreModule.forRoot(reducers, { metaReducers }),
+    EffectsModule.forRoot([AfLoginEffects])
   ],
   providers: [
-    AfAuthService,
     AfAuthGuardService,
     AfDataService,
     ApiDataService,

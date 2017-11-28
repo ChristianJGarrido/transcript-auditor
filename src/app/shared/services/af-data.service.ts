@@ -2,7 +2,6 @@ import { environment } from '../../../environments/environment';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { AfAuthService } from './af-auth.service';
 import { ApiLoginService } from './api-login.service';
 import { ExportService } from './export.service';
 import {
@@ -15,6 +14,10 @@ import {
 } from '../interfaces/interfaces';
 
 import { combineLatest } from 'rxjs/operators';
+
+import { Store } from '@ngrx/store';
+import { StoreModel } from '../../app.store';
+import { AfLoginState } from '../store/af-login/af-login.model';
 
 // 3rd party
 import {
@@ -50,12 +53,18 @@ export class AfDataService {
   // user details
   user: AfUser;
 
+  // store
+  afLogin$: Observable<AfLoginState>;
+
   constructor(
-    private afAuthService: AfAuthService,
+    private store: Store<StoreModel>,
     private apiLoginService: ApiLoginService,
     private afStore: AngularFirestore,
     private exportService: ExportService
   ) {
+
+    this.afLogin$ = this.store.select(state => state.afLogin);
+
     // wait for user to be ready, then subscribe to data store
     this.afUserReady$.subscribe(ready => {
       if (ready) {
@@ -84,10 +93,10 @@ export class AfDataService {
     });
 
     // subscribe to AF and API auth events
-    this.afAuthService.afUser$
+    this.afLogin$
       .pipe(combineLatest(this.apiLoginService.events$))
       .subscribe(([user, loginEvents]) => {
-        if (user && loginEvents.isLoggedIn) {
+        if (user.uid && loginEvents.isLoggedIn) {
           // save user
           this.user = this.createUser(user);
           // bind to uid
@@ -119,10 +128,10 @@ export class AfDataService {
 
   /**
    * Creates a user
-   * @param {firebase.User} user
+   * @param {AfLoginState} user
    * @return {AfUser}
    */
-  createUser(user: firebase.User): AfUser {
+  createUser(user: AfLoginState): AfUser {
     return {
       createdAt: new Date(),
       email: user.email,
