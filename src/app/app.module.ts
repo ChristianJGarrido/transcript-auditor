@@ -28,6 +28,7 @@ import { MessageLinkComponent } from './main/messages/message-link/message-link.
 import { MessageParticipantComponent } from './main/messages/message-participant/message-participant.component';
 import { MessageTransferComponent } from './main/messages/message-transfer/message-transfer.component';
 import { MessageInteractionComponent } from './main/messages/message-interaction/message-interaction.component';
+import { MessageByComponent } from './shared/components/message-by/message-by.component';
 
 // services
 import { AfAuthGuardService } from './shared/services/af-auth-guard.service';
@@ -35,6 +36,7 @@ import { AfDataService } from './shared/services/af-data.service';
 import { ApiDataService } from './shared/services/api-data.service';
 import { ApiLoginService } from './shared/services/api-login.service';
 import { ExportService } from './shared/services/export.service';
+import { WatsonService } from './shared/services/watson.service';
 
 // routing
 import { AppRoutingModule } from './app-routing.module';
@@ -89,7 +91,8 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     MessageLinkComponent,
     MessageParticipantComponent,
     MessageTransferComponent,
-    MessageInteractionComponent
+    MessageInteractionComponent,
+    MessageByComponent
   ],
   imports: [
     BrowserModule,
@@ -121,7 +124,8 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     AfDataService,
     ApiDataService,
     ApiLoginService,
-    ExportService
+    ExportService,
+    WatsonService
   ],
   entryComponents: [ModalComponent],
   bootstrap: [AppComponent]

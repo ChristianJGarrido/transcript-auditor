@@ -1,11 +1,4 @@
-<div class="row">
-  <div class="col-auto font-secondary">
-    System
-  </div>
-  <div class="col font-secondary">
-    {{participant.time | slice:11:19}}
-  </div>
-</div>
+<app-message-by [by]="'System'" [time]="participant.time"></app-message-by>
 <div class="row font-primary">
   <div class="col-12">
     <span class="text-info">

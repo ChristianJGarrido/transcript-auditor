@@ -8,6 +8,8 @@
       </div>
     </div>
 
+    <!-- <button class="btn btn-sm btn-success" (click)="analyseMessages()">Analyze</button> -->
+
     <!-- Conversation subtitle & download button -->
     <span *ngIf="apiConversation">
       <span class="card-subtitle mb-2 text-muted">ID: {{apiConversation?.info.conversationId}}
@@ -20,9 +22,9 @@
 
     <!-- Message rows -->
     <div class="container-fluid messages-scroll-container p-0" id="messages-scroll-container">
-      <div class="row" *ngFor="let event of messageEvents" [ngSwitch]="event.key">
+      <div class="row" *ngFor="let event of messageEvents" [ngSwitch]="event.eventKey">
         <div class="col-12 pt-2">
-          <app-message-text *ngSwitchCase="'TEXT_PLAIN'" [message]="event"></app-message-text>
+          <app-message-text *ngSwitchCase="'MESSAGE'" [message]="event"></app-message-text>
           <app-message-interaction *ngSwitchCase="'INTERACTION'" [interaction]="event"></app-message-interaction>
           <app-message-link *ngSwitchCase="'LINK'" [message]="event"></app-message-link>
           <app-message-participant *ngSwitchCase="'PARTICIPANT'" [participant]="event"></app-message-participant>

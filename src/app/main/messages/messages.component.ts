@@ -19,6 +19,7 @@ import { ExportService } from '../../shared/services/export.service';
 
 // 3rd party
 import * as _ from 'lodash';
+import { WatsonService } from '../../shared/services/watson.service';
 
 @Component({
   selector: 'app-messages',
@@ -32,7 +33,27 @@ export class MessagesComponent implements OnInit, OnChanges {
 
   messageEvents: any[] = [];
 
-  constructor(private exportService: ExportService) {}
+  constructor(
+    private exportService: ExportService,
+    private watsonService: WatsonService
+  ) {}
+
+  /**
+   * Analyse messages with Watson API
+   */
+  analyseMessages() {
+    const messages = this.messageEvents
+      .filter(message => {
+        return message.eventKey === 'MESSAGE' && message.sentBy === 'Consumer';
+      })
+      .map(
+        message =>
+          message.messageData &&
+          message.messageData.msg &&
+          message.messageData.msg.text
+      );
+    this.watsonService.analyseMessages(messages);
+  }
 
   /**
    * Download message data to CSV
@@ -41,11 +62,14 @@ export class MessagesComponent implements OnInit, OnChanges {
     // prepare message records
     const messages = this.messageEvents.map(event => {
       return {
-        event: event.key,
+        event: event.eventKey,
         sentBy: event.sentBy,
         agentFullName: event.agentFullName,
         time: event.time,
-        text: event.messageData && event.messageData.msg && event.messageData.msg.text
+        text:
+          event.messageData &&
+          event.messageData.msg &&
+          event.messageData.msg.text
       };
     });
     this.exportService.downloadCsvFile(messages, 'Conversation');
@@ -70,13 +94,22 @@ export class MessagesComponent implements OnInit, OnChanges {
 
     // combine all events
     const events = [
-      ...this.apiConversation.messageRecords.map(item => ({ ...item, key: item.type })),
-      ...this.apiConversation.agentParticipants.map(item => ({ ...item, key: 'PARTICIPANT' })),
-      ...this.apiConversation.transfers.map(item => ({ ...item, key: 'TRANSFER' })),
+      ...this.apiConversation.messageRecords.map(item => ({
+        ...item,
+        eventKey: 'MESSAGE'
+      })),
+      ...this.apiConversation.agentParticipants.map(item => ({
+        ...item,
+        eventKey: 'PARTICIPANT'
+      })),
+      ...this.apiConversation.transfers.map(item => ({
+        ...item,
+        eventKey: 'TRANSFER'
+      }))
       // ...this.conversation.interactions.map(item => ({
       //   ...item,
       //   timeL: item.interactionTimeL,
-      //   key: 'INTERACTION'
+      //   eventKey: 'INTERACTION'
       // }))
     ];
 

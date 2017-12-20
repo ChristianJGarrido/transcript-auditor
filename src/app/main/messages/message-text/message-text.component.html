@@ -1,11 +1,10 @@
+<app-message-by [by]="message.sentBy" [time]="message.time"></app-message-by>
 <div class="row">
-  <div class="col-auto font-secondary">
-    {{message.sentBy}}
+  <div class="col font-primary">
+    <div class="card" [ngClass]="message.sentBy === 'Agent' ? 'message-card-agent' : 'message-card-consumer'">
+      <div class="card-body p-2" [ngClass]="message.sentBy === 'Agent' ? 'font-agent' : 'font-consumer'">
+        {{message.messageData?.msg?.text}}
+      </div>
+    </div>
   </div>
-  <div class="col font-secondary">
-    {{message.time | slice:11:19}}
-  </div>
-</div>
-<div class="row">
-  <div class="col font-primary" [ngClass]="message.sentBy === 'Agent' ? 'font-agent' : 'font-consumer'">{{message.messageData?.msg?.text}}</div>
 </div>
