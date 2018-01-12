@@ -6,8 +6,6 @@ import {
   HttpParams
 } from '@angular/common/http';
 
-declare var NaturalLanguageUnderstandingV1: any;
-
 @Injectable()
 export class WatsonService {
   constructor(private http: HttpClient) {}
