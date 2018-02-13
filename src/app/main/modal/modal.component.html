@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title font-primary">LiveEngage Login</h5>
   <div class="col-1">
-    <i class="fa fa-times" aria-hidden="true" (click)="dialogRef.close()"></i>
+    <i class="far fa-times" aria-hidden="true" (click)="dialogRef.close()"></i>
   </div>
 </div>
 <div class="modal-body">
@@ -26,7 +26,7 @@
     <button class="col btn btn-primary btn-sm" (click)="lelogin()" [hidden]="(events$ | async).isLoggedIn" [disabled]="(events$ | async).loggingIn">{{(events$ | async).loggingIn ? 'Logging in...' : 'Login to LiveEngage'}}</button>
     <button class="col btn btn-danger btn-sm" (click)="lelogout()" [hidden]="!(events$ | async).isLoggedIn">Logout of LiveEngage</button>
   </form>
-  
+
 </div>
 
 <!-- Logout of Auditor -->

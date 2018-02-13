@@ -1,0 +1,38 @@
+<div class="card" id="messages-container">
+  <div class="card-body">
+    <div class="row no-gutters">
+      <h5 class="card-title col-auto">Conversation Messages</h5>
+      <div class="col-auto px-2 text-right" (click)="cycleConversations(false)">
+        <i class="far fa-chevron-left" matTooltip="Previous conversation" aria-hidden="true"></i>
+      </div>
+      <div class="col-auto px-2 text-right" (click)="cycleConversations(true)">
+        <i class="far fa-chevron-right" matTooltip="Next conversation" aria-hidden="true"></i>
+      </div>
+    </div>
+
+    <!-- <button class="btn btn-sm btn-success" (click)="analyseMessages()">Analyze</button> -->
+
+    <!-- Conversation subtitle & download button -->
+    <span *ngIf="apiConversation">
+      <span class="card-subtitle mb-2 text-muted">ID: {{apiConversation?.info.conversationId}}
+        <i class="far fa-download" aria-hidden="true" matTooltip="Export to CSV" (click)="downloadCsv()"></i>
+      </span>
+    </span>
+
+    <!-- No conversation message -->
+    <app-no-results [results]="apiConversation" [messagePrimary]="'Select a conversation'"></app-no-results>
+
+    <!-- Message rows -->
+    <div class="container-fluid messages-scroll-container p-0" id="messages-scroll-container">
+      <div class="row" *ngFor="let event of messageEvents" [ngSwitch]="event.eventKey">
+        <div class="col-12 pt-2">
+          <app-conversation-message-text *ngSwitchCase="'MESSAGE'" [message]="event"></app-conversation-message-text>
+          <app-conversation-message-interaction *ngSwitchCase="'INTERACTION'" [interaction]="event"></app-conversation-message-interaction>
+          <app-conversation-message-link *ngSwitchCase="'LINK'" [message]="event"></app-conversation-message-link>
+          <app-conversation-message-participant *ngSwitchCase="'PARTICIPANT'" [participant]="event"></app-conversation-message-participant>
+          <app-conversation-message-transfer *ngSwitchCase="'TRANSFER'" [transfer]="event"></app-conversation-message-transfer>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

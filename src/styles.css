@@ -8,10 +8,10 @@ body {
 }
 
 /* hovers */
-.fa-chevron-left:hover,
-.fa-chevron-right:hover,
-.fa-sticky-note:hover,
-.fa-download:hover,
+/* .far-chevron-left:hover,
+.far-chevron-right:hover, */
+.far-sticky-note:hover,
+.far-download:hover,
 .note-row:hover > .font-primary,
 .note-row:hover > .font-secondary,
 .note-select > .font-primary,

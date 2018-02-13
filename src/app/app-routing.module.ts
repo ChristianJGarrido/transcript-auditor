@@ -2,6 +2,8 @@
 import { NgModule } from '@angular/core';
 import { AppComponent } from './app.component';
 import { MainComponent } from './main/main.component';
+import { ConversationComponent } from './main/conversation/conversation.component';
+import { AssessmentsComponent } from './main/assessments/assessments.component';
 
 // other components
 import { LoginComponent } from './login/login.component';
@@ -16,7 +18,12 @@ const routes: Routes = [
   {
     path: 'app',
     component: MainComponent,
-    canActivate: [AfAuthGuardService]
+    canActivate: [AfAuthGuardService],
+    children: [
+      { path: 'conversations', component: ConversationComponent },
+      { path: 'assessments', component: AssessmentsComponent },
+      { path: '', redirectTo: 'conversations', pathMatch: 'full' }
+    ]
   },
   { path: '**', redirectTo: 'login' }
 ];

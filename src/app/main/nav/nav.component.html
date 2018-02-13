@@ -1,0 +1,13 @@
+<div class="container-fluid">
+  <div class="row p-2">
+    <div class="col-auto" (click)="openSideNavList()">
+      <i class="far fa-filter"></i>
+    </div>
+    <div class="col-auto">
+      <a class="nav-link" href="#" [routerLink]="['conversations']" routerLinkActive="active">CONVERSATIONS</a>
+    </div>
+    <div class="col-auto">
+      <a class="nav-link" href="#" [routerLink]="['assessments']" routerLinkActive="active">ASSESSMENTS</a>
+    </div>
+  </div>
+</div>

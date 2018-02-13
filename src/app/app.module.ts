@@ -7,28 +7,50 @@ import { HttpClientModule } from '@angular/common/http';
 
 // app components
 import { AppComponent } from './app.component';
+import { NavComponent } from './main/nav/nav.component';
 import { LoginComponent } from './login/login.component';
 import { MainComponent } from './main/main.component';
 import { ModalComponent } from './main/modal/modal.component';
-import { ConversationsComponent } from './main/conversations/conversations.component';
-import { MessagesComponent } from './main/messages/messages.component';
-import { FormComponent } from './main/form/form.component';
-import { FormSaveComponent } from './main/form/form-save/form-save.component';
-import { FormNotesComponent } from './main/form/form-notes/form-notes.component';
-import { FormSelectComponent } from './main/form/form-select/form-select.component';
-import { ConversationsFilterComponent } from './main/conversations/conversations-filter/conversations-filter.component';
+import { ConversationsListComponent } from './main/conversations-list/conversations-list.component';
+import { ConversationsListFilterComponent } from './main/conversations-list/conversations-list-filter/conversations-list-filter.component';
 import { NoResultsComponent } from './shared/components/no-results/no-results.component';
 import { SideNavComponent } from './main/side-nav/side-nav.component';
-import { ConversationStatsComponent } from './main/conversation-stats/conversation-stats.component';
-import { ConversationStatsWidgetComponent } from './main/conversation-stats/conversation-stats-widget/conversation-stats-widget.component';
-import { ConversationChartComponent } from './main/conversation-chart/conversation-chart.component';
 import { HeaderComponent } from './main/header/header.component';
-import { MessageTextComponent } from './main/messages/message-text/message-text.component';
-import { MessageLinkComponent } from './main/messages/message-link/message-link.component';
-import { MessageParticipantComponent } from './main/messages/message-participant/message-participant.component';
-import { MessageTransferComponent } from './main/messages/message-transfer/message-transfer.component';
-import { MessageInteractionComponent } from './main/messages/message-interaction/message-interaction.component';
+
 import { MessageByComponent } from './shared/components/message-by/message-by.component';
+
+import { ConversationComponent } from './main/conversation/conversation.component';
+import { ConversationStatsComponent } from './main/conversation/conversation-stats/conversation-stats.component';
+import {
+  ConversationStatsWidgetComponent
+} from './main/conversation/conversation-stats/conversation-stats-widget/conversation-stats-widget.component';
+import { ConversationChartComponent } from './main/conversation/conversation-chart/conversation-chart.component';
+import { ConversationSummaryComponent } from './main/conversation/conversation-summary/conversation-summary.component';
+import {
+  ConversationSummarySaveComponent
+} from './main/conversation/conversation-summary/conversation-summary-save/conversation-summary-save.component';
+import {
+  ConversationSummaryNotesComponent
+} from './main/conversation/conversation-summary/conversation-summary-notes/conversation-summary-notes.component';
+import {
+  ConversationSummarySelectComponent
+} from './main/conversation/conversation-summary/conversation-summary-select/conversation-summary-select.component';
+import { ConversationMessagesComponent } from './main/conversation/conversation-messages/conversation-messages.component';
+import {
+  ConversationMessageTextComponent
+} from './main/conversation/conversation-messages/conversation-message-text/conversation-message-text.component';
+import {
+  ConversationMessageLinkComponent
+} from './main/conversation/conversation-messages/conversation-message-link/conversation-message-link.component';
+import {
+  ConversationMessageParticipantComponent
+} from './main/conversation/conversation-messages/conversation-message-participant/conversation-message-participant.component';
+import {
+  ConversationMessageTransferComponent
+} from './main/conversation/conversation-messages/conversation-message-transfer/conversation-message-transfer.component';
+import {
+  ConversationMessageInteractionComponent
+} from './main/conversation/conversation-messages/conversation-message-interaction/conversation-message-interaction.component';
 
 // services
 import { AfAuthGuardService } from './shared/services/af-auth-guard.service';
@@ -67,6 +89,7 @@ import { AfLoginEffects } from './shared/store/af-login/af-login.effects';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
+import { AssessmentsComponent } from './main/assessments/assessments.component';
 
 @NgModule({
   declarations: [
@@ -74,25 +97,28 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     LoginComponent,
     MainComponent,
     ModalComponent,
-    ConversationsComponent,
-    MessagesComponent,
-    FormComponent,
-    FormSaveComponent,
-    FormNotesComponent,
-    FormSelectComponent,
-    ConversationsFilterComponent,
-    NoResultsComponent,
-    SideNavComponent,
+    ConversationsListComponent,
+    ConversationsListFilterComponent,
+    ConversationComponent,
     ConversationStatsComponent,
     ConversationStatsWidgetComponent,
     ConversationChartComponent,
+    ConversationSummaryComponent,
+    ConversationSummarySaveComponent,
+    ConversationSummaryNotesComponent,
+    ConversationSummarySelectComponent,
+    NoResultsComponent,
+    SideNavComponent,
     HeaderComponent,
-    MessageTextComponent,
-    MessageLinkComponent,
-    MessageParticipantComponent,
-    MessageTransferComponent,
-    MessageInteractionComponent,
-    MessageByComponent
+    ConversationMessagesComponent,
+    ConversationMessageTextComponent,
+    ConversationMessageLinkComponent,
+    ConversationMessageParticipantComponent,
+    ConversationMessageTransferComponent,
+    ConversationMessageInteractionComponent,
+    MessageByComponent,
+    NavComponent,
+    AssessmentsComponent,
   ],
   imports: [
     BrowserModule,
@@ -117,7 +143,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     MultiselectDropdownModule,
     ChartsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([AfLoginEffects])
+    EffectsModule.forRoot([AfLoginEffects]),
   ],
   providers: [
     AfAuthGuardService,
@@ -125,9 +151,9 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     ApiDataService,
     ApiLoginService,
     ExportService,
-    WatsonService
+    WatsonService,
   ],
   entryComponents: [ModalComponent],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

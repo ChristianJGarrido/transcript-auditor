@@ -1,0 +1,25 @@
+<div class="card" id="conversations-container">
+  <div class="card-body">
+    <h5 class="card-title">Conversation List <span class="text-muted">({{count | number:'1.0-0'}})</span></h5>
+
+    <!-- conversation filters -->
+    <div class="row">
+      <div class="col">
+        <app-conversations-list-filter></app-conversations-list-filter>
+      </div>
+    </div>
+
+    <!-- conversation grid -->
+    <div *ngIf="rows.length" class="row mt-2">
+      <div class="col">
+        <ngx-datatable #table style="cursor: pointer;" [limit]="15" class="material" [columnMode]="'flex'" [rowHeight]="30" [headerHeight]="50"
+          [footerHeight]="50" [rows]="rows" [columns]="columns" (activate)="clickDatatable($event)">
+        </ngx-datatable>
+      </div>
+    </div>
+
+    <!-- no conversation message -->
+    <app-no-results [results]="rows.length > 0" [messagePrimary]="'No results found'" [messageSecondary]="'Try to broaden your search'"></app-no-results>
+
+  </div>
+</div>

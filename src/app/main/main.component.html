@@ -1,40 +1,13 @@
-<!-- navbar -->
 <app-header></app-header>
 
-<!-- side nav container -->
 <mat-sidenav-container class="example-container">
-  <div class="container-fluid">
-
-    <div class="row no-gutters mt-2">
-
-      <div class="col-12 col-md-4 mt-1 mt-md-0 pr-md-2">
-        <app-conversations [count]="count" [apiConversations]="apiConversations" (selectConversation)="selectConversation($event)"></app-conversations>
-      </div>
-
-      <div class="col-12 col-md-4 mt-1 mt-md-0 pr-md-2">
-        <div class="row no-gutters">
-          <app-conversation-chart [apiConversation]="apiConversation"></app-conversation-chart>
-        </div>
-        <div class="row no-gutters pt-2">
-          <app-messages [apiConversation]="apiConversation" (nextConversation)="cycleConversations($event)"></app-messages>
-        </div>
-      </div>
-
-      <div class="col-12 col-md-4 mt-1 mt-md-0">
-        <div class="row no-gutters">
-          <app-conversation-stats [apiConversation]="apiConversation"></app-conversation-stats>
-        </div>
-        <div class="row no-gutters pt-2">
-          <app-form [apiConversation]="apiConversation" [afConversationsData]="(afConversationsData$ | async)" [sidenav]="sidenav"></app-form>
-        </div>
-      </div>
-
-    </div>
-  </div>
+  <app-nav [sideNavList]="sideNavList"></app-nav>
+  <router-outlet></router-outlet>
+  <!-- <app-conversation [apiConversation]="apiConversation" [apiConversations]="apiConversations"></app-conversation> -->
 
   <!-- side nav -->
-  <mat-sidenav mode="push" position="end" #sidenav>
-    <app-side-nav [afConversationsData]="(afConversationsData$ | async)"></app-side-nav>
+  <mat-sidenav mode="push" position="start" #sideNavList>
+    <app-conversations-list [count]="count" [apiConversations]="apiConversations" (selectConversation)="selectConversation($event)"></app-conversations-list>
   </mat-sidenav>
 
 </mat-sidenav-container>

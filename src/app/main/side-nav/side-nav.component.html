@@ -4,14 +4,14 @@
       <h5 class="card-title col-auto">Previous Notes</h5>
     </div>
     <div class="col text-right">
-      <i class="p-1 fa fa-download" aria-hidden="true" matTooltip="Export to CSV" (click)="downloadCsv()" style="cursor: pointer;"></i>
+      <i class="p-1 far fa-download" aria-hidden="true" matTooltip="Export to CSV" (click)="downloadCsv()"></i>
     </div>
   </div>
   <div *ngIf="!(apiLoading$ | async)" class="font-secondary col-auto">Click note to select</div>
   <div *ngIf="(apiLoading$ | async)" class="font-secondary">
-    <i class="fa fa-spinner fa-pulse text-center"></i> Loading...</div>
+    <i class="far fa-spinner fa-pulse text-center"></i> Loading...</div>
   <div class="nav-scroll-container">
-    <div *ngFor="let item of afConversations" class="row note-row pt-2 px-2" [ngClass]="selected === item.conversationId ? 'note-select' : '' " (click)="selectNote(item.conversationId)" style="cursor: pointer;">
+    <div *ngFor="let item of afConversations" class="row note-row pt-2 px-2" [ngClass]="selected === item.conversationId ? 'note-select' : '' " (click)="selectNote(item.conversationId)">
       <div class="col-12 font-primary">
         <small>{{item.lastUpdateTime | date}} ({{item.lastUpdateBy}})</small>
       </div>

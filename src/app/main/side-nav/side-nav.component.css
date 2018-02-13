@@ -1,6 +1,9 @@
 .nav-scroll-container {
-  overflow-y: scroll; 
-  overflow-x: hidden; 
+  overflow-y: scroll;
+  overflow-x: hidden;
   height: 700px;
   position: relative;
+}
+.fa-download, .note-row {
+  cursor: pointer;
 }

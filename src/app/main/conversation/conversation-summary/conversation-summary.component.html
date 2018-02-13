@@ -1,0 +1,26 @@
+<div class="card" id="form-container">
+  <div class="card-body">
+    <div class="row">
+      <h5 class="card-title col-auto">Conversation Notes</h5>
+    </div>
+    <span class="card-subtitle mb-2 text-muted">ID: {{apiConversation?.info.conversationId}}</span>
+
+    <form *ngIf="formReady">
+      <!-- row for selectors -->
+      <app-conversation-summary-select [formData]="formData" [id]="apiConversation?.info.conversationId"></app-conversation-summary-select>
+      <!-- Row for notes -->
+      <app-conversation-summary-notes [formData]="formData" [id]="apiConversation?.info.conversationId"></app-conversation-summary-notes>
+      <!-- row for saved notification -->
+      <app-conversation-summary-save [afConversationData]="afConversationData"></app-conversation-summary-save>
+    </form>
+
+    <!-- conversation agent summary -->
+    <div *ngIf="apiConversation?.summary" class="row mt-2">
+      <div class="col">
+        <label class="font-primary">Agent Summary</label><br/>
+        <span class="font-secondary"><small>{{apiConversation?.summary?.text}}</small></span>
+      </div>
+    </div>
+
+  </div>
+</div>
