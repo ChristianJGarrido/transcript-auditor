@@ -1,3 +1,7 @@
+@import '../node_modules/bootstrap/dist/css/bootstrap.css';
+@import './styles/ngx-datatable.css';
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
 /* You can add global styles to this file, and also import other style files */
 body {
   background-color: #e9ecef;
@@ -91,13 +95,9 @@ body {
 }
 
 /* angular material */
-@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 mat-sidenav {
   width: 300px;
 }
-
-/* ngx-datatable */
-@import './styles/ngx-datatable.css';
 
 /*
 * Custom styles
