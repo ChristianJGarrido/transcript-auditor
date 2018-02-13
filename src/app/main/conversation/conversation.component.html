@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="row no-gutters mt-2">
-    <div class="col-12 col-md-5 mt-1 mt-md-0 pr-md-2">
+    <div class="col-12 col-md-5 pr-2">
       <div class="row no-gutters">
         <app-conversation-stats [apiConversation]="apiConversation"></app-conversation-stats>
       </div>
@@ -9,9 +9,12 @@
       </div>
     </div>
 
-    <div class="col-12 col-md-7 mt-1 mt-md-0">
-      <div class="row no-gutters pt-2">
+    <div class="col-12 col-md-7">
+      <div class="row no-gutters">
         <app-conversation-summary [apiConversation]="apiConversation" [afConversationsData]="afConversationsData"></app-conversation-summary>
+      </div>
+      <div class="row no-gutters pt-2">
+        <app-conversation-qa></app-conversation-qa>
       </div>
     </div>
   </div>

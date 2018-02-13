@@ -8,7 +8,7 @@ import { Component, OnInit, Input, HostBinding } from '@angular/core';
 export class ConversationStatsWidgetComponent implements OnInit {
   @Input() metricName: any;
   @Input() metricValue: any;
-  @HostBinding('class') class = 'col-3 pr-1 pt-1';
+  @HostBinding('class') class = 'col-3 pr-1 pb-1';
 
   constructor() { }
 

@@ -16,10 +16,11 @@ import { ConversationsListFilterComponent } from './main/conversations-list/conv
 import { NoResultsComponent } from './shared/components/no-results/no-results.component';
 import { SideNavComponent } from './main/side-nav/side-nav.component';
 import { HeaderComponent } from './main/header/header.component';
-
+import { AssessmentsComponent } from './main/assessments/assessments.component';
 import { MessageByComponent } from './shared/components/message-by/message-by.component';
 
 import { ConversationComponent } from './main/conversation/conversation.component';
+import { ConversationQaComponent } from './main/conversation/conversation-qa/conversation-qa.component';
 import { ConversationStatsComponent } from './main/conversation/conversation-stats/conversation-stats.component';
 import {
   ConversationStatsWidgetComponent
@@ -89,7 +90,6 @@ import { AfLoginEffects } from './shared/store/af-login/af-login.effects';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
-import { AssessmentsComponent } from './main/assessments/assessments.component';
 
 @NgModule({
   declarations: [
@@ -119,6 +119,7 @@ import { AssessmentsComponent } from './main/assessments/assessments.component';
     MessageByComponent,
     NavComponent,
     AssessmentsComponent,
+    ConversationQaComponent,
   ],
   imports: [
     BrowserModule,

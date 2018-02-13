@@ -60,40 +60,40 @@ export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // when window resizes, extend container height
-    const resize = (window.onresize = () => {
-      let windowHeight = 0;
+    // // when window resizes, extend container height
+    // const resize = (window.onresize = () => {
+    //   let windowHeight = 0;
 
-      // get heights
-      if (typeof window.innerWidth === 'number') {
-        // Non-IE
-        windowHeight = window.innerHeight || 0;
-      }
+    //   // get heights
+    //   if (typeof window.innerWidth === 'number') {
+    //     // Non-IE
+    //     windowHeight = window.innerHeight || 0;
+    //   }
 
-      // calculate heights
-      const conversationHeight = windowHeight < 790 ? 790 : windowHeight;
-      const messagesHeight = conversationHeight - 200;
-      const messagesScrollHeight = messagesHeight - 115;
-      const formHeight = conversationHeight - 285;
+    //   // calculate heights
+    //   const conversationHeight = windowHeight < 790 ? 790 : windowHeight;
+    //   const messagesHeight = conversationHeight - 200;
+    //   const messagesScrollHeight = messagesHeight - 115;
+    //   const formHeight = conversationHeight - 285;
 
-      // set heights
-      if (document.getElementById('conversations-container')) {
-        document.getElementById('conversations-container').style.height =
-          String(conversationHeight) + 'px';
-      }
-      if (document.getElementById('messages-container')) {
-        document.getElementById('messages-container').style.height = String(messagesHeight) + 'px';
-      }
-      if (document.getElementById('messages-scroll-container')) {
-        document.getElementById('messages-scroll-container').style.height =
-          String(messagesScrollHeight) + 'px';
-      }
-      if (document.getElementById('form-container')) {
-        document.getElementById('form-container').style.height = String(formHeight) + 'px';
-      }
-    });
+    //   // set heights
+    //   if (document.getElementById('conversations-container')) {
+    //     document.getElementById('conversations-container').style.height =
+    //       String(conversationHeight) + 'px';
+    //   }
+    //   if (document.getElementById('messages-container')) {
+    //     document.getElementById('messages-container').style.height = String(messagesHeight) + 'px';
+    //   }
+    //   if (document.getElementById('messages-scroll-container')) {
+    //     document.getElementById('messages-scroll-container').style.height =
+    //       String(messagesScrollHeight) + 'px';
+    //   }
+    //   if (document.getElementById('form-container')) {
+    //     document.getElementById('form-container').style.height = String(formHeight) + 'px';
+    //   }
+    // });
 
-    resize();
+    // resize();
   }
 
   ngOnDestroy() {

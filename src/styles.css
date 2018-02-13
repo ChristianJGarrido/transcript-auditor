@@ -2,14 +2,9 @@
 @import './styles/ngx-datatable.css';
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-/* You can add global styles to this file, and also import other style files */
-body {
-  background-color: #e9ecef;
-}
-
 /* hovers */
-/* .far-chevron-left:hover,
-.far-chevron-right:hover, */
+.far-chevron-left:hover,
+.far-chevron-right:hover,
 .far-sticky-note:hover,
 .far-download:hover,
 .note-row:hover > .font-primary,

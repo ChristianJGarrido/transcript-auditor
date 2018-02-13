@@ -1,11 +1,11 @@
 <app-header></app-header>
+<app-nav [sideNavList]="sideNavList"></app-nav>
 
-<mat-sidenav-container class="example-container">
-  <app-nav [sideNavList]="sideNavList"></app-nav>
+<mat-sidenav-container class="main-container">
+
   <router-outlet></router-outlet>
   <!-- <app-conversation [apiConversation]="apiConversation" [apiConversations]="apiConversations"></app-conversation> -->
 
-  <!-- side nav -->
   <mat-sidenav mode="push" position="start" #sideNavList>
     <app-conversations-list [count]="count" [apiConversations]="apiConversations" (selectConversation)="selectConversation($event)"></app-conversations-list>
   </mat-sidenav>

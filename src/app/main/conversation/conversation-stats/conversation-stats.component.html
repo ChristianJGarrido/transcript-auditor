@@ -1,18 +1,14 @@
-<div class="card">
-  <div class="card-body p-2">
-    <div class="row no-gutters">
-      <app-conversation-stats-widget [metricName]="'Close Reason'" [metricValue]="apiConversation?.info.closeReason"></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'Duration Hrs'" [metricValue]="(apiConversation?.info.duration / 1000 / 3600 || 0) | number:'1.0-1'"></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'Messages'" [metricValue]="apiConversation?.messageRecords.length"></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'TTFR Min'" [metricValue]="calculateFirstResponseTime() | number:'1.0-1'"></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'ART Hrs'" [metricValue]="calculateResponseTimes() | number:'1.0-1'"></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'MCS'" [metricValue]="apiConversation?.info.mcs"></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'CSAT'" [metricValue]="apiConversation?.info.csatRate ? apiConversation?.info.csatRate / 100 : 'NA' "></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'Source'" [metricValue]="apiConversation?.info.source"></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'Status'" [metricValue]="apiConversation?.info.status"></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'Transfers'" [metricValue]="apiConversation?.transfers.length"></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'Participants'" [metricValue]="apiConversation?.agentParticipants.length"></app-conversation-stats-widget>
-      <app-conversation-stats-widget [metricName]="'Assignments'" [metricValue]="apiConversation?.interactions.length"></app-conversation-stats-widget>
-    </div>
-  </div>
+<div class="row no-gutters">
+  <app-conversation-stats-widget [metricName]="'Close Reason'" [metricValue]="apiConversation?.info.closeReason"></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'Duration Hrs'" [metricValue]="(apiConversation?.info.duration / 1000 / 3600 || 0) | number:'1.0-1'"></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'Messages'" [metricValue]="apiConversation?.messageRecords.length"></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'TTFR Min'" [metricValue]="calculateFirstResponseTime() | number:'1.0-1'"></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'ART Hrs'" [metricValue]="calculateResponseTimes() | number:'1.0-1'"></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'MCS'" [metricValue]="apiConversation?.info.mcs"></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'CSAT'" [metricValue]="apiConversation?.info.csatRate ? apiConversation?.info.csatRate / 100 : 'NA' "></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'Source'" [metricValue]="apiConversation?.info.source"></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'Status'" [metricValue]="apiConversation?.info.status"></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'Transfers'" [metricValue]="apiConversation?.transfers.length"></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'Participants'" [metricValue]="apiConversation?.agentParticipants.length"></app-conversation-stats-widget>
+  <app-conversation-stats-widget [metricName]="'Assignments'" [metricValue]="apiConversation?.interactions.length"></app-conversation-stats-widget>
 </div>
