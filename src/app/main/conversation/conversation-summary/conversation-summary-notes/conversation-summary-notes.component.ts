@@ -1,5 +1,4 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { AfDataService } from '../../../../shared/services/af-data.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -18,14 +17,14 @@ export class ConversationSummaryNotesComponent implements OnInit, OnDestroy {
   note$: Subject<string> = new Subject();
   noteSub: Subscription;
 
-  constructor(private afDataService: AfDataService) {}
+  constructor() {}
 
   /**
    * Updates the conversations note
    * @param {string} note
    */
   changeNote(note: string) {
-    this.afDataService.toggleSave('saving');
+    // this.afDataService.toggleSave('saving');
     this.note$.next(note);
   }
 
@@ -39,9 +38,9 @@ export class ConversationSummaryNotesComponent implements OnInit, OnDestroy {
         distinctUntilChanged(),
         switchMap((data: string) => {
           return Observable.of(
-            this.afDataService.updateConversation(this.id, {
-              note: data
-            })
+            // this.afDataService.updateConversation(this.id, {
+            //   note: data
+            // })
           );
         })
       )

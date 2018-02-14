@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { AfDataService } from '../../../../shared/services/af-data.service';
 import { AfConversationForm } from '../../../../shared/interfaces/interfaces';
 
 @Component({
@@ -11,17 +10,17 @@ export class ConversationSummarySelectComponent implements OnInit {
   @Input() formData: AfConversationForm;
   @Input() id: string;
 
-  constructor(private afDataService: AfDataService) {}
+  constructor() {}
 
   /**
    * Updates the conversations select
    * @param {string} select
    */
   changeSelect(select: string) {
-    this.afDataService.toggleSave('saving');
-    this.afDataService.updateConversation(this.id, {
-      select: this.formData.select
-    });
+    // this.afDataService.toggleSave('saving');
+    // this.afDataService.updateConversation(this.id, {
+    //   select: this.formData.select
+    // });
   }
 
   /**
@@ -29,10 +28,10 @@ export class ConversationSummarySelectComponent implements OnInit {
    * @param {any[]} select
    */
   changeCheck(check: any[]) {
-    this.afDataService.toggleSave('saving');
-    this.afDataService.updateConversation(this.id, {
-      check: this.formData.check
-    });
+    // this.afDataService.toggleSave('saving');
+    // this.afDataService.updateConversation(this.id, {
+    //   check: this.formData.check
+    // });
   }
 
   ngOnInit() {}

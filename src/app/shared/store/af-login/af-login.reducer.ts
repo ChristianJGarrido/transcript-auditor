@@ -10,23 +10,34 @@ export function AfLoginReducer(
   action: Action
 ): AfLoginModel {
   switch (action.type) {
-    case AfLoginActions.GOOGLE_LOGIN: {
-      return { ...state, loading: true };
-    }
-    case AfLoginActions.GET_USER: {
-      return { ...state, loading: true };
-    }
-    case AfLoginActions.AUTHENTICATED: {
-      return { ...state, ...action.payload, loading: false };
-    }
-    case AfLoginActions.NOT_AUTHENTICATED: {
-      return { ...state, ...initialAfLoginState, loading: false };
-    }
-    case AfLoginActions.LOGOUT: {
-      return { ...state, loading: true };
-    }
-    default: {
+    case AfLoginActions.GOOGLE_LOGIN:
+      return {
+        ...state,
+        loading: true,
+      };
+    case AfLoginActions.GET_USER:
+      return {
+        ...state,
+        loading: true,
+      };
+    case AfLoginActions.AUTHENTICATED:
+      return {
+        ...state,
+        ...action.user,
+        loading: false,
+      };
+    case AfLoginActions.NOT_AUTHENTICATED:
+      return {
+        ...state,
+        ...initialAfLoginState,
+        loading: false,
+      };
+    case AfLoginActions.LOGOUT:
+      return {
+        ...state,
+        loading: true,
+      };
+    default:
       return state;
-    }
   }
 }

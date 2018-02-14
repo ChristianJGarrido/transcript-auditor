@@ -8,7 +8,6 @@ import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Subscription } from 'rxjs/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { AfDataService } from '../../../shared/services/af-data.service';
 
 // 3rd party
 import * as _ from 'lodash';
@@ -38,7 +37,7 @@ export class ConversationSummaryComponent implements OnInit, OnChanges {
   };
   formData: AfConversationForm = _.cloneDeep(this.formDefault);
 
-  constructor(private afDataService: AfDataService) {}
+  constructor() {}
 
   /**
    * Update form data when inputs change

@@ -8,7 +8,6 @@ import {
   ViewChild
 } from '@angular/core';
 import { ApiConversationHistoryRecord, ApiOptions } from '../../shared/interfaces/interfaces';
-import { ApiDataService } from '../../shared/services/api-data.service';
 
 // 3rd party
 import { DatatableComponent } from '@swimlane/ngx-datatable';
@@ -27,7 +26,7 @@ export class ConversationsListComponent implements OnInit, OnChanges {
   rows: any[] = [];
   columns: any[] = [];
 
-  constructor(private apiDataService: ApiDataService) {}
+  constructor() {}
 
   /**
    * selects an individual conversation

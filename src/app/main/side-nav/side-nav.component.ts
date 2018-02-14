@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnChanges, EventEmitter, Output } from '@angular/core';
 import { AfUser, AfConversationData, AfConversationForm } from '../../shared/interfaces/interfaces';
-import { ApiDataService } from '../../shared/services/api-data.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { ExportService } from '../../shared/services/export.service';
 
@@ -19,7 +18,7 @@ export class SideNavComponent implements OnInit, OnChanges {
   apiLoading$: BehaviorSubject<boolean>;
   selected: string;
 
-  constructor(private apiDataService: ApiDataService, private exportService: ExportService) { }
+  constructor(private exportService: ExportService) { }
 
   /**
    * trigger download of all note data
@@ -35,12 +34,12 @@ export class SideNavComponent implements OnInit, OnChanges {
   selectNote(id: string) {
     if (id) {
       this.selected = id;
-      this.apiDataService.getConversationById(id);
+      // this.apiDataService.getConversationById(id);
     }
   }
 
   ngOnInit() {
-    this.apiLoading$ = this.apiDataService.apiLoading$;
+    // this.apiLoading$ = this.apiDataService.apiLoading$;
   }
 
   ngOnChanges() {

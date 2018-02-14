@@ -2,9 +2,15 @@ import { environment } from '../environments/environment';
 
 // reducers
 import { AfLoginReducer } from './shared/store/af-login/af-login.reducer';
+import { AfDataReducer } from './shared/store/af-data/af-data.reducer';
+import { ApiLoginReducer } from './shared/store/api-login/api-login.reducer';
+import { ApiDataReducer } from './shared/store/api-data/api-data.reducer';
 
 // models
 import { AfLoginModel } from './shared/store/af-login/af-login.model';
+import { AfDataModel } from './shared/store/af-data/af-data.model';
+import { ApiLoginModel } from './shared/store/api-login/api-login.model';
+import { ApiDataModel } from './shared/store/api-data/api-data.model';
 
 /**
  * combineReducers is another useful metareducer that takes a map of reducer
@@ -14,7 +20,12 @@ import { AfLoginModel } from './shared/store/af-login/af-login.model';
  *
  * More: https://egghead.io/lessons/javascript-redux-implementing-combinereducers-from-scratch
  */
-import { combineReducers, ActionReducer, ActionReducerMap, Action } from '@ngrx/store';
+import {
+  combineReducers,
+  ActionReducer,
+  ActionReducerMap,
+  Action,
+} from '@ngrx/store';
 
 /**
  * storeLogger provides a more advanced logging middleware for
@@ -26,15 +37,23 @@ import { storeLogger } from 'ngrx-store-logger';
 // store modal
 export interface StoreModel {
   afLogin: AfLoginModel;
+  afData: AfDataModel;
+  apiLogin: ApiLoginModel;
+  apiData: ApiDataModel;
 }
 
 // store reducers
 export const reducers: ActionReducerMap<StoreModel> = {
-  afLogin: AfLoginReducer
+  afLogin: AfLoginReducer,
+  afData: AfDataReducer,
+  apiLogin: ApiLoginReducer,
+  apiData: ApiDataReducer,
 };
 
 // declare metaReducers
-export function logger(reducer: ActionReducer<StoreModel>): ActionReducer<StoreModel> {
+export function logger(
+  reducer: ActionReducer<StoreModel>
+): ActionReducer<StoreModel> {
   return storeLogger({ collapsed: true })(reducer);
 }
 

@@ -2,16 +2,16 @@
   <div class="row no-gutters mt-2">
     <div class="col-12 col-md-5 pr-2">
       <div class="row no-gutters">
-        <app-conversation-stats [apiConversation]="apiConversation"></app-conversation-stats>
+        <app-conversation-stats [apiConversation]="(apiData$ | async).select"></app-conversation-stats>
       </div>
       <div class="row no-gutters pt-2">
-        <app-conversation-messages [apiConversation]="apiConversation" (nextConversation)="cycleConversations($event)"></app-conversation-messages>
+        <app-conversation-messages [apiConversation]="(apiData$ | async).select" (nextConversation)="cycleConversations($event)"></app-conversation-messages>
       </div>
     </div>
 
     <div class="col-12 col-md-7">
       <div class="row no-gutters">
-        <app-conversation-summary [apiConversation]="apiConversation" [afConversationsData]="afConversationsData"></app-conversation-summary>
+        <app-conversation-summary [apiConversation]="(apiData$ | async).select" [afConversationsData]="(afData$ | async).data"></app-conversation-summary>
       </div>
       <div class="row no-gutters pt-2">
         <app-conversation-qa></app-conversation-qa>

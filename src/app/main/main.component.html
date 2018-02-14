@@ -1,13 +1,12 @@
-<app-header></app-header>
+<app-header [apiLogin]="(apiLogin$ | async)"></app-header>
 <app-nav [sideNavList]="sideNavList"></app-nav>
 
 <mat-sidenav-container class="main-container">
 
   <router-outlet></router-outlet>
-  <!-- <app-conversation [apiConversation]="apiConversation" [apiConversations]="apiConversations"></app-conversation> -->
 
   <mat-sidenav mode="push" position="start" #sideNavList>
-    <app-conversations-list [count]="count" [apiConversations]="apiConversations" (selectConversation)="selectConversation($event)"></app-conversations-list>
+    <app-conversations-list [apiConversations]="(apiData$ | async).msgHist.conversationHistoryRecords" (selectConversation)="selectConversation($event)"></app-conversations-list>
   </mat-sidenav>
 
 </mat-sidenav-container>

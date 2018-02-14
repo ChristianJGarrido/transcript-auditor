@@ -55,8 +55,6 @@ import {
 
 // services
 import { AfAuthGuardService } from './shared/services/af-auth-guard.service';
-import { AfDataService } from './shared/services/af-data.service';
-import { ApiDataService } from './shared/services/api-data.service';
 import { ApiLoginService } from './shared/services/api-login.service';
 import { ExportService } from './shared/services/export.service';
 import { WatsonService } from './shared/services/watson.service';
@@ -85,6 +83,9 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { reducers, metaReducers } from './app.store';
 import { AfLoginEffects } from './shared/store/af-login/af-login.effects';
+import { AfDataEffects } from './shared/store/af-data/af-data.effects';
+import { ApiLoginEffects } from './shared/store/api-login/api-login.effects';
+import { ApiDataEffects } from './shared/store/api-data/api-data.effects';
 
 // 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -144,12 +145,10 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
     MultiselectDropdownModule,
     ChartsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
-    EffectsModule.forRoot([AfLoginEffects]),
+    EffectsModule.forRoot([AfLoginEffects, AfDataEffects, ApiLoginEffects, ApiDataEffects]),
   ],
   providers: [
     AfAuthGuardService,
-    AfDataService,
-    ApiDataService,
     ApiLoginService,
     ExportService,
     WatsonService,

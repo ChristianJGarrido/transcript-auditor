@@ -1,103 +1,48 @@
-import { Component, OnInit, OnDestroy, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
-import { AfUser, ApiConversationHistoryRecord, AfConversationData } from '../shared/interfaces/interfaces';
-import { AfDataService } from '../shared/services/af-data.service';
-import { ApiDataService } from '../shared/services/api-data.service';
+import {
+  AfUser,
+  ApiConversationHistoryRecord,
+  AfConversationData,
+} from '../shared/interfaces/interfaces';
+import { Store } from '@ngrx/store';
+import { StoreModel } from '../app.store';
+import * as ApiLoginActions from '../shared/store/api-login/api-login.actions';
+import { ApiDataModel } from '../shared/store/api-data/api-data.model';
+import { AfLoginModel } from '../shared/store/af-login/af-login.model';
+import { AfDataModel } from '../shared/store/af-data/af-data.model';
+import { ApiLoginModel } from '../shared/store/api-login/api-login.model';
 
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
-  styleUrls: ['./main.component.css']
+  styleUrls: ['./main.component.css'],
 })
-export class MainComponent implements OnInit, OnDestroy, AfterViewInit {
-  // subscripitions
-  apiConversationsSub: Subscription;
-  apiConversationSub: Subscription;
-  afConversationsData$: BehaviorSubject<AfConversationData[]>;
+export class MainComponent implements OnInit, AfterViewInit {
+  afLogin$: Observable<AfLoginModel>;
+  afData$: Observable<AfDataModel>;
+  apiLogin$: Observable<ApiLoginModel>;
+  apiData$: Observable<ApiDataModel>;
 
-  // properties
-  apiConversation: ApiConversationHistoryRecord;
-  apiConversations: ApiConversationHistoryRecord[] = [];
-  count: number;
-
-  test;
-
-  constructor(private afDataService: AfDataService, private apiDataService: ApiDataService) {}
+  constructor(private store: Store<StoreModel>) {}
 
   /**
    * assigns conversation property from event emission
    * @param {ApiConversationHistoryRecord} conversation
    */
   selectConversation(conversation: ApiConversationHistoryRecord) {
-    this.apiConversation = conversation;
+    // this.apiConversation = conversation;
   }
 
-
-  ngOnInit() {
-    // setup stream from angularFire
-    this.afConversationsData$ = this.afDataService.afConversationData$;
-
-    // setup stream for api data
-    this.apiConversationsSub = this.apiDataService.apiConversations$.subscribe(data => {
-      this.apiConversations = data ? data.conversationHistoryRecords : [];
-      this.count = data ? data._metadata && data._metadata.count : 0;
-
-      // after data is collected, get first conversation
-      if (!this.apiConversation && this.apiConversations.length > 0) {
-        this.apiConversation = this.apiConversations[0];
-      }
-    });
-
-    // setup stream for individual api conversation
-    this.apiConversationSub = this.apiDataService.apiConversation$.subscribe(data => {
-      this.apiConversation =
-        data && data.conversationHistoryRecords && data.conversationHistoryRecords[0]
-          ? data.conversationHistoryRecords[0]
-          : null;
-    });
+  ngOnInit(): void {
+    this.store.dispatch(new ApiLoginActions.GetSession());
+    this.afLogin$ = this.store.select(state => state.afLogin);
+    this.afData$ = this.store.select(state => state.afData);
+    this.apiLogin$ = this.store.select(state => state.apiLogin);
+    this.apiData$ = this.store.select(state => state.apiData);
   }
 
-  ngAfterViewInit() {
-    // // when window resizes, extend container height
-    // const resize = (window.onresize = () => {
-    //   let windowHeight = 0;
-
-    //   // get heights
-    //   if (typeof window.innerWidth === 'number') {
-    //     // Non-IE
-    //     windowHeight = window.innerHeight || 0;
-    //   }
-
-    //   // calculate heights
-    //   const conversationHeight = windowHeight < 790 ? 790 : windowHeight;
-    //   const messagesHeight = conversationHeight - 200;
-    //   const messagesScrollHeight = messagesHeight - 115;
-    //   const formHeight = conversationHeight - 285;
-
-    //   // set heights
-    //   if (document.getElementById('conversations-container')) {
-    //     document.getElementById('conversations-container').style.height =
-    //       String(conversationHeight) + 'px';
-    //   }
-    //   if (document.getElementById('messages-container')) {
-    //     document.getElementById('messages-container').style.height = String(messagesHeight) + 'px';
-    //   }
-    //   if (document.getElementById('messages-scroll-container')) {
-    //     document.getElementById('messages-scroll-container').style.height =
-    //       String(messagesScrollHeight) + 'px';
-    //   }
-    //   if (document.getElementById('form-container')) {
-    //     document.getElementById('form-container').style.height = String(formHeight) + 'px';
-    //   }
-    // });
-
-    // resize();
-  }
-
-  ngOnDestroy() {
-    this.apiConversationsSub.unsubscribe();
-    this.apiConversationSub.unsubscribe();
-  }
+  ngAfterViewInit(): void {}
 }

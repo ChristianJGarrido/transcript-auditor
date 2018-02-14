@@ -72,12 +72,12 @@ export class AfDataService {
         if (!environment.production) {
           console.log('Subscribing to data');
         }
-        this.afConversationDataSub = this.getAfData().subscribe(data => {
-          this.afConversationData$.next(data);
-        });
-        this.afAccountsDataSub = this.getAfAllData().subscribe(data => {
-          this.afAccountsData$.next(data);
-        });
+        // this.afConversationDataSub = this.getAfData().subscribe(data => {
+        //   this.afConversationData$.next(data);
+        // });
+        // this.afAccountsDataSub = this.getAfAllData().subscribe(data => {
+        //   this.afAccountsData$.next(data);
+        // });
       } else {
         // unsubscribe to data store
         if (this.afConversationDataSub) {
@@ -93,21 +93,21 @@ export class AfDataService {
     });
 
     // subscribe to AF and API auth events
-    this.afLogin$
-      .pipe(combineLatest(this.apiLoginService.events$))
-      .subscribe(([user, loginEvents]) => {
-        if (user.uid && loginEvents.isLoggedIn) {
-          // save user
-          this.user = this.createUser(user);
-          // bind to uid
-          this.afUsersRef = this.afStore.collection(`users`).doc(user.uid);
-          // check user exists and bind to database
-          this.checkUserExists();
-        } else {
-          // clear observables if not signed into firebase
-          this.clearData();
-        }
-      });
+    // this.afLogin$
+    //   .pipe(combineLatest())
+    //   .subscribe(([user, loginEvents]) => {
+    //     if (user.uid && loginEvents.isLoggedIn) {
+    //       // save user
+    //       this.user = this.createUser(user);
+    //       // bind to uid
+    //       this.afUsersRef = this.afStore.collection(`users`).doc(user.uid);
+    //       // check user exists and bind to database
+    //       this.checkUserExists();
+    //     } else {
+    //       // clear observables if not signed into firebase
+    //       this.clearData();
+    //     }
+    //   });
   }
 
   /**
@@ -131,73 +131,73 @@ export class AfDataService {
    * @param {AfLoginState} user
    * @return {AfUser}
    */
-  createUser(user: AfLoginState): AfUser {
-    return {
-      createdAt: new Date(),
-      email: user.email,
-      displayName: user.displayName,
-      accounts: [this.apiLoginService.user.account],
-      admin: this.apiLoginService.isLPA
-    };
-  }
+  // createUser(user: AfLoginState): AfUser {
+  //   return {
+  //     createdAt: new Date(),
+  //     email: user.email,
+  //     displayName: user.displayName,
+  //     accounts: [this.apiLoginService.user.account],
+  //     admin: this.apiLoginService.isLPA
+  //   };
+  // }
 
   /**
    * Add new user account on login
    */
-  addUserAccount(): void {
-    this.afUserSub = this.afUsersRef.valueChanges().subscribe(user => {
-      const account = this.apiLoginService.user.account;
-      if (!user.accounts.includes(account)) {
-        this.afUsersRef.update({ accounts: [...user.accounts, account] });
-      }
-    });
-  }
+  // addUserAccount(): void {
+  //   this.afUserSub = this.afUsersRef.valueChanges().subscribe(user => {
+  //     const account = this.apiLoginService.user.account;
+  //     if (!user.accounts.includes(account)) {
+  //       this.afUsersRef.update({ accounts: [...user.accounts, account] });
+  //     }
+  //   });
+  // }
 
   /**
    * Check if user exists in database - create if not
    */
-  checkUserExists(): void {
-    this.afUsersRef
-      .update({})
-      .then(() => {
-        if (!environment.production) {
-          console.log('User found');
-        }
-        this.addUserAccount();
-        this.afUsersData$ = this.afUsersRef.valueChanges();
-        this.afUserReady$.next(true);
-      })
-      .catch(() =>
-        this.afUsersRef
-          .set(this.user)
-          .then(() => {
-            if (!environment.production) {
-              console.log('User created');
-            }
-            this.afUsersData$ = this.afUsersRef.valueChanges();
-            this.afUserReady$.next(true);
-          })
-          .catch(() => {
-            if (!environment.production) {
-              console.log('Error creating user');
-            }
-          })
-      );
-  }
+  // checkUserExists(): void {
+  //   this.afUsersRef
+  //     .update({})
+  //     .then(() => {
+  //       if (!environment.production) {
+  //         console.log('User found');
+  //       }
+  //       this.addUserAccount();
+  //       this.afUsersData$ = this.afUsersRef.valueChanges();
+  //       this.afUserReady$.next(true);
+  //     })
+  //     .catch(() =>
+  //       this.afUsersRef
+  //         .set(this.user)
+  //         .then(() => {
+  //           if (!environment.production) {
+  //             console.log('User created');
+  //           }
+  //           this.afUsersData$ = this.afUsersRef.valueChanges();
+  //           this.afUserReady$.next(true);
+  //         })
+  //         .catch(() => {
+  //           if (!environment.production) {
+  //             console.log('Error creating user');
+  //           }
+  //         })
+  //     );
+  // }
 
   /**
    * Returns observable of firebase specific account data
    * @return {Observable<AfConversationData[]>}
    */
-  getAfData(): Observable<AfConversationData[]> {
-    // set account number: depend on token
-    const account: string = this.apiLoginService.bearer ? this.apiLoginService.user.account : null;
-    // create doc for account and attach af data
-    this.afStore.doc(`accounts/${account}`).set({}, { merge: true });
-    this.afConversationRef = this.afStore.doc(`accounts/${account}`).collection('conversations');
-    // return observable stream
-    return this.afConversationRef.valueChanges();
-  }
+  // getAfData(): Observable<AfConversationData[]> {
+  //   // set account number: depend on token
+  //   const account: string = this.apiLoginService.bearer ? this.apiLoginService.user.account : null;
+  //   // create doc for account and attach af data
+  //   this.afStore.doc(`accounts/${account}`).set({}, { merge: true });
+  //   this.afConversationRef = this.afStore.doc(`accounts/${account}`).collection('conversations');
+  //   // return observable stream
+  //   return this.afConversationRef.valueChanges();
+  // }
 
   /**
    * Returns observable of firebase all account data

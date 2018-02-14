@@ -8,29 +8,28 @@
   <form #loginForm="ngForm">
 
     <!-- LE account number -->
-    <mat-form-field class="col">
+    <mat-form-field class="col" [hidden]="(apiLogin$ | async).bearer">
       <input matInput placeholder="LiveEngage Account" name="lpSite" [(ngModel)]="leUser.account">
     </mat-form-field>
 
     <!-- LE user name -->
-    <mat-form-field class="col">
+    <mat-form-field class="col" [hidden]="(apiLogin$ | async).bearer">
       <input matInput placeholder="LiveEngage Username" name="lpUser" [(ngModel)]="leUser.username">
     </mat-form-field>
 
     <!-- LE password -->
-    <mat-form-field class="col">
+    <mat-form-field class="col" [hidden]="(apiLogin$ | async).bearer">
       <input matInput type="password" placeholder="LiveEngage Password" name="lpPass" [(ngModel)]="leUser.password">
     </mat-form-field>
 
     <!-- LiveEngage login/logout buttons -->
-    <button class="col btn btn-primary btn-sm" (click)="lelogin()" [hidden]="(events$ | async).isLoggedIn" [disabled]="(events$ | async).loggingIn">{{(events$ | async).loggingIn ? 'Logging in...' : 'Login to LiveEngage'}}</button>
-    <button class="col btn btn-danger btn-sm" (click)="lelogout()" [hidden]="!(events$ | async).isLoggedIn">Logout of LiveEngage</button>
+    <button class="col btn btn-primary btn-sm" (click)="lelogin()" [hidden]="(apiLogin$ | async).bearer" [disabled]="(apiLogin$ | async).loading">{{(apiLogin$ | async).loading ? 'Logging in...' : 'Login to LiveEngage'}}</button>
+    <button class="col btn btn-danger btn-sm" (click)="lelogout()" [hidden]="!(apiLogin$ | async).bearer">Logout of LiveEngage</button>
   </form>
 
 </div>
 
 <!-- Logout of Auditor -->
 <div class="modal-footer">
-  <button *ngIf="(afUser$ | async)?.admin" type="submit" class="btn btn-outline-success" (click)="getAll()">Admin Export</button>
   <button type="submit" class="btn btn-outline-danger" (click)="logout()">Sign out of Analyzer</button>
 </div>

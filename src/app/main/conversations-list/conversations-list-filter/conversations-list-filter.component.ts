@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ApiDataService } from '../../../shared/services/api-data.service';
 import { ApiOptions, ApiIds, ApiSearchSdes } from '../../../shared/interfaces/interfaces';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Subscription } from 'rxjs/Subscription';
@@ -80,7 +79,7 @@ export class ConversationsListFilterComponent implements OnInit, OnDestroy {
   sdeSearch: ApiSearchSdes;
   ids: ApiIds;
 
-  constructor(private apiDataService: ApiDataService) {}
+  constructor() {}
 
   /**
    * request new data from API with optional search params
@@ -184,7 +183,7 @@ export class ConversationsListFilterComponent implements OnInit, OnDestroy {
         debounceTime(700),
         switchMap(() => {
           return Observable.of(
-            this.apiDataService.getData(this.options, this.ids)
+            // this.apiDataService.getData(this.options, this.ids)
           );
         })
       )
@@ -192,7 +191,7 @@ export class ConversationsListFilterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.apiLoading$ = this.apiDataService.apiLoading$;
+    // this.apiLoading$ = this.apiDataService.apiLoading$;
     this.debounceFilter();
   }
 

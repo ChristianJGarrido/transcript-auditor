@@ -1,19 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ApiLoginService } from '../../shared/services/api-login.service';
+import { Component, OnInit, Input } from '@angular/core';
 import { ModalComponent } from '../modal/modal.component';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Subscription } from 'rxjs/Subscription';
+import { ApiLoginModel } from '../../shared/store/api-login/api-login.model';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.css']
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class HeaderComponent implements OnInit {
+  @Input() apiLogin: ApiLoginModel;
   dialogRef: MatDialogRef<ModalComponent>;
-  eventsSub: Subscription;
 
-  constructor(public dialog: MatDialog, private apiLoginService: ApiLoginService) {}
+  constructor(public dialog: MatDialog) {}
 
   /**
    * Opens the material dialog modal
@@ -25,23 +24,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnInit() {
-    // sub to events and open dialog if not logged in
-    this.eventsSub = this.apiLoginService.events$.subscribe(event => {
-      if (event.isLoggedIn) {
-        if (this.dialogRef) {
-          this.dialogRef.close();
-        }
-      } else {
-        if (!this.dialogRef) {
-          // timeout required due to known angular bug with opening dialog during change detection
-          setTimeout(() => this.openDialog(), 100);
-        }
+  /**
+   * if api session valid, don't open dialog
+   */
+  checkApiSession(): void {
+    if (this.apiLogin.bearer) {
+      if (this.dialogRef) {
+        this.dialogRef.close();
       }
-    });
+    } else {
+      if (!this.dialogRef) {
+        // timeout required due to known angular bug with opening dialog during change detection
+        setTimeout(() => this.openDialog(), 100);
+      }
+    }
   }
 
-  ngOnDestroy() {
-    this.eventsSub.unsubscribe();
+  ngOnInit() {
+    this.checkApiSession();
   }
+
 }
