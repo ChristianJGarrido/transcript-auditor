@@ -1,3 +1,15 @@
-<p>
-  assessments works!
-</p>
+<div class="container-fluid">
+  <div class="row no-gutters mt-2">
+    <div class="col-12 col-md-6 pr-2">
+      <div class="row no-gutters">
+        <app-assessments-grid [data]="(assessments$ | async)" [type]="'playlists'"></app-assessments-grid>
+      </div>
+    </div>
+
+    <div class="col-12 col-md-6">
+      <div class="row no-gutters">
+        <app-assessments-grid [data]="(assessments$ | async)" [type]="'assessments'"></app-assessments-grid>
+      </div>
+    </div>
+  </div>
+</div>

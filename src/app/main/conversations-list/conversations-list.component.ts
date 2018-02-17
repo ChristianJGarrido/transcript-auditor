@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { ApiConversationHistoryRecord, ApiOptions } from '../../shared/interfaces/interfaces';
 
-// 3rd party
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 
 @Component({
@@ -20,11 +19,10 @@ import { DatatableComponent } from '@swimlane/ngx-datatable';
 export class ConversationsListComponent implements OnInit, OnChanges {
   @ViewChild('table') table: DatatableComponent;
   @Input() apiConversations: ApiConversationHistoryRecord[] = [];
-  @Input() count: number;
   @Output() selectConversation = new EventEmitter<ApiConversationHistoryRecord>();
 
-  rows: any[] = [];
-  columns: any[] = [];
+  rows = [];
+  columns = [];
 
   constructor() {}
 

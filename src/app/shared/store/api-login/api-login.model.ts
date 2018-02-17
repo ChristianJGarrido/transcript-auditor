@@ -14,7 +14,7 @@ export interface ApiLoginModel extends ApiLoginUser {
 }
 
 export interface ApiDomains {
-  engHist: string;
+  engHistDomain: string;
   msgHist: string;
   agentVep: string;
 }

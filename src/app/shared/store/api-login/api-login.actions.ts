@@ -7,7 +7,6 @@ export const GET_SESSION = '[API Login] Get session';
 export const SAVE_SESSION = '[API Login] Save session';
 export const AUTHENTICATED = '[API Login] Authenticated';
 export const NOT_AUTHENTICATED = '[API Login] Not authenticated';
-export const LOGOUT = '[API Login] Logout';
 export const LOGIN_ERROR = '[API Login] Login error';
 
 export class GetDomains implements Action {
@@ -31,12 +30,9 @@ export class Authenticated implements Action {
 export class NotAuthenticated implements Action {
   readonly type = NOT_AUTHENTICATED;
 }
-export class Logout implements Action {
-  readonly type = LOGOUT;
-}
 export class LoginError implements Action {
   readonly type = LOGIN_ERROR;
   constructor(public error: any) {}
 }
 
-export type All = GetDomains | Login | GetSession | SaveSession | NotAuthenticated | Authenticated | Logout | LoginError;
+export type All = GetDomains | Login | GetSession | SaveSession | NotAuthenticated | Authenticated | LoginError;

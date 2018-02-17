@@ -3,12 +3,15 @@ import { Router } from '@angular/router';
 import { Effect, Actions } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { map, switchMap, exhaustMap } from 'rxjs/operators';
+import { map, switchMap, first, catchError } from 'rxjs/operators';
 
-import * as AfDataActions from '../af-data/af-data.actions';
 import * as AfLoginActions from './af-login.actions';
 import { AfLoginState } from './af-login.model';
 
+import {
+  AngularFirestore,
+  AngularFirestoreCollection,
+} from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 
@@ -23,9 +26,8 @@ export class AfLoginEffects {
         if (auth) {
           const user = new AfLoginState(auth.uid, auth.displayName, auth.email);
           return new AfLoginActions.Authenticated(user);
-        } else {
-          return new AfLoginActions.NotAuthenticated();
         }
+        return new AfLoginActions.NotAuthenticated();
       })
     );
 
@@ -35,7 +37,28 @@ export class AfLoginEffects {
     .pipe(
       map(action => {
         this.router.navigate(['/app']);
-        return new AfDataActions.GetData(action.user);
+        return new AfLoginActions.CreateUser(action.user);
+      })
+    );
+
+  @Effect()
+  createUser$: Observable<any> = this.actions$
+    .ofType<AfLoginActions.CreateUser>(AfLoginActions.CREATE_USER)
+    .pipe(
+      switchMap(action => {
+        const { uid, email, displayName } = action.user;
+        const docRef = this.afStore.doc(`users/${uid}`);
+        return docRef.valueChanges().pipe(
+          first(),
+          switchMap(async user => {
+            if (user) {
+              return new AfLoginActions.Success();
+            }
+            await docRef.set({ ...user, createdAt: new Date() });
+            return new AfLoginActions.Success();
+          }),
+          catchError(error => [new AfLoginActions.Error(error)])
+        );
       })
     );
 
@@ -67,6 +90,7 @@ export class AfLoginEffects {
 
   constructor(
     private actions$: Actions,
+    public afStore: AngularFirestore,
     public afAuth: AngularFireAuth,
     private router: Router
   ) {}

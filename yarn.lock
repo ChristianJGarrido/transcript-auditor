@@ -253,6 +253,10 @@
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/@ngrx/effects/-/effects-5.0.1.tgz#cf970a6b8e2f3d3647e795e7040e09a2e7d157ed"
 
+"@ngrx/entity@^5.1.0":
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/@ngrx/entity/-/entity-5.1.0.tgz#27de53bd10c7f93c82d8aa1642357c65657e1459"
+
 "@ngrx/store@^5.0.0":
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/@ngrx/store/-/store-5.0.0.tgz#483a955ea99a63ee083675ce0596d505e5501747"
@@ -481,6 +485,12 @@ amdefine@>=0.0.4:
 angular-2-dropdown-multiselect@^1.6.1:
   version "1.6.3"
   resolved "https://registry.yarnpkg.com/angular-2-dropdown-multiselect/-/angular-2-dropdown-multiselect-1.6.3.tgz#9b4dd795513e6a167c82a95dd659a438b322d37f"
+
+angular-star-rating@^3.0.8:
+  version "3.0.8"
+  resolved "https://registry.yarnpkg.com/angular-star-rating/-/angular-star-rating-3.0.8.tgz#c33ea9bb5b61d7a2f8cf4cc60faa0048716c96b0"
+  dependencies:
+    css-star-rating "^1.1.3"
 
 angularfire2@^5.0.0-rc.6:
   version "5.0.0-rc.6"
@@ -1774,6 +1784,10 @@ css-selector-tokenizer@^0.7.0:
     fastparse "^1.1.1"
     regexpu-core "^1.0.0"
 
+css-star-rating@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/css-star-rating/-/css-star-rating-1.1.3.tgz#d3b8da2c90c69456a579fa3954d6d724d14db734"
+
 css-what@2.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-2.1.0.tgz#9467d032c38cfaefb9f2d79501253062f87fa1bd"
@@ -3001,6 +3015,10 @@ grpc@^1.7.1:
     nan "^2.0.0"
     node-pre-gyp "^0.6.39"
     protobufjs "^5.0.0"
+
+hammerjs@^2.0.8:
+  version "2.0.8"
+  resolved "https://registry.yarnpkg.com/hammerjs/-/hammerjs-2.0.8.tgz#04ef77862cff2bb79d30f7692095930222bf60f1"
 
 handle-thing@^1.2.5:
   version "1.2.5"

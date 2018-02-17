@@ -1,0 +1,8 @@
+<div class="row no-gutters">
+  <div class="col-auto px-2 text-right" (click)="cycleItem(false)" [matTooltip]="'Previous '+type">
+    <i class="far fa-chevron-left" aria-hidden="true"></i>
+  </div>
+  <div class="col-auto px-2 text-right" (click)="cycleItem(true)" [matTooltip]="'Next '+type">
+    <i class="far fa-chevron-right" aria-hidden="true"></i>
+  </div>
+</div>

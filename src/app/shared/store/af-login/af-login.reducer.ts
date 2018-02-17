@@ -37,6 +37,11 @@ export function AfLoginReducer(
         ...state,
         loading: true,
       };
+    case AfLoginActions.SUCCESS:
+      return {
+        ...state,
+        loading: false,
+      };
     default:
       return state;
   }

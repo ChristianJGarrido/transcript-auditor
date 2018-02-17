@@ -5,7 +5,7 @@ export type Action = ApiLoginActions.All;
 
 const initialApiLoginState = new ApiLoginState(null, '', '', false, {
   agentVep: '',
-  engHist: '',
+  engHistDomain: '',
   msgHist: '',
 });
 

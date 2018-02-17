@@ -1,3 +1,21 @@
 .fa-filter {
   cursor: pointer;
+  color: white;
+}
+.fa-filter:hover {
+  color: rgb(185, 185, 185);
+}
+.container-fluid {
+  background-color: #4e4e4e;
+}
+.nav-link {
+  color: white;
+  font-family: MyriadPro, 'sans-serif';
+  font-weight: 300;
+}
+.nav-link:hover {
+  color: rgb(185, 185, 185);
+}
+.nav-link.active {
+  border-bottom: 1px solid white;
 }

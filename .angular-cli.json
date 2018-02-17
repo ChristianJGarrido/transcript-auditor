@@ -19,6 +19,7 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
+        "../node_modules/angular-star-rating/assets/scss/star-rating.scss",
         "styles.css"
       ],
       "scripts": [

@@ -12,6 +12,7 @@ const initialApiDataState: ApiDataModel = {
     _metadata: null,
     conversationHistoryRecords: [],
   },
+  total: [],
   select: null,
   error: false,
   loading: false,
@@ -22,16 +23,16 @@ export function ApiDataReducer(
   action: Action
 ): ApiDataModel {
   switch (action.type) {
-    case ApiDataActions.GET_DATA:
+    case ApiDataActions.GET_CONVERSATIONS:
       return {
         ...state,
         error: false,
         loading: true,
       };
-    case ApiDataActions.SAVE_DATA:
+    case ApiDataActions.SAVE_CONVERSATIONS:
       return {
         ...state,
-        msgHist: action.data,
+        ...action.data,
         loading: false,
       };
     case ApiDataActions.SELECT_CONVERSATION:
@@ -43,6 +44,7 @@ export function ApiDataReducer(
       return {
         ...state,
         error: true,
+        loading: false,
       };
     default:
       return state;

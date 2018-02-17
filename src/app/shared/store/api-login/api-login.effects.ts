@@ -13,6 +13,7 @@ import {
 import { ApiLoginModel } from '../api-login/api-login.model';
 import * as ApiLoginActions from '../api-login/api-login.actions';
 import * as ApiDataActions from '../api-data/api-data.actions';
+import * as AssessmentActions from '../assessment/assessment.actions';
 
 @Injectable()
 export class ApiLoginEffects {
@@ -22,20 +23,16 @@ export class ApiLoginEffects {
     .pipe(
       map(action => {
         // retrieve from storage
-        const bearer =
-          sessionStorage.getItem('transcriptAuditorBearer') || null;
-        const domains = localStorage.getItem('transcriptAuditorDomains');
+        const bearer = sessionStorage.getItem('ca_Bearer') || null;
+        const domains = localStorage.getItem('ca_Domains');
         const user = {
           bearer,
-          username: localStorage.getItem('transcriptAuditorUsername') || '',
-          account: localStorage.getItem('transcriptAuditorAccount') || '',
-          isLPA:
-            localStorage.getItem('transcriptAuditorLPA') === 'true'
-              ? true
-              : false,
+          username: localStorage.getItem('ca_Username') || '',
+          account: localStorage.getItem('ca_Account') || '',
+          isLPA: localStorage.getItem('ca_LPA') === 'true' ? true : false,
           domains: domains
             ? JSON.parse(domains)
-            : { msgHist: '', agentVep: '', engHist: '' },
+            : { msgHist: '', agentVep: '', engHistDomain: '' },
         };
         if (bearer) {
           return new ApiLoginActions.Authenticated(user);
@@ -63,22 +60,19 @@ export class ApiLoginEffects {
         };
         return this.http.post<any>(url, body, { headers }).pipe(
           map(response => {
-              if (response.bearer) {
-                const session = {
-                  bearer: response.bearer,
-                  username: user.username,
-                  account: user.account,
-                  isLPA: response.config.isLPA,
-                  domains: domains,
-                };
-                return new ApiLoginActions.SaveSession(session);
-              } else {
-                return new ApiLoginActions.NotAuthenticated();
-              }
-            }),
-            catchError(err => {
-              return [new ApiLoginActions.LoginError(err)];
-            })
+            if (response.bearer) {
+              const session = {
+                domains,
+                bearer: response.bearer,
+                username: user.username,
+                account: user.account,
+                isLPA: response.config.isLPA,
+              };
+              return new ApiLoginActions.SaveSession(session);
+            }
+            return new ApiLoginActions.NotAuthenticated();
+          }),
+          catchError(err => [new ApiLoginActions.LoginError(err)])
         );
       })
     );
@@ -90,34 +84,30 @@ export class ApiLoginEffects {
       map(action => {
         // save auth to sessionStorage
         const { bearer, username, account, isLPA, domains } = action.session;
-        sessionStorage.setItem('transcriptAuditorBearer', bearer);
-        localStorage.setItem(
-          'transcriptAuditorDomains',
-          JSON.stringify(domains)
-        );
-        localStorage.setItem('transcriptAuditorUsername', username);
-        localStorage.setItem('transcriptAuditorAccount', account);
-        localStorage.setItem('transcriptAuditorLPA', isLPA.toString());
+        sessionStorage.setItem('ca_Bearer', bearer);
+        localStorage.setItem('ca_Domains', JSON.stringify(domains));
+        localStorage.setItem('ca_Username', username);
+        localStorage.setItem('ca_Account', account);
+        localStorage.setItem('ca_LPA', isLPA.toString());
         return new ApiLoginActions.Authenticated(action.session);
       })
     );
 
   @Effect()
-  apiAuth$: Observable<any> = this.actions$
+  queryData$: Observable<any> = this.actions$
     .ofType<ApiLoginActions.Authenticated>(ApiLoginActions.AUTHENTICATED)
-    .pipe(
-      map(action => {
-        return new ApiDataActions.GetData();
-      })
-    );
+    .pipe(switchMap(action => [
+      new ApiDataActions.GetConversations(),
+      new AssessmentActions.Query()
+    ]));
 
-  @Effect()
+  @Effect({ dispatch: false })
   apiLogout$: Observable<any> = this.actions$
-    .ofType<ApiLoginActions.Logout>(ApiLoginActions.LOGOUT)
+    .ofType<ApiLoginActions.NotAuthenticated>(ApiLoginActions.NOT_AUTHENTICATED)
     .pipe(
       map(action => {
-        sessionStorage.removeItem('transcriptAuditorBearer');
-        return new ApiLoginActions.NotAuthenticated();
+        sessionStorage.removeItem('ca_Bearer');
+        return Observable.of(null);
       })
     );
 

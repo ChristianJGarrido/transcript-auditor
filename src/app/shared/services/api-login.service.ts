@@ -17,7 +17,7 @@ export class ApiLoginService {
   private domains = {
     msgHist: '',
     agentVep: '',
-    engHist: '',
+    engHistDomain: '',
   };
   private saved = false;
 

@@ -1,0 +1,19 @@
+<div class="container-fluid">
+  <div class="row mb-2">
+    <div class="col">
+      <h4>Personality Descriptors</h4>
+    </div>
+  </div>
+  <div *ngFor="let item of personality" class="row no-gutters">
+    <div class="col-3">
+      {{item.descriptor}}
+    </div>
+    <div class="col">
+      <mat-slider [max]="2" [min]="-2" [invert]="true" [thumb-label]="'thumbLabel'" [tick-interval]="1" [(ngModel)]="item.score">
+      </mat-slider>
+    </div>
+    <div class="col-3">
+      {{item.antonym}}
+    </div>
+  </div>
+</div>

@@ -1,17 +1,17 @@
 import { Action } from '@ngrx/store';
-import { ApiMsgHist } from './api-data.model';
+import { ApiMsgHist, ApiEngHist } from './api-data.model';
 
-export const GET_DATA = '[API Data] Get data';
-export const SAVE_DATA = '[API Data] Save data';
+export const GET_CONVERSATIONS = '[API Data] Get conversations';
+export const SAVE_CONVERSATIONS = '[API Data] Save conversations';
 export const SELECT_CONVERSATION = '[API Data] Select conversation';
 export const DATA_ERROR = '[API Data] Error getting data';
 
-export class GetData implements Action {
-  readonly type = GET_DATA;
+export class GetConversations implements Action {
+  readonly type = GET_CONVERSATIONS;
 }
-export class SaveData implements Action {
-  readonly type = SAVE_DATA;
-  constructor(public data: ApiMsgHist) {}
+export class SaveConversations implements Action {
+  readonly type = SAVE_CONVERSATIONS;
+  constructor(public data: { msgHist: ApiMsgHist; engHist: ApiEngHist }) {}
 }
 export class SelectConversation implements Action {
   readonly type = SELECT_CONVERSATION;
@@ -22,4 +22,8 @@ export class DataError implements Action {
   constructor(public error: any) {}
 }
 
-export type All = GetData | SaveData | SelectConversation | DataError;
+export type All =
+  | GetConversations
+  | SaveConversations
+  | SelectConversation
+  | DataError;

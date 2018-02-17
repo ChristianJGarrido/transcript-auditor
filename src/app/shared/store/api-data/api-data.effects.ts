@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { Effect, Actions } from '@ngrx/effects';
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
-import { map, switchMap, withLatestFrom, catchError } from 'rxjs/operators';
+import {
+  map,
+  switchMap,
+  withLatestFrom,
+  catchError,
+  combineLatest,
+} from 'rxjs/operators';
 import {
   HttpClient,
   HttpHeaders,
@@ -10,8 +16,9 @@ import {
   HttpParams,
 } from '@angular/common/http';
 
+import * as ApiLoginActions from '../api-login/api-login.actions';
 import * as ApiDataActions from '../api-data/api-data.actions';
-import { ApiDataModel, ApiMsgHist } from '../api-data/api-data.model';
+import { ApiDataModel, ApiMsgHist, ApiEngHist } from '../api-data/api-data.model';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
 import { ApiLoginModel } from '../api-login/api-login.model';
@@ -20,16 +27,26 @@ import { ApiLoginModel } from '../api-login/api-login.model';
 export class ApiDataEffects {
   @Effect()
   getData$: Observable<any> = this.actions$
-    .ofType<ApiDataActions.GetData>(ApiDataActions.GET_DATA)
+    .ofType<ApiDataActions.GetConversations>(ApiDataActions.GET_CONVERSATIONS)
     .pipe(
       withLatestFrom(this.store.select(state => state.apiLogin)),
       switchMap(([action, apiLogin]) => {
-        const { url, body, headers, params } = this.generateRequest(apiLogin);
-        return this.http.post<ApiMsgHist>(url, body, { headers, params }).pipe(
-          switchMap(response => {
-            return [new ApiDataActions.SaveData(response)];
+        const msgHistReq = this.generateRequest(true, apiLogin);
+        const engHistReq = this.generateRequest(false, apiLogin);
+        const msgHistObs = this.http.post<ApiMsgHist>(msgHistReq.url, msgHistReq.body, msgHistReq.options);
+        const engHistObs = this.http.post<ApiEngHist>(engHistReq.url, engHistReq.body, engHistReq.options);
+        return msgHistObs.pipe(
+          combineLatest(engHistObs),
+          switchMap(([msgHist, engHist]) => {
+            return [new ApiDataActions.SaveConversations({
+              msgHist,
+              engHist
+            })];
           }),
           catchError(err => {
+            if (err.status === 401) {
+              return [{type: 'error'}, new ApiLoginActions.NotAuthenticated()];
+            }
             return [new ApiDataActions.DataError(err)];
           })
         );
@@ -38,13 +55,13 @@ export class ApiDataEffects {
 
   @Effect()
   selectData$: Observable<any> = this.actions$
-    .ofType<ApiDataActions.SaveData>(ApiDataActions.SAVE_DATA)
+    .ofType<ApiDataActions.SaveConversations>(ApiDataActions.SAVE_CONVERSATIONS)
     .pipe(
       withLatestFrom(this.store.select(state => state.apiData)),
       switchMap(([action, apiData]) => {
         const length = apiData.msgHist.conversationHistoryRecords.length;
         if (!apiData.select && length) {
-          const index = Math.floor((Math.random() * length));
+          const index = Math.floor(Math.random() * length);
           const select = apiData.msgHist.conversationHistoryRecords[index];
           return [new ApiDataActions.SelectConversation(select)];
         }
@@ -62,7 +79,10 @@ export class ApiDataEffects {
    * helper method to calculate ms from dates
    * @return {number, number}
    */
-  convertDateToMs(dateFrom: Date, dateTo: Date): { from: number; to: number } {
+  convertDateToMs(): { from: number; to: number } {
+    const now = new Date();
+    const dateTo = new Date(now.setDate(now.getDate() - 1));
+    const dateFrom = new Date(now.setDate(now.getDate() - 7));
     const from: number = Math.round(dateFrom.getTime());
     const to: number = Math.round(dateTo.getTime());
     return { from, to };
@@ -78,30 +98,25 @@ export class ApiDataEffects {
   }
 
   /**
-   * Get data
+   * Get data from either Eng Hist API or Msg Hist API
+   * @param {boolean} messagingMode
+   * @param {ApiLoginModel} apiLogin
    */
-  generateRequest(apiLogin: ApiLoginModel) {
+  generateRequest(messagingMode: boolean, apiLogin: ApiLoginModel) {
     const { domains, account, bearer } = apiLogin;
-    // prepare URL
-    const url = `https://${
-      domains.msgHist
-    }/messaging_history/api/account/${account}/conversations/search`;
-    // get start
-    const to = new Date();
-    const dateTo = new Date(to.setDate(to.getDate() - 1));
-    const dateFrom = new Date(to.setDate(to.getDate() - 7));
-    const start = this.convertDateToMs(dateFrom, dateTo);
-    // prepare body
+    const { msgHist, engHistDomain } = domains;
+    const domain = messagingMode ? msgHist : engHistDomain;
+    const history = messagingMode ? 'messaging_history' : 'interaction_history';
+    const interaction = messagingMode ? 'conversations' : 'interactions';
+    const url = `https://${domain}/${history}/api/account/${account}/${interaction}/search`;
+    const start = this.convertDateToMs();
     const body = { start };
-    // set headers
     const headers = this.getHeaders(bearer);
-    // set params
     const params: HttpParams = new HttpParams()
       .set('limit', '100')
       .set('offset', '0')
       .set('sort', 'start:desc');
-    // return request objects
-    return { url, body, headers, params };
+    return { url, body, options: { headers, params } };
   }
 
   // /**

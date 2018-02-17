@@ -2,15 +2,15 @@ import { environment } from '../environments/environment';
 
 // reducers
 import { AfLoginReducer } from './shared/store/af-login/af-login.reducer';
-import { AfDataReducer } from './shared/store/af-data/af-data.reducer';
 import { ApiLoginReducer } from './shared/store/api-login/api-login.reducer';
 import { ApiDataReducer } from './shared/store/api-data/api-data.reducer';
+import { AssessmentReducer } from './shared/store/assessment/assessment.reducer';
 
 // models
 import { AfLoginModel } from './shared/store/af-login/af-login.model';
-import { AfDataModel } from './shared/store/af-data/af-data.model';
 import { ApiLoginModel } from './shared/store/api-login/api-login.model';
 import { ApiDataModel } from './shared/store/api-data/api-data.model';
+import { AssessmentModel } from './shared/store/assessment/assessment.model';
 
 /**
  * combineReducers is another useful metareducer that takes a map of reducer
@@ -37,17 +37,17 @@ import { storeLogger } from 'ngrx-store-logger';
 // store modal
 export interface StoreModel {
   afLogin: AfLoginModel;
-  afData: AfDataModel;
   apiLogin: ApiLoginModel;
   apiData: ApiDataModel;
+  assessment: AssessmentModel;
 }
 
 // store reducers
-export const reducers: ActionReducerMap<StoreModel> = {
+export const reducers: ActionReducerMap<any> = {
   afLogin: AfLoginReducer,
-  afData: AfDataReducer,
   apiLogin: ApiLoginReducer,
   apiData: ApiDataReducer,
+  assessment: AssessmentReducer,
 };
 
 // declare metaReducers

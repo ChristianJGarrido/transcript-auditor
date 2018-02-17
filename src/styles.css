@@ -3,17 +3,13 @@
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
 /* hovers */
-.far-chevron-left:hover,
-.far-chevron-right:hover,
-.far-sticky-note:hover,
-.far-download:hover,
-.note-row:hover > .font-primary,
-.note-row:hover > .font-secondary,
-.note-select > .font-primary,
-.note-select > .font-secondary {
-  background: #9c9ea0;
-  color: #ffffff;
-  border-radius: 5px;
+.fa-chevron-left:hover,
+.fa-chevron-right:hover,
+.fa-download:hover,
+.fa-plus-circle:hover,
+.fa-minus-circle:hover {
+  color: #b6b6b6;
+  cursor: pointer;
 }
 
 /* sprites */
@@ -39,7 +35,7 @@
 
 /* bootstrap overrided */
 .card {
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 0px solid rgba(0, 0, 0, 0.0);
 }
 .card,
 .card-title,
@@ -87,11 +83,6 @@
 /* drop downs */
 .dropdown-item > a {
   color: #5d5e60;
-}
-
-/* angular material */
-mat-sidenav {
-  width: 300px;
 }
 
 /*

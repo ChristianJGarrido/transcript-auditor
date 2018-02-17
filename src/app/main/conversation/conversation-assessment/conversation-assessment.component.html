@@ -1,0 +1,23 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row no-gutters justify-content-between">
+      <h5 class="card-title col-auto m-0">Conversation Assessment
+        <span class="text-muted">(1 of {{assessments.length | number:'1.0-0'}})</span>
+      </h5>
+      <div class="col-auto">
+        <div class="row no-gutters">
+          <app-cycle-items [type]="'assessment'"></app-cycle-items>
+          <app-assessment-control [assessment]="assessments"></app-assessment-control>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="row mt-2">
+  <app-conversation-assessment-summary [assessments]="assessments"></app-conversation-assessment-summary>
+</div>
+<div class="row mt-2">
+  <app-conversation-assessment-qa [assessments]="assessments"></app-conversation-assessment-qa>
+</div>

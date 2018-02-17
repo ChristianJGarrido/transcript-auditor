@@ -1,0 +1,32 @@
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">{{type}}
+      <span class="text-muted">({{rows.length | number:'1.0-0'}})</span>
+    </h5>
+
+    <!-- conversation grid -->
+    <div *ngIf="rows.length" class="row mt-2">
+      <div class="col">
+        <ngx-datatable #table style="cursor: pointer;" [limit]="15" class="material" [columnMode]="'auto'" [rowHeight]="30" [headerHeight]="50"
+          [selected]="selected" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows" [columns]="columns"
+          (select)='onSelect($event)'>
+          <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
+            <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
+              <input type="checkbox" [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)" />
+            </ng-template>
+            <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+              <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" />
+            </ng-template>
+          </ngx-datatable-column>
+          <ngx-datatable-column name="Name"></ngx-datatable-column>
+          <ngx-datatable-column name="ID"></ngx-datatable-column>
+          <ngx-datatable-column name="Created"></ngx-datatable-column>
+        </ngx-datatable>
+      </div>
+    </div>
+
+    <!-- no conversation message -->
+    <app-no-results [results]="rows.length > 0" [messagePrimary]="'No '+type+' found'" [messageSecondary]="'Try to broaden your search'"></app-no-results>
+
+  </div>
+</div>

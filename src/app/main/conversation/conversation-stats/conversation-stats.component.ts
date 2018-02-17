@@ -1,7 +1,6 @@
 import { Component, OnChanges, Input, HostBinding } from '@angular/core';
 import { ApiConversationHistoryRecord } from '../../../shared/interfaces/interfaces';
 
-// 3rd party
 import * as _ from 'lodash';
 
 @Component({

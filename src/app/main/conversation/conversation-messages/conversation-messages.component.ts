@@ -3,7 +3,6 @@ import {
   OnInit,
   Output,
   Input,
-  EventEmitter,
   HostBinding,
   OnChanges
 } from '@angular/core';
@@ -29,7 +28,6 @@ import { WatsonService } from '../../../shared/services/watson.service';
 export class ConversationMessagesComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
   @Input() apiConversation: ApiConversationHistoryRecord;
-  @Output() nextConversation = new EventEmitter<boolean>();
 
   messageEvents: any[] = [];
 
@@ -73,14 +71,6 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
       };
     });
     this.exportService.downloadCsvFile(messages, 'Conversation');
-  }
-
-  /**
-   * toggle through conversations (true is forward, false is back)
-   * @param {boolean} next
-   */
-  cycleConversations(next: boolean) {
-    this.nextConversation.emit(next);
   }
 
   /**
