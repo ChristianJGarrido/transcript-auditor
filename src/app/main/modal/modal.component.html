@@ -1,7 +1,7 @@
 <div class="modal-header">
   <h5 class="modal-title font-primary">LiveEngage Login</h5>
-  <div class="col-1">
-    <i class="far fa-times" aria-hidden="true" (click)="dialogRef.close()"></i>
+  <div class="col-1" (click)="dialogRef.close()">
+    <i class="far fa-times" aria-hidden="true"></i>
   </div>
 </div>
 <div class="modal-body">
@@ -31,5 +31,5 @@
 
 <!-- Logout of Auditor -->
 <div class="modal-footer">
-  <button type="submit" class="btn btn-outline-danger" (click)="logout()">Sign out of Analyzer</button>
+  <button type="submit" class="btn btn-outline-danger col" (click)="logout()">Sign out of Analyzer</button>
 </div>
