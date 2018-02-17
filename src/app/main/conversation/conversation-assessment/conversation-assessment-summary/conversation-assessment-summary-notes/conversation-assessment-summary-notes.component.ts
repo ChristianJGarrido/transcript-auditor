@@ -3,7 +3,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
-import { AfConversationData, AfConversationForm } from '../../../../../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-conversation-assessment-summary-notes',
@@ -11,8 +10,9 @@ import { AfConversationData, AfConversationForm } from '../../../../../shared/in
   styleUrls: ['./conversation-assessment-summary-notes.component.css']
 })
 export class ConversationAssessmentSummaryNotesComponent implements OnInit, OnDestroy {
-  @Input() formData: AfConversationForm;
   @Input() id: string;
+
+  note = '';
 
   note$: Subject<string> = new Subject();
   noteSub: Subscription;

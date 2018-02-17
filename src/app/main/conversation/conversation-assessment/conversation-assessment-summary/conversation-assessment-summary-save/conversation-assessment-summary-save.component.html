@@ -3,8 +3,8 @@
     <small>Last Update: {{afConversationData?.lastUpdateBy}} ({{afConversationData?.lastUpdateTime | date:'medium'}})</small>
   </div>
 </div>
-<div *ngIf="afSave$ | async" class="row mt-2">
-  <div [ngSwitch]="afSave$ | async" class="font-secondary col">
+<div class="row mt-2">
+  <div [ngSwitch]="null" class="font-secondary col">
     <span *ngSwitchCase="'saved'">
       <i style="color: green" class="far fa-check" aria-hidden="true"></i> Saved</span>
     <span *ngSwitchCase="'saving'">

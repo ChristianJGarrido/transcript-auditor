@@ -2,19 +2,31 @@
   <div class="card-body">
     <div class="row">
       <h5 class="card-title col-auto">Summary</h5>
+      <!-- <span class="card-subtitle mb-2 text-muted">ID</span> -->
     </div>
-    <!-- <span class="card-subtitle mb-2 text-muted">ID</span> -->
-    <button class="btn btn-outline-secondary btn-sm" (click)="openDialog()">Rank personality</button>
-    <app-conversation-assessment-summary-stars></app-conversation-assessment-summary-stars>
+    <div class="row">
+      <div class="col-3">
+        <div class="row no-gutters">
+          <app-conversation-assessment-summary-stars [rating]="0"></app-conversation-assessment-summary-stars>
+          <button class="btn btn-outline-secondary btn-sm col mt-2" (click)="openDialog()">Personality</button>
+          <!-- <app-conversation-assessment-summary-save ></app-conversation-assessment-summary-save> -->
+        </div>
+      </div>
+      <div class="col-9">
+        <app-conversation-assessment-summary-notes [id]="'123'"></app-conversation-assessment-summary-notes>
+      </div>
+    </div>
+
     <!-- <app-conversation-assessment-summary-select  [id]="'123'"></app-conversation-assessment-summary-select> -->
-    <!-- <app-conversation-assessment-summary-notes  [id]="'123'"></app-conversation-assessment-summary-notes> -->
-    <!-- <app-conversation-assessment-summary-save ></app-conversation-assessment-summary-save> -->
 
     <!-- conversation agent summary -->
     <div class="row mt-2">
       <div class="col">
-        <label class="font-primary">Agent Summary</label><br/>
-        <span class="font-secondary"><small>Conversation summary text here</small></span>
+        <label class="font-primary">Agent Summary</label>
+        <br/>
+        <span class="font-secondary">
+          <small>Conversation summary text here</small>
+        </span>
       </div>
     </div>
 
