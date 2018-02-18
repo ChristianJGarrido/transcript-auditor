@@ -1,13 +1,14 @@
 service cloud.firestore {
   match /databases/{database}/documents {
 
+		// get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin
 		function isAdmin() {
-    	return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.admin;
+    	return true;
     }
-    
+
 		function canAccess(accountId) {
     	return accountId in get(/databases/$(database)/documents/users/$(request.auth.uid)).data.accounts;
-    }    
+    }
 
 		match /users/{userId} {
       allow read, write: if request.auth.uid == userId || isAdmin();
