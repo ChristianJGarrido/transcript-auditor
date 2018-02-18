@@ -16,6 +16,8 @@ export interface AssessmentPersonalityModel {
   descriptor: string;
   antonym: string;
   score: number;
+  min: number;
+  max: number;
 }
 
 export interface AssessmentQaModel {
@@ -36,14 +38,14 @@ export class Assessment implements AssessmentModel {
     public note: string = '',
     public rating: number = 0,
     public personality: AssessmentPersonalityModel[] = [
-      { descriptor: 'Natural', antonym: 'Stiff', score: 0 },
-      { descriptor: 'Warm', antonym: 'Cold', score: 0 },
-      { descriptor: 'Formal', antonym: 'Casual', score: 0 },
-      { descriptor: 'Humorous', antonym: 'Serious', score: 0 },
-      { descriptor: 'Succinct', antonym: 'Wordy', score: 0 },
-      { descriptor: 'Polite', antonym: 'Blunt', score: 0 },
-      { descriptor: 'Energetic', antonym: 'Lethargic', score: 0 },
-      { descriptor: 'Younger', antonym: 'Older', score: 0 },
+      { descriptor: 'Natural', antonym: 'Stiff', score: 0, min: -5, max: 5 },
+      { descriptor: 'Warm', antonym: 'Cold', score: 0, min: -5, max: 5 },
+      { descriptor: 'Formal', antonym: 'Casual', score: 0, min: -5, max: 5 },
+      { descriptor: 'Humorous', antonym: 'Serious', score: 0, min: -5, max: 5 },
+      { descriptor: 'Succinct', antonym: 'Wordy', score: 0, min: -5, max: 5 },
+      { descriptor: 'Polite', antonym: 'Blunt', score: 0, min: -5, max: 5 },
+      { descriptor: 'Energetic', antonym: 'Lethargic', score: 0, min: -5, max: 5 },
+      { descriptor: 'Younger', antonym: 'Older', score: 0, min: -5, max: 5 },
     ],
     public qa: AssessmentQaModel[] = [
       { rowType: 1, label: 'S - Set the Tone' },

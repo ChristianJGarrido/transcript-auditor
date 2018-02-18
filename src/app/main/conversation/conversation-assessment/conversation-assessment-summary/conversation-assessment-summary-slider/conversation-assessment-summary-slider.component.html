@@ -9,7 +9,7 @@
       {{item.descriptor}}
     </div>
     <div class="col">
-      <mat-slider [max]="2" [min]="-2" [invert]="true" [thumb-label]="'thumbLabel'" [tick-interval]="1" [(ngModel)]="item.score">
+      <mat-slider [max]="item.max" [min]="item.min" [thumbLabel]="true" [invert]="true" [(ngModel)]="item.score">
       </mat-slider>
     </div>
     <div class="col-3">
