@@ -14,6 +14,7 @@ import { ApiLoginModel } from '../api-login/api-login.model';
 import * as ApiLoginActions from '../api-login/api-login.actions';
 import * as ApiDataActions from '../api-data/api-data.actions';
 import * as AssessmentActions from '../assessment/assessment.actions';
+import * as PlaylistActions from '../playlist/playlist.actions';
 
 @Injectable()
 export class ApiLoginEffects {
@@ -98,7 +99,8 @@ export class ApiLoginEffects {
     .ofType<ApiLoginActions.Authenticated>(ApiLoginActions.AUTHENTICATED)
     .pipe(switchMap(action => [
       new ApiDataActions.GetConversations(),
-      new AssessmentActions.Query()
+      new AssessmentActions.Query(),
+      new PlaylistActions.Query(),
     ]));
 
   @Effect({ dispatch: false })

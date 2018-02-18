@@ -1,1 +1,1 @@
-<star-rating-comp [starType]="'svg'" [rating]="rating"></star-rating-comp>
+<star-rating-comp [hoverEnabled]="true" [showHalfStars]="true" [starType]="'svg'" [rating]="rating" (onRatingChange)="updateRating($event)"></star-rating-comp>

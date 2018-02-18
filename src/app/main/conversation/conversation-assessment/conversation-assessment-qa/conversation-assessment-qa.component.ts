@@ -8,7 +8,7 @@ import { AssessmentModel } from '../../../../shared/store/assessment/assessment.
 })
 export class ConversationAssessmentQaComponent implements OnInit {
   @HostBinding('class') class = 'col-12';
-  @Input() assessments: AssessmentModel[];
+  @Input() assessmentSelect: AssessmentModel;
 
   constructor() { }
 

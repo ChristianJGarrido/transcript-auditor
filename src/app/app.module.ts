@@ -14,10 +14,13 @@ import { MainComponent } from './main/main.component';
 import { ModalComponent } from './main/modal/modal.component';
 import { ConversationsListComponent } from './main/conversations-list/conversations-list.component';
 import { ConversationsListFilterComponent } from './main/conversations-list/conversations-list-filter/conversations-list-filter.component';
-import { NoResultsComponent } from './shared/components/no-results/no-results.component';
 import { HeaderComponent } from './main/header/header.component';
+
+// shared
+import { NoResultsComponent } from './shared/components/no-results/no-results.component';
 import { MessageByComponent } from './shared/components/message-by/message-by.component';
 import { CycleItemsComponent } from './shared/components/cycle-items/cycle-items.component';
+import { AssessmentControlComponent } from './shared/components/assessment-control/assessment-control.component';
 
 // assessments
 import { AssessmentsComponent } from './main/assessments/assessments.component';
@@ -56,6 +59,7 @@ import { AfAuthGuardService } from './shared/services/af-auth-guard.service';
 import { ApiLoginService } from './shared/services/api-login.service';
 import { ExportService } from './shared/services/export.service';
 import { WatsonService } from './shared/services/watson.service';
+import { FirestoreService } from './shared/services/firestore.service';
 
 // routing
 import { AppRoutingModule } from './app-routing.module';
@@ -85,6 +89,7 @@ import { AfLoginEffects } from './shared/store/af-login/af-login.effects';
 import { ApiLoginEffects } from './shared/store/api-login/api-login.effects';
 import { ApiDataEffects } from './shared/store/api-data/api-data.effects';
 import { AssessmentEffects } from './shared/store/assessment/assessment.effects';
+import { PlaylistEffects } from './shared/store/playlist/playlist.effects';
 
 // 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -92,7 +97,7 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { StarRatingModule } from 'angular-star-rating';
 import 'hammerjs';
-import { AssessmentControlComponent } from './shared/components/assessment-control/assessment-control.component';
+import { ConversationAssessmentControlComponent } from './main/conversation/conversation-assessment/conversation-assessment-control/conversation-assessment-control.component';
 
 @NgModule({
   declarations: [
@@ -128,6 +133,7 @@ import { AssessmentControlComponent } from './shared/components/assessment-contr
     ConversationAssessmentSummarySliderComponent,
     ConversationAssessmentComponent,
     AssessmentControlComponent,
+    ConversationAssessmentControlComponent,
   ],
   imports: [
     StarRatingModule.forRoot(),
@@ -156,6 +162,7 @@ import { AssessmentControlComponent } from './shared/components/assessment-contr
     StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([
       AssessmentEffects,
+      PlaylistEffects,
       AfLoginEffects,
       ApiLoginEffects,
       ApiDataEffects,
@@ -166,6 +173,7 @@ import { AssessmentControlComponent } from './shared/components/assessment-contr
     ApiLoginService,
     ExportService,
     WatsonService,
+    FirestoreService,
   ],
   entryComponents: [ModalComponent, ConversationAssessmentSummarySliderComponent],
   bootstrap: [AppComponent],

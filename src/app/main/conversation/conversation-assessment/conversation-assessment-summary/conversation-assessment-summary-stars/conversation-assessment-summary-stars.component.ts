@@ -1,4 +1,7 @@
 import { Component, OnInit, Input, HostBinding } from '@angular/core';
+import * as AssessmentActions from '../../../../../shared/store/assessment/assessment.actions';
+import { Store } from '@ngrx/store';
+import { StoreModel } from '../../../../../app.store';
 
 @Component({
   selector: 'app-conversation-assessment-summary-stars',
@@ -7,11 +10,20 @@ import { Component, OnInit, Input, HostBinding } from '@angular/core';
 })
 export class ConversationAssessmentSummaryStarsComponent implements OnInit {
   @HostBinding('class') class = 'col-auto';
+  @Input() id: string;
   @Input() rating: number;
 
-  constructor() { }
+  constructor(private store: Store<StoreModel>) {}
 
-  ngOnInit() {
+  /**
+   * Updates the assessment rating (only if changed)
+   * @param {number} rating
+   */
+  updateRating({ rating }): void {
+    if (this.rating !== rating) {
+      this.store.dispatch(new AssessmentActions.Update(this.id, { rating }));
+    }
   }
 
+  ngOnInit() {}
 }

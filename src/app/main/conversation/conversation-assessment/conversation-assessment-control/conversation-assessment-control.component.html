@@ -1,0 +1,42 @@
+<div class="card">
+  <div class="card-body">
+    <div class="row no-gutters justify-content-between">
+      <h5 class="card-title col-auto m-0">Conversation Assessment
+        <span class="text-muted">({{findIndex() + 1}} of {{assessments.length | number:'1.0-0'}})</span>
+        <span *ngIf="assessmentSelect && assessmentSelect.isPrivate">
+          <i>(PRIVATE)</i>
+        </span>
+      </h5>
+      <div class="col-auto">
+        <div class="row no-gutters">
+          <app-cycle-items [type]="'assessment'" [index]="findIndex()" [items]="assessments"></app-cycle-items>
+          <app-assessment-control [assessmentSelect]="assessmentSelect"></app-assessment-control>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="assessmentSelect" class="row pt-1">
+      <div class="col text-secondary">
+        <span>Conversation ID:
+          <strong>{{assessmentSelect.conversationId}}</strong>
+        </span>
+        <br>
+        <span>Created by:
+          <strong>{{assessmentSelect.createdBy}}</strong> on
+          <strong>{{assessmentSelect.createdAt | date}}</strong>
+        </span>
+        <br>
+        <span>Last update by:
+          <strong>{{assessmentSelect.lastUpdateBy}}</strong> on
+          <strong>{{assessmentSelect.lastUpdateAt | date}}</strong>
+        </span>
+      </div>
+    </div>
+
+    <div *ngIf="!assessmentSelect" class="row no-assessment" (click)="createAssessment()">
+      <div class="col">
+        <app-no-results messagePrimary="No assessment found" messageSecondary="Click to start a new assessment"></app-no-results>
+      </div>
+    </div>
+
+  </div>
+</div>

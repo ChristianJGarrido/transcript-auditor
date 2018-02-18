@@ -5,12 +5,14 @@ import { AfLoginReducer } from './shared/store/af-login/af-login.reducer';
 import { ApiLoginReducer } from './shared/store/api-login/api-login.reducer';
 import { ApiDataReducer } from './shared/store/api-data/api-data.reducer';
 import { AssessmentReducer } from './shared/store/assessment/assessment.reducer';
+import { PlaylistReducer } from './shared/store/playlist/playlist.reducer';
 
 // models
 import { AfLoginModel } from './shared/store/af-login/af-login.model';
 import { ApiLoginModel } from './shared/store/api-login/api-login.model';
 import { ApiDataModel } from './shared/store/api-data/api-data.model';
 import { AssessmentModel } from './shared/store/assessment/assessment.model';
+import { PlaylistModel } from './shared/store/playlist/playlist.model';
 
 /**
  * combineReducers is another useful metareducer that takes a map of reducer
@@ -40,6 +42,7 @@ export interface StoreModel {
   apiLogin: ApiLoginModel;
   apiData: ApiDataModel;
   assessment: AssessmentModel;
+  playlist: PlaylistModel;
 }
 
 // store reducers
@@ -48,6 +51,7 @@ export const reducers: ActionReducerMap<any> = {
   apiLogin: ApiLoginReducer,
   apiData: ApiDataReducer,
   assessment: AssessmentReducer,
+  playlist: PlaylistReducer,
 };
 
 // declare metaReducers

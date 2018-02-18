@@ -1,23 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { switchMap, mergeMap, map, withLatestFrom, catchError } from 'rxjs/operators';
+import {
+  switchMap,
+  mergeMap,
+  map,
+  withLatestFrom,
+  catchError,
+  debounceTime,
+  distinctUntilChanged,
+} from 'rxjs/operators';
 import { Action, Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
-
+import { FirestoreService } from '../../services/firestore.service';
 import { StoreModel } from '../../../app.store';
 import { Assessment, AssessmentModel } from './assessment.model';
 import * as assessmentActions from './assessment.actions';
-
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-  AngularFirestoreDocument,
-} from 'angularfire2/firestore';
-import { AngularFireAuth } from 'angularfire2/auth';
+import * as fromAssessment from './assessment.reducer';
 
 @Injectable()
 export class AssessmentEffects {
-
   // query collection
   @Effect()
   query$: Observable<Action> = this.actions$
@@ -25,16 +26,30 @@ export class AssessmentEffects {
     .pipe(
       withLatestFrom(this.store.select(state => state.apiLogin)),
       switchMap(([action, apiLogin]) => {
-        const ref = this.getAssessments(apiLogin.account);
-        return ref.snapshotChanges().map(arr => {
-          return arr.map(doc => {
-            const data = doc.payload.doc.data();
-            return { id: doc.payload.doc.id, ...data } as AssessmentModel;
-          });
-        });
+        const ref = this.afService.getAssessments(apiLogin.account);
+        return ref.valueChanges();
       }),
-      map(assessments => new assessmentActions.AddAll(assessments)),
-      catchError(err => [new assessmentActions.Error(err)]),
+      map(data => new assessmentActions.AddAll(data)),
+      catchError(err => [new assessmentActions.Error(err)])
+    );
+
+  // select after add
+  @Effect({dispatch: false})
+  select$: Observable<Action> = this.actions$
+    .ofType(assessmentActions.ADD_ALL)
+    .pipe(
+      withLatestFrom(
+        this.store.select(fromAssessment.selectAssessment),
+        this.store.select(fromAssessment.selectIds)
+      ),
+      map(([action, data, ids]) => {
+        if (!data) {
+          const index = 0;
+          const id = ids[index];
+          this.store.dispatch(new assessmentActions.Select(id));
+        }
+        return null;
+      })
     );
 
   // create
@@ -47,15 +62,20 @@ export class AssessmentEffects {
         this.store.select(state => state.apiLogin),
         this.store.select(state => state.afLogin)
       ),
-      switchMap(([action, apiLogin, afLogin]) => {
-        const assessment = {
-          ...new Assessment(afLogin.email, this.createUUID()),
+      switchMap(async ([action, apiLogin, afLogin]) => {
+        const uuid = this.afService.createUUID();
+        const data = {
+          ...new Assessment(uuid, afLogin.email, afLogin.email, '123'),
         };
-        const ref = this.getAssessment(apiLogin.account, assessment.id);
-        return Observable.fromPromise(ref.set(assessment));
+        const ref = this.afService.getDocument(
+          apiLogin.account,
+          'assessments',
+          data.id
+        );
+        await ref.set(data);
+        return new assessmentActions.Select(uuid);
       }),
-      map(() => new assessmentActions.Success()),
-      catchError(err => [new assessmentActions.Error(err)]),
+      catchError(err => [new assessmentActions.Error(err)])
     );
 
   // update
@@ -64,13 +84,23 @@ export class AssessmentEffects {
     .ofType(assessmentActions.UPDATE)
     .pipe(
       map((action: assessmentActions.Update) => action),
-      withLatestFrom(this.store.select(state => state.apiLogin)),
-      switchMap(([assessment, apiLogin]) => {
-        const ref = this.getAssessment(apiLogin.account, assessment.id);
-        return Observable.fromPromise(ref.update(assessment.changes));
+      withLatestFrom(this.store.select(state => state.apiLogin), this.store.select(state => state.afLogin)),
+      debounceTime(1000),
+      distinctUntilChanged(),
+      switchMap(([data, apiLogin, afLogin]) => {
+        const ref = this.afService.getDocument(
+          apiLogin.account,
+          'assessments',
+          data.id
+        );
+        return Observable.fromPromise(ref.update({
+          lastUpdateBy: afLogin.email,
+          lastUpdateAt: new Date(),
+          ...data.changes
+        }));
       }),
       map(() => new assessmentActions.Success()),
-      catchError(err => [new assessmentActions.Error(err)]),
+      catchError(err => [new assessmentActions.Error(err)])
     );
 
   // delete
@@ -81,47 +111,20 @@ export class AssessmentEffects {
       map((action: assessmentActions.Delete) => action.id),
       withLatestFrom(this.store.select(state => state.apiLogin)),
       switchMap(([id, apiLogin]) => {
-        const ref = this.getAssessment(apiLogin.account, id);
+        const ref = this.afService.getDocument(
+          apiLogin.account,
+          'assessments',
+          id
+        );
         return Observable.fromPromise(ref.delete());
       }),
       map(() => new assessmentActions.Success()),
-      catchError(err => [new assessmentActions.Error(err)]),
+      catchError(err => [new assessmentActions.Error(err)])
     );
 
   constructor(
     private store: Store<StoreModel>,
     private actions$: Actions,
-    private afAuth: AngularFireAuth,
-    private afStore: AngularFirestore
+    private afService: FirestoreService
   ) {}
-
-  /**
-   * returns assessment collection
-   * @param {string} account
-   */
-  getAssessments(account: string): AngularFirestoreCollection<{}> {
-    return this.afStore
-      .doc(`accounts/${account}`)
-      .collection<AssessmentModel>('assessments');
-  }
-
-  /**
-   * returns assessment document
-   * @param {string} account
-   * @param {string} id
-   */
-  getAssessment(account: string, id: string): AngularFirestoreDocument<{}> {
-    return this.getAssessments(account).doc(id);
-  }
-
-  /* tslint:disable:no-bitwise */
-  createUUID() {
-    let dt = new Date().getUTCMilliseconds();
-    const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
-      const r = ((dt + Math.random() * 16) % 16) | 0;
-      dt = Math.floor(dt / 16);
-      return (c === 'x' ? r : (r & 0x3) | 0x8).toString(16);
-    });
-    return uuid;
-  }
 }

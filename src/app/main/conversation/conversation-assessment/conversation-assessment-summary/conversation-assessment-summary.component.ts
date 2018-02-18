@@ -24,7 +24,7 @@ import { AssessmentModel } from '../../../../shared/store/assessment/assessment.
 })
 export class ConversationAssessmentSummaryComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
-  @Input() assessments: AssessmentModel[];
+  @Input() assessmentSelect: AssessmentModel;
 
   dialogRef: MatDialogRef<ConversationAssessmentSummarySliderComponent>;
 
@@ -38,6 +38,10 @@ export class ConversationAssessmentSummaryComponent implements OnInit, OnChanges
       maxWidth: 400,
       position: { top: '15%', right: '15%' },
       hasBackdrop: true,
+      data: {
+        id: this.assessmentSelect.id,
+        personality: this.assessmentSelect.personality,
+      },
     });
   }
 

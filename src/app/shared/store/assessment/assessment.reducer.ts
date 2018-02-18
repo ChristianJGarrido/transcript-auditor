@@ -21,7 +21,9 @@ export function AssessmentReducer(
 ) {
   switch (action.type) {
     case actions.ADD_ALL:
-      return assessmentAdapter.addAll(action.assessments, state);
+      return assessmentAdapter.addAll(action.data, state);
+    case actions.SELECT:
+      return {...state, selectedAssessmentId: action.id };
     default:
       return state;
   }

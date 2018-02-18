@@ -1,57 +1,26 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import * as AssessmentActions from '../../../../../shared/store/assessment/assessment.actions';
+import { Store } from '@ngrx/store';
+import { StoreModel } from '../../../../../app.store';
 
 @Component({
   selector: 'app-conversation-assessment-summary-notes',
   templateUrl: './conversation-assessment-summary-notes.component.html',
   styleUrls: ['./conversation-assessment-summary-notes.component.css']
 })
-export class ConversationAssessmentSummaryNotesComponent implements OnInit, OnDestroy {
+export class ConversationAssessmentSummaryNotesComponent implements OnInit {
   @Input() id: string;
+  @Input() note: string;
 
-  note = '';
-
-  note$: Subject<string> = new Subject();
-  noteSub: Subscription;
-
-  constructor() {}
+  constructor(private store: Store<StoreModel>) {}
 
   /**
-   * Updates the conversations note
+   * Updates the assessment note
    * @param {string} note
    */
-  changeNote(note: string) {
-    // this.afDataService.toggleSave('saving');
-    this.note$.next(note);
+  updateNote(note: string): void {
+    this.store.dispatch(new AssessmentActions.Update(this.id, { note }));
   }
 
-  /**
-   * Method to apply debounce listener to note input
-   */
-  debounceInput() {
-    this.noteSub = this.note$
-      .pipe(
-        debounceTime(500),
-        distinctUntilChanged(),
-        switchMap((data: string) => {
-          return Observable.of(
-            // this.afDataService.updateConversation(this.id, {
-            //   note: data
-            // })
-          );
-        })
-      )
-      .subscribe();
-  }
-
-  ngOnInit() {
-    this.debounceInput();
-  }
-
-  ngOnDestroy() {
-    this.noteSub.unsubscribe();
-  }
+  ngOnInit() {}
 }

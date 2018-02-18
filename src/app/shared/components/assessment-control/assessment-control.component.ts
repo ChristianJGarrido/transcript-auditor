@@ -11,16 +11,21 @@ import { AssessmentModel } from '../../store/assessment/assessment.model';
 })
 export class AssessmentControlComponent implements OnInit {
   @HostBinding('class') class = 'col-auto';
-  @Input() assessment: AssessmentModel;
+  @Input() assessmentSelect: AssessmentModel;
 
   constructor(private store: Store<StoreModel>) { }
 
+  // creates a new assessment
   createAssessment(): void {
     this.store.dispatch(new AssessmentActions.Create());
   }
 
-  deleteAssessment(id: string): void {
-    this.store.dispatch(new AssessmentActions.Delete(id));
+  // deletes the current assessment
+  deleteAssessment(): void {
+    const id = this.assessmentSelect && this.assessmentSelect.id;
+    if (id) {
+      this.store.dispatch(new AssessmentActions.Delete(id));
+    }
   }
 
   ngOnInit() {

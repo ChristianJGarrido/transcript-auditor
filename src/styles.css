@@ -2,15 +2,23 @@
 @import './styles/ngx-datatable.css';
 @import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
 
-/* hovers */
+/* font-awesome */
+.fa-chevron-left,
+.fa-chevron-right,
+.fa-download,
+.fa-plus-circle,
+.fa-minus-circle,
+.fa-times {
+  color: #b6b6b6;
+  cursor: pointer;
+}
 .fa-chevron-left:hover,
 .fa-chevron-right:hover,
 .fa-download:hover,
 .fa-plus-circle:hover,
 .fa-minus-circle:hover,
 .fa-times:hover {
-  color: #b6b6b6;
-  cursor: pointer;
+  color: black;
 }
 
 /* sprites */
