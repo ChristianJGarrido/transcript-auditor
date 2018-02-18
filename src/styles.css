@@ -44,24 +44,31 @@
 
 /* bootstrap overrided */
 .card {
-  border: 0px solid rgba(0, 0, 0, 0.0);
+  border: 0px solid rgba(0, 0, 0, 0);
 }
 .card,
 .card-title,
 .card-subtitle,
 .navbar,
 .font-primary,
-.font-secondary, .font-by {
+.font-secondary,
+.font-by,
+.font-tertiary {
   font-family: MyriadPro, 'sans-serif';
 }
 .font-primary,
 .font-secondary {
   font-size: 1rem;
 }
+.font-tertiary {
+  font-size: 0.8rem;
+}
 .font-primary {
   color: black;
 }
-.font-secondary, .font-by {
+.font-secondary,
+.font-tertiary,
+.font-by {
   color: #9c9c9c;
 }
 .font-by {
@@ -96,7 +103,7 @@
 
 /* material */
 .mat-dialog-container {
-  padding: 12px!important;
+  padding: 12px !important;
 }
 
 /*

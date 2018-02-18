@@ -1,0 +1,6 @@
+.row-header {
+  border-bottom: 1px solid rgb(184, 184, 184);
+}
+.row-content {
+  border-bottom: 0.4px solid rgb(228, 228, 228);
+}

@@ -15,19 +15,19 @@
       </div>
     </div>
     <div *ngIf="assessmentSelect" class="row pt-1">
-      <div class="col text-secondary">
+      <div class="col font-tertiary">
         <span>Conversation ID:
           <strong>{{assessmentSelect.conversationId}}</strong>
         </span>
         <br>
         <span>Created by:
           <strong>{{assessmentSelect.createdBy}}</strong> on
-          <strong>{{assessmentSelect.createdAt | date}}</strong>
+          <strong>{{assessmentSelect.createdAt | date:'medium'}}</strong>
         </span>
         <br>
         <span>Last update by:
           <strong>{{assessmentSelect.lastUpdateBy}}</strong> on
-          <strong>{{assessmentSelect.lastUpdateAt | date}}</strong>
+          <strong>{{assessmentSelect.lastUpdateAt | date:'medium'}}</strong>
         </span>
       </div>
     </div>
