@@ -18,6 +18,7 @@ export class ConversationAssessmentComponent implements OnInit {
   @HostBinding('class') class = 'col-12';
   @Input() assessments: AssessmentModel[];
   @Input() assessmentSelect: AssessmentModel;
+  @Input() loading: boolean;
 
   constructor(private store: Store<StoreModel>) {}
 

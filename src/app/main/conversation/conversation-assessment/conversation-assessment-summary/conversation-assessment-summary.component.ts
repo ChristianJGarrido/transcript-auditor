@@ -26,6 +26,7 @@ export class ConversationAssessmentSummaryComponent
   implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
   @Input() assessmentSelect: AssessmentModel;
+  @Input() loading: boolean;
 
   dialogRef: MatDialogRef<ConversationAssessmentSummarySliderComponent>;
 

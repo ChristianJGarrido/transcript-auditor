@@ -13,6 +13,7 @@ export class ConversationAssessmentControlComponent implements OnInit {
     child: AssessmentControlComponent;
   @Input() assessments: AssessmentModel[];
   @Input() assessmentSelect: AssessmentModel;
+  @Input() loading: boolean;
 
   constructor() { }
 

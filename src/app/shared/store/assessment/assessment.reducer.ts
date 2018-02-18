@@ -20,10 +20,15 @@ export function AssessmentReducer(
   action: actions.AssessmentActions
 ) {
   switch (action.type) {
+    case actions.CREATE:
+    case actions.DELETE:
+      return { ...state, loading: true };
+    case actions.SUCCESS:
+      return { ...state, loading: false };
     case actions.ADD_ALL:
       return assessmentAdapter.addAll(action.data, state);
     case actions.SELECT:
-      return {...state, selectedAssessmentId: action.id };
+      return { ...state, selectedAssessmentId: action.id, loading: false };
     default:
       return state;
   }
@@ -39,11 +44,15 @@ export const {
 } = assessmentAdapter.getSelectors(getAssessmentState);
 
 // Create custom selectors
-const getSelectedAssessmentId = (state: State) =>
-  state.selectedAssessmentId;
+const getSelectedAssessmentId = (state: State) => state.selectedAssessmentId;
+const getLoading = (state: State) => state.loading;
 export const selectAssessmentId = createSelector(
   getAssessmentState,
   getSelectedAssessmentId
+);
+export const selectLoading = createSelector(
+  getAssessmentState,
+  getLoading
 );
 export const selectAssessment = createSelector(
   selectEntities,

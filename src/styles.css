@@ -42,6 +42,11 @@
   display: inline-block;
 }
 
+/* loading */
+.card.loading-opacity {
+  opacity: 0.5;
+}
+
 /* bootstrap overrided */
 .card {
   border: 0px solid rgba(0, 0, 0, 0);

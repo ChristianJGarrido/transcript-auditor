@@ -24,6 +24,7 @@ export class ConversationComponent implements OnInit {
 
   assessments$: Observable<AssessmentModel[]>;
   assessmentSelect$: Observable<AssessmentModel>;
+  assessmentsLoading$: Observable<boolean>;
 
   playlists$: Observable<PlaylistModel[]>;
   playlistSelect$: Observable<PlaylistModel>;
@@ -37,6 +38,7 @@ export class ConversationComponent implements OnInit {
 
     this.assessments$ = this.store.select(fromAssessment.selectAll);
     this.assessmentSelect$ = this.store.select(fromAssessment.selectAssessment);
+    this.assessmentsLoading$ = this.store.select(fromAssessment.selectLoading);
 
     this.playlists$ = this.store.select(fromPlaylist.selectAll);
     this.playlistSelect$ = this.store.select(fromPlaylist.selectPlaylist);

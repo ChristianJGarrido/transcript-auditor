@@ -34,7 +34,7 @@ export class AssessmentEffects {
     );
 
   // select after add
-  @Effect({dispatch: false})
+  @Effect({ dispatch: false })
   select$: Observable<Action> = this.actions$
     .ofType(assessmentActions.ADD_ALL)
     .pipe(
@@ -84,7 +84,10 @@ export class AssessmentEffects {
     .ofType(assessmentActions.UPDATE)
     .pipe(
       map((action: assessmentActions.Update) => action),
-      withLatestFrom(this.store.select(state => state.apiLogin), this.store.select(state => state.afLogin)),
+      withLatestFrom(
+        this.store.select(state => state.apiLogin),
+        this.store.select(state => state.afLogin)
+      ),
       debounceTime(1000),
       distinctUntilChanged(),
       switchMap(([data, apiLogin, afLogin]) => {
@@ -93,11 +96,13 @@ export class AssessmentEffects {
           'assessments',
           data.id
         );
-        return Observable.fromPromise(ref.update({
-          lastUpdateBy: afLogin.email,
-          lastUpdateAt: new Date(),
-          ...data.changes
-        }));
+        return Observable.fromPromise(
+          ref.update({
+            lastUpdateBy: afLogin.email,
+            lastUpdateAt: new Date(),
+            ...data.changes,
+          })
+        );
       }),
       map(() => new assessmentActions.Success()),
       catchError(err => [new assessmentActions.Error(err)])
