@@ -22,7 +22,8 @@ import { AssessmentModel } from '../../../../shared/store/assessment/assessment.
   templateUrl: './conversation-assessment-summary.component.html',
   styleUrls: ['./conversation-assessment-summary.component.css'],
 })
-export class ConversationAssessmentSummaryComponent implements OnInit, OnChanges {
+export class ConversationAssessmentSummaryComponent
+  implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
   @Input() assessmentSelect: AssessmentModel;
 
@@ -34,20 +35,37 @@ export class ConversationAssessmentSummaryComponent implements OnInit, OnChanges
    * Opens the material dialog modal
    */
   openDialog(): void {
-    this.dialogRef = this.dialog.open(ConversationAssessmentSummarySliderComponent, {
-      maxWidth: 400,
-      position: { top: '15%', right: '15%' },
-      hasBackdrop: true,
-      data: {
-        id: this.assessmentSelect.id,
-        personality: this.assessmentSelect.personality,
-      },
-    });
+    this.dialogRef = this.dialog.open(
+      ConversationAssessmentSummarySliderComponent,
+      {
+        maxWidth: 400,
+        position: { top: '15%', right: '15%' },
+        hasBackdrop: true,
+        data: {
+          id: this.assessmentSelect.id,
+          personality: this.assessmentSelect.personality,
+        },
+      }
+    );
   }
 
-  ngOnInit() {
+  /**
+   * Calculates the weighted personality score
+   * @return {string}
+   */
+  calculatePersonality(): string {
+    const descriptors = this.assessmentSelect.personality;
+    const score =
+      (descriptors &&
+        descriptors.reduce((prev, curr) => {
+          return prev + curr.score;
+        }, 0)) ||
+      0;
+    const personality = Math.round(score / descriptors.length * 100) / 100;
+    return personality > 0 ? `+${personality}` : `${personality}`;
   }
 
-  ngOnChanges() {
-  }
+  ngOnInit() {}
+
+  ngOnChanges() {}
 }

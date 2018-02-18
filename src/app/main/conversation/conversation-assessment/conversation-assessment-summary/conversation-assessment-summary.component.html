@@ -7,7 +7,7 @@
       <div class="col-3">
         <div class="row no-gutters">
           <app-conversation-assessment-summary-stars [id]="assessmentSelect.id" [rating]="assessmentSelect.rating"></app-conversation-assessment-summary-stars>
-          <button class="btn btn-outline-secondary btn-sm col mt-2" (click)="openDialog()">Personality</button>
+          <button class="btn btn-outline-secondary btn-sm col mt-2" (click)="openDialog()">Personality {{calculatePersonality()}}</button>
           <!-- <app-conversation-assessment-summary-save></app-conversation-assessment-summary-save> -->
         </div>
       </div>
