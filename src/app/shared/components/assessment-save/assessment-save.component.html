@@ -1,0 +1,8 @@
+<div *ngIf="updating !== null" class="row mt-2">
+  <div [ngSwitch]="updating" class="font-secondary col">
+    <span *ngSwitchCase="false">
+      <i style="color: green" class="far fa-check" aria-hidden="true"></i> Saved</span>
+    <span *ngSwitchCase="true">
+      <i class="far fa-sync-alt fa-spin" aria-hidden="true"></i> saving</span>
+  </div>
+</div>

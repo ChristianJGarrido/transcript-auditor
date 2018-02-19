@@ -1,9 +1,9 @@
 <div class="row">
-  <app-conversation-assessment-control [loading]="loading" [assessmentSelect]="assessmentSelect" [assessments]="assessments"></app-conversation-assessment-control>
+  <app-conversation-assessment-control [assessmentState]="assessmentState" [assessmentSelect]="assessmentSelect" [assessments]="assessments"></app-conversation-assessment-control>
 </div>
 <div *ngIf="assessmentSelect" class="row mt-2">
-  <app-conversation-assessment-summary [loading]="loading" [assessmentSelect]="assessmentSelect"></app-conversation-assessment-summary>
+  <app-conversation-assessment-summary [assessmentState]="assessmentState" [assessmentSelect]="assessmentSelect"></app-conversation-assessment-summary>
 </div>
 <div *ngIf="assessmentSelect" class="row mt-2">
-  <app-conversation-assessment-qa [loading]="loading" [assessmentSelect]="assessmentSelect"></app-conversation-assessment-qa>
+  <app-conversation-assessment-qa [assessmentState]="assessmentState" [assessmentSelect]="assessmentSelect"></app-conversation-assessment-qa>
 </div>

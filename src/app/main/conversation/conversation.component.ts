@@ -22,10 +22,11 @@ export class ConversationComponent implements OnInit {
   apiLogin$: Observable<ApiLoginModel>;
   apiData$: Observable<ApiDataModel>;
 
+  assessmentState$: Observable<fromAssessment.State>;
   assessments$: Observable<AssessmentModel[]>;
   assessmentSelect$: Observable<AssessmentModel>;
-  assessmentsLoading$: Observable<boolean>;
 
+  playlistState$: Observable<fromPlaylist.State>;
   playlists$: Observable<PlaylistModel[]>;
   playlistSelect$: Observable<PlaylistModel>;
 
@@ -36,10 +37,13 @@ export class ConversationComponent implements OnInit {
     this.apiLogin$ = this.store.select(state => state.apiLogin);
     this.apiData$ = this.store.select(state => state.apiData);
 
+    this.assessmentState$ = this.store.select(
+      fromAssessment.getAssessmentState
+    );
     this.assessments$ = this.store.select(fromAssessment.selectAll);
     this.assessmentSelect$ = this.store.select(fromAssessment.selectAssessment);
-    this.assessmentsLoading$ = this.store.select(fromAssessment.selectLoading);
 
+    this.playlistState$ = this.store.select(fromPlaylist.getPlaylistState);
     this.playlists$ = this.store.select(fromPlaylist.selectAll);
     this.playlistSelect$ = this.store.select(fromPlaylist.selectPlaylist);
   }

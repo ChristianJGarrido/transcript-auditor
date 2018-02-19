@@ -8,8 +8,8 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
-import * as AfDataActions from '../../../../shared/store/af-data/af-data.actions';
 import * as AssessmentActions from '../../../../shared/store/assessment/assessment.actions';
+import * as fromAssessment from '../../../../shared/store/assessment/assessment.reducer';
 import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { ConversationAssessmentSummarySliderComponent } from './conversation-assessment-summary-slider/conversation-assessment-summary-slider.component';
 import { Store } from '@ngrx/store';
@@ -25,8 +25,8 @@ import { AssessmentModel } from '../../../../shared/store/assessment/assessment.
 export class ConversationAssessmentSummaryComponent
   implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
+  @Input() assessmentState: fromAssessment.State;
   @Input() assessmentSelect: AssessmentModel;
-  @Input() loading: boolean;
 
   dialogRef: MatDialogRef<ConversationAssessmentSummarySliderComponent>;
 

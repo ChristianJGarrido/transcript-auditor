@@ -1,5 +1,6 @@
 import { Component, OnInit, HostBinding, Input } from '@angular/core';
 import { AssessmentModel } from '../../../../shared/store/assessment/assessment.model';
+import * as fromAssessment from '../../../../shared/store/assessment/assessment.reducer';
 
 @Component({
   selector: 'app-conversation-assessment-qa',
@@ -8,8 +9,8 @@ import { AssessmentModel } from '../../../../shared/store/assessment/assessment.
 })
 export class ConversationAssessmentQaComponent implements OnInit {
   @HostBinding('class') class = 'col-12';
+  @Input() assessmentState: fromAssessment.State;
   @Input() assessmentSelect: AssessmentModel;
-  @Input() loading: boolean;
 
   constructor() { }
 

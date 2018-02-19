@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
 import { AssessmentModel } from '../../../shared/store/assessment/assessment.model';
 import * as AssessmentActions from '../../../shared/store/assessment/assessment.actions';
+import * as fromAssessment from '../../../shared/store/assessment/assessment.reducer';
 
 @Component({
   selector: 'app-conversation-assessment',
@@ -16,9 +17,9 @@ import * as AssessmentActions from '../../../shared/store/assessment/assessment.
 })
 export class ConversationAssessmentComponent implements OnInit {
   @HostBinding('class') class = 'col-12';
+  @Input() assessmentState: fromAssessment.State;
   @Input() assessments: AssessmentModel[];
   @Input() assessmentSelect: AssessmentModel;
-  @Input() loading: boolean;
 
   constructor(private store: Store<StoreModel>) {}
 

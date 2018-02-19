@@ -21,6 +21,7 @@ import { NoResultsComponent } from './shared/components/no-results/no-results.co
 import { MessageByComponent } from './shared/components/message-by/message-by.component';
 import { CycleItemsComponent } from './shared/components/cycle-items/cycle-items.component';
 import { AssessmentControlComponent } from './shared/components/assessment-control/assessment-control.component';
+import { AssessmentSaveComponent } from './shared/components/assessment-save/assessment-save.component';
 
 // assessments
 import { AssessmentsComponent } from './main/assessments/assessments.component';
@@ -40,7 +41,6 @@ import { ConversationChartComponent } from './main/conversation/conversation-cha
 import { ConversationAssessmentComponent } from './main/conversation/conversation-assessment/conversation-assessment.component';
 import { ConversationAssessmentQaComponent } from './main/conversation/conversation-assessment/conversation-assessment-qa/conversation-assessment-qa.component';
 import { ConversationAssessmentSummaryComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary.component';
-import { ConversationAssessmentSummarySaveComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-save/conversation-assessment-summary-save.component';
 import { ConversationAssessmentSummaryNotesComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-notes/conversation-assessment-summary-notes.component';
 import { ConversationAssessmentSummarySelectComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-select/conversation-assessment-summary-select.component';
 import { ConversationAssessmentSummaryStarsComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-stars/conversation-assessment-summary-stars.component';
@@ -111,10 +111,14 @@ import { ConversationAssessmentControlComponent } from './main/conversation/conv
     ConversationStatsComponent,
     ConversationStatsWidgetComponent,
     ConversationChartComponent,
+    ConversationAssessmentComponent,
+    ConversationAssessmentControlComponent,
+    ConversationAssessmentQaComponent,
     ConversationAssessmentSummaryComponent,
-    ConversationAssessmentSummarySaveComponent,
     ConversationAssessmentSummaryNotesComponent,
     ConversationAssessmentSummarySelectComponent,
+    ConversationAssessmentSummaryStarsComponent,
+    ConversationAssessmentSummarySliderComponent,
     NoResultsComponent,
     HeaderComponent,
     ConversationMessagesComponent,
@@ -125,15 +129,11 @@ import { ConversationAssessmentControlComponent } from './main/conversation/conv
     ConversationMessageInteractionComponent,
     MessageByComponent,
     NavComponent,
-    ConversationAssessmentQaComponent,
     AssessmentsComponent,
     AssessmentsGridComponent,
     CycleItemsComponent,
-    ConversationAssessmentSummaryStarsComponent,
-    ConversationAssessmentSummarySliderComponent,
-    ConversationAssessmentComponent,
     AssessmentControlComponent,
-    ConversationAssessmentControlComponent,
+    AssessmentSaveComponent,
   ],
   imports: [
     StarRatingModule.forRoot(),

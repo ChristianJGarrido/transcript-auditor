@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, HostBinding, ViewChild } from '@angular/core';
 import { AssessmentControlComponent } from '../../../../shared/components/assessment-control/assessment-control.component';
 import { AssessmentModel } from '../../../../shared/store/assessment/assessment.model';
+import * as fromAssessment from '../../../../shared/store/assessment/assessment.reducer';
 
 @Component({
   selector: 'app-conversation-assessment-control',
@@ -11,9 +12,9 @@ export class ConversationAssessmentControlComponent implements OnInit {
   @HostBinding('class') class = 'col-12';
   @ViewChild(AssessmentControlComponent)
     child: AssessmentControlComponent;
+  @Input() assessmentState: fromAssessment.State;
   @Input() assessments: AssessmentModel[];
   @Input() assessmentSelect: AssessmentModel;
-  @Input() loading: boolean;
 
   constructor() { }
 
