@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
 import { PlaylistModel } from './playlist.model';
 
-export const QUERY = '[Playlist] Query playlists';
-export const SELECT = '[Playlist] Select playlist';
+export const QUERY = '[Playlist] Query';
+export const SELECT = '[Playlist] Select';
 
 export const CREATE = '[Playlist] Create';
 export const UPDATE = '[Playlist] Update';
@@ -10,7 +10,7 @@ export const DELETE = '[Playlist] Delete';
 
 export const ADD_ALL = '[Playlist] Add all';
 export const SUCCESS = '[Playlist] Success';
-export const ERROR = '[Playlist] Firestore error';
+export const ERROR = '[Playlist] Error';
 
 export class Query implements Action {
   readonly type = QUERY;

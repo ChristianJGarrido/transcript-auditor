@@ -1,8 +1,8 @@
 import { Action } from '@ngrx/store';
 import { AssessmentModel } from './assessment.model';
 
-export const QUERY = '[Assessment] Query assessments';
-export const SELECT = '[Assessment] Select assessment';
+export const QUERY = '[Assessment] Query';
+export const SELECT = '[Assessment] Select';
 
 export const CREATE = '[Assessment] Create';
 export const UPDATE = '[Assessment] Update';
@@ -10,7 +10,7 @@ export const DELETE = '[Assessment] Delete';
 
 export const ADD_ALL = '[Assessment] Add all';
 export const SUCCESS = '[Assessment] Success';
-export const ERROR = '[Assessment] Firestore error';
+export const ERROR = '[Assessment] Error';
 
 export class Query implements Action {
   readonly type = QUERY;
