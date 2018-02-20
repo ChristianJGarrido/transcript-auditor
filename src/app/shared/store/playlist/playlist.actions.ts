@@ -9,7 +9,7 @@ export const UPDATE = '[Playlist] Update';
 export const DELETE = '[Playlist] Delete';
 
 export const ADD_ALL = '[Playlist] Add all';
-export const SUCCESS = '[Playlist] Successful firestore write';
+export const SUCCESS = '[Playlist] Success';
 export const ERROR = '[Playlist] Firestore error';
 
 export class Query implements Action {
@@ -17,7 +17,7 @@ export class Query implements Action {
 }
 export class Select implements Action {
   readonly type = SELECT;
-  constructor(public id: String | Number) {}
+  constructor(public id: string) {}
 }
 
 export class AddAll implements Action {
@@ -41,7 +41,10 @@ export class Delete implements Action {
 }
 export class Update implements Action {
   readonly type = UPDATE;
-  constructor(public id: string, public changes: Partial<PlaylistModel>) {}
+  constructor(
+    public id: string,
+    public changes: Partial<PlaylistModel>
+  ) {}
 }
 
 export type AssessmentActions =

@@ -3,25 +3,25 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { AssessmentModel } from './assessment.model';
 
-export const assessmentAdapter = createEntityAdapter<AssessmentModel>();
+export const adapter = createEntityAdapter<AssessmentModel>();
 export interface State extends EntityState<AssessmentModel> {
   loading: boolean;
   updating: boolean;
   error: boolean;
-  selectedAssessmentId: string;
+  selectedId: string;
 }
-export const initialState: State = assessmentAdapter.getInitialState({
+export const initialState: State = adapter.getInitialState({
   loading: false,
   updating: null,
   error: false,
-  selectedAssessmentId: null,
+  selectedId: null,
 });
 
 // Reducer
 export function AssessmentReducer(
   state: State = initialState,
   action: actions.AssessmentActions
-) {
+): State {
   switch (action.type) {
     case actions.CREATE:
     case actions.DELETE:
@@ -31,9 +31,9 @@ export function AssessmentReducer(
     case actions.SUCCESS:
       return { ...state, loading: false, updating: false, error: false };
     case actions.ADD_ALL:
-      return assessmentAdapter.addAll(action.data, state);
+      return adapter.addAll(action.data, state);
     case actions.SELECT:
-      return { ...state, selectedAssessmentId: action.id, loading: false };
+      return { ...state, selectedId: action.id.toString(), loading: false };
     case actions.ERROR:
       return { ...state, loading: false, updating: false, error: true };
     default:
@@ -42,22 +42,19 @@ export function AssessmentReducer(
 }
 
 // Create the default selectors
-export const getAssessmentState = createFeatureSelector<State>('assessment');
+export const getState = createFeatureSelector<State>('assessment');
 export const {
   selectIds,
   selectEntities,
   selectAll,
   selectTotal,
-} = assessmentAdapter.getSelectors(getAssessmentState);
+} = adapter.getSelectors(getState);
 
 // Create custom selectors
-const getSelectedAssessmentId = (state: State) => state.selectedAssessmentId;
-export const selectAssessmentId = createSelector(
-  getAssessmentState,
-  getSelectedAssessmentId
-);
+const getSelectedId = (state: State) => state.selectedId;
+export const selectId = createSelector(getState, getSelectedId);
 export const selectAssessment = createSelector(
   selectEntities,
-  selectAssessmentId,
-  (assessmentEntities, assessmentId) => assessmentEntities[assessmentId]
+  selectId,
+  (entities, id) => entities[id]
 );

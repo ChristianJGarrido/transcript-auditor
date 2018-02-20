@@ -46,7 +46,7 @@ export class AssessmentEffects {
         if (!data) {
           const index = 0;
           const id = ids[index];
-          this.store.dispatch(new assessmentActions.Select(id));
+          this.store.dispatch(new assessmentActions.Select(id.toString()));
         }
         return null;
       })

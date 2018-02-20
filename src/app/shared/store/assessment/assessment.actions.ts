@@ -17,7 +17,7 @@ export class Query implements Action {
 }
 export class Select implements Action {
   readonly type = SELECT;
-  constructor(public id: String | Number) {}
+  constructor(public id: string) {}
 }
 
 export class AddAll implements Action {
@@ -41,7 +41,10 @@ export class Delete implements Action {
 }
 export class Update implements Action {
   readonly type = UPDATE;
-  constructor(public id: string, public changes: Partial<AssessmentModel>) {}
+  constructor(
+    public id: string,
+    public changes: Partial<AssessmentModel>
+  ) {}
 }
 
 export type AssessmentActions =

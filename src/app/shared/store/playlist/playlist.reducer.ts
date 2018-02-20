@@ -3,23 +3,25 @@ import { EntityState, createEntityAdapter } from '@ngrx/entity';
 import { createSelector, createFeatureSelector } from '@ngrx/store';
 import { PlaylistModel } from './playlist.model';
 
-export const playlistAdapter = createEntityAdapter<PlaylistModel>();
+export const adapter = createEntityAdapter<PlaylistModel>();
 export interface State extends EntityState<PlaylistModel> {
   loading: boolean;
+  error: boolean;
   updating: boolean;
-  selectedPlaylistId: string;
+  selectedId: string;
 }
-export const initialState: State = playlistAdapter.getInitialState({
+export const initialState: State = adapter.getInitialState({
   loading: false,
+  error: false,
   updating: null,
-  selectedPlaylistId: null,
+  selectedId: null,
 });
 
 // Reducer
 export function PlaylistReducer(
   state: State = initialState,
   action: actions.AssessmentActions
-) {
+): State {
   switch (action.type) {
     case actions.CREATE:
     case actions.DELETE:
@@ -29,9 +31,9 @@ export function PlaylistReducer(
     case actions.SUCCESS:
       return { ...state, loading: false, updating: false, error: false };
     case actions.ADD_ALL:
-      return playlistAdapter.addAll(action.data, state);
+      return adapter.addAll(action.data, state);
     case actions.SELECT:
-      return { ...state, selectedPlaylistId: action.id, loading: false };
+      return { ...state, selectedId: action.id.toString(), loading: false };
     case actions.ERROR:
       return { ...state, loading: false, updating: false, error: true };
     default:
@@ -40,32 +42,19 @@ export function PlaylistReducer(
 }
 
 // Create the default selectors
-export const getPlaylistState = createFeatureSelector<State>('playlist');
+export const getState = createFeatureSelector<State>('playlist');
 export const {
   selectIds,
   selectEntities,
   selectAll,
   selectTotal,
-} = playlistAdapter.getSelectors(getPlaylistState);
+} = adapter.getSelectors(getState);
 
 // Create custom selectors
-const getSelectedPlaylistId = (state: State) => state.selectedPlaylistId;
-const getLoading = (state: State) => state.loading;
-const getUpdating = (state: State) => state.updating;
-export const selectPlaylistId = createSelector(
-  getPlaylistState,
-  getSelectedPlaylistId
-);
-export const selectLoading = createSelector(
-  getPlaylistState,
-  getLoading
-);
-export const selectUpdating = createSelector(
-  getPlaylistState,
-  getUpdating
-);
+const getSelectedId = (state: State) => state.selectedId;
+export const selectId = createSelector(getState, getSelectedId);
 export const selectPlaylist = createSelector(
   selectEntities,
-  selectPlaylistId,
-  (playlistEntities, playlistId) => playlistEntities[playlistId]
+  selectId,
+  (entities, id) => entities[id]
 );

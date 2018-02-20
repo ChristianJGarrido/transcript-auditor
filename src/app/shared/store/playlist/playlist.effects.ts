@@ -44,7 +44,7 @@ export class PlaylistEffects {
         if (!data) {
           const index = 0;
           const id = ids[index];
-          return new playlistActions.Select(id);
+          return new playlistActions.Select(id.toString());
         }
         return new playlistActions.Success();
       })
