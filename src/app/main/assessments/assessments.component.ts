@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AfLoginModel } from '../../shared/store/af-login/af-login.model';
-import { AfDataModel } from '../../shared/store/af-data/af-data.model';
 import { ApiLoginModel } from '../../shared/store/api-login/api-login.model';
 import { ApiDataModel } from '../../shared/store/api-data/api-data.model';
 import { Store } from '@ngrx/store';
