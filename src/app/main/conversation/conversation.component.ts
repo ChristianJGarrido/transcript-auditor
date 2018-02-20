@@ -37,13 +37,11 @@ export class ConversationComponent implements OnInit {
     this.apiLogin$ = this.store.select(state => state.apiLogin);
     this.apiData$ = this.store.select(state => state.apiData);
 
-    this.assessmentState$ = this.store.select(
-      fromAssessment.getAssessmentState
-    );
+    this.assessmentState$ = this.store.select(fromAssessment.getState);
     this.assessments$ = this.store.select(fromAssessment.selectAll);
     this.assessmentSelect$ = this.store.select(fromAssessment.selectAssessment);
 
-    this.playlistState$ = this.store.select(fromPlaylist.getPlaylistState);
+    this.playlistState$ = this.store.select(fromPlaylist.getState);
     this.playlists$ = this.store.select(fromPlaylist.selectAll);
     this.playlistSelect$ = this.store.select(fromPlaylist.selectPlaylist);
   }
