@@ -90,6 +90,7 @@ import { ApiLoginEffects } from './shared/store/api-login/api-login.effects';
 import { ApiDataEffects } from './shared/store/api-data/api-data.effects';
 import { AssessmentEffects } from './shared/store/assessment/assessment.effects';
 import { PlaylistEffects } from './shared/store/playlist/playlist.effects';
+import { ConversationEffects } from './shared/store/conversation/conversation.effects';
 
 // 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -166,6 +167,7 @@ import { ConversationAssessmentControlComponent } from './main/conversation/conv
       AfLoginEffects,
       ApiLoginEffects,
       ApiDataEffects,
+      ConversationEffects,
     ]),
   ],
   providers: [
