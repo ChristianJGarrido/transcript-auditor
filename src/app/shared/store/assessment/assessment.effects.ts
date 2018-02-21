@@ -39,14 +39,14 @@ export class AssessmentEffects {
     .ofType(assessmentActions.ADD_ALL)
     .pipe(
       withLatestFrom(
-        this.store.select(fromAssessment.selectAssessment),
+        this.store.select(fromAssessment.selectOne),
         this.store.select(fromAssessment.selectIds)
       ),
       map(([action, data, ids]) => {
-        if (!data) {
+        if (!data && ids.length) {
           const index = 0;
           const id = ids[index];
-          this.store.dispatch(new assessmentActions.Select(id.toString()));
+          this.store.dispatch(new assessmentActions.Select(id && id.toString()));
         }
         return null;
       })

@@ -37,14 +37,14 @@ export class PlaylistEffects {
     .ofType(playlistActions.ADD_ALL)
     .pipe(
       withLatestFrom(
-        this.store.select(fromPlaylist.selectPlaylist),
+        this.store.select(fromPlaylist.selectOne),
         this.store.select(fromPlaylist.selectIds)
       ),
       map(([action, data, ids]) => {
-        if (!data) {
+        if (!data && ids.length) {
           const index = 0;
           const id = ids[index];
-          return new playlistActions.Select(id.toString());
+          return new playlistActions.Select(id && id.toString());
         }
         return new playlistActions.Success();
       })
