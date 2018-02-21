@@ -12,9 +12,9 @@ import {
 
 import { ApiLoginModel } from '../api-login/api-login.model';
 import * as ApiLoginActions from '../api-login/api-login.actions';
-import * as ApiDataActions from '../api-data/api-data.actions';
 import * as AssessmentActions from '../assessment/assessment.actions';
 import * as PlaylistActions from '../playlist/playlist.actions';
+import * as ConversationActions from '../conversation/conversation.actions';
 
 @Injectable()
 export class ApiLoginEffects {
@@ -59,15 +59,16 @@ export class ApiLoginEffects {
           username: user.username,
           password: user.password,
         };
-        return this.http.post<any>(url, body, { headers }).pipe(
+        return this.http.post<any>(url, body, { headers, observe: 'response' }).pipe(
           map(response => {
-            if (response.bearer) {
+            console.log(response.headers);
+            if (response.body.bearer) {
               const session = {
                 domains,
-                bearer: response.bearer,
+                bearer: response.body.bearer,
                 username: user.username,
                 account: user.account,
-                isLPA: response.config.isLPA,
+                isLPA: response.body.config.isLPA,
               };
               return new ApiLoginActions.SaveSession(session);
             }
@@ -98,7 +99,7 @@ export class ApiLoginEffects {
   queryData$: Observable<any> = this.actions$
     .ofType<ApiLoginActions.Authenticated>(ApiLoginActions.AUTHENTICATED)
     .pipe(switchMap(action => [
-      new ApiDataActions.GetConversations(),
+      new ConversationActions.Query(),
       new AssessmentActions.Query(),
       new PlaylistActions.Query(),
     ]));

@@ -1,7 +1,6 @@
 import { Component, OnInit, OnChanges, ViewChild, Input, HostBinding } from '@angular/core';
-import { ApiConversationHistoryRecord } from '../../../shared/interfaces/interfaces';
+import { ConversationModel } from '../../../shared/store/conversation/conversation.model';
 
-// 3rd party
 import { BaseChartDirective } from 'ng2-charts/ng2-charts';
 import * as Chart from 'chart.js';
 
@@ -13,7 +12,7 @@ import * as Chart from 'chart.js';
 export class ConversationChartComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
   @ViewChild(BaseChartDirective) chart: BaseChartDirective;
-  @Input() apiConversation: ApiConversationHistoryRecord;
+  @Input() conversationSelect: ConversationModel;
 
   chartData: Chart.ChartDataSets[] = [{data: [0, 0, 0]}];
   chartLabels: string[] = ['1', '2', '3'];

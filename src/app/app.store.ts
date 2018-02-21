@@ -3,7 +3,6 @@ import { environment } from '../environments/environment';
 // reducers
 import { AfLoginReducer } from './shared/store/af-login/af-login.reducer';
 import { ApiLoginReducer } from './shared/store/api-login/api-login.reducer';
-import { ApiDataReducer } from './shared/store/api-data/api-data.reducer';
 import { AssessmentReducer } from './shared/store/assessment/assessment.reducer';
 import { PlaylistReducer } from './shared/store/playlist/playlist.reducer';
 import { ConversationReducer } from './shared/store/conversation/conversation.reducer';
@@ -11,7 +10,6 @@ import { ConversationReducer } from './shared/store/conversation/conversation.re
 // models
 import { AfLoginModel } from './shared/store/af-login/af-login.model';
 import { ApiLoginModel } from './shared/store/api-login/api-login.model';
-import { ApiDataModel } from './shared/store/api-data/api-data.model';
 import { AssessmentModel } from './shared/store/assessment/assessment.model';
 import { PlaylistModel } from './shared/store/playlist/playlist.model';
 import { ConversationModel } from './shared/store/conversation/conversation.model';
@@ -42,7 +40,6 @@ import { storeLogger } from 'ngrx-store-logger';
 export interface StoreModel {
   afLogin: AfLoginModel;
   apiLogin: ApiLoginModel;
-  apiData: ApiDataModel;
   assessment: AssessmentModel;
   playlist: PlaylistModel;
   conversation: ConversationModel;
@@ -52,7 +49,6 @@ export interface StoreModel {
 export const reducers: ActionReducerMap<any> = {
   afLogin: AfLoginReducer,
   apiLogin: ApiLoginReducer,
-  apiData: ApiDataReducer,
   assessment: AssessmentReducer,
   playlist: PlaylistReducer,
   conversation: ConversationReducer,

@@ -3,8 +3,8 @@ import { Observable } from 'rxjs/Observable';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../app.store';
 import * as ApiLoginActions from '../shared/store/api-login/api-login.actions';
-import { ApiDataModel } from '../shared/store/api-data/api-data.model';
-import { AfLoginModel } from '../shared/store/af-login/af-login.model';
+import * as fromConversation from '../shared/store/conversation/conversation.reducer';
+import { ConversationModel } from '../shared/store/conversation/conversation.model';
 import { ApiLoginModel } from '../shared/store/api-login/api-login.model';
 
 @Component({
@@ -13,17 +13,15 @@ import { ApiLoginModel } from '../shared/store/api-login/api-login.model';
   styleUrls: ['./main.component.css'],
 })
 export class MainComponent implements OnInit, AfterViewInit {
-  afLogin$: Observable<AfLoginModel>;
   apiLogin$: Observable<ApiLoginModel>;
-  apiData$: Observable<ApiDataModel>;
+  conversations$: Observable<ConversationModel[]>;
 
   constructor(private store: Store<StoreModel>) {}
 
   ngOnInit(): void {
     this.store.dispatch(new ApiLoginActions.GetSession());
-    this.afLogin$ = this.store.select(state => state.afLogin);
     this.apiLogin$ = this.store.select(state => state.apiLogin);
-    this.apiData$ = this.store.select(state => state.apiData);
+    this.conversations$ = this.store.select(fromConversation.selectAll);
   }
 
   ngAfterViewInit(): void {}

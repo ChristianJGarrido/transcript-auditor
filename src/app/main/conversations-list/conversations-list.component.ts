@@ -10,6 +10,7 @@ import {
 import { ApiConversationHistoryRecord, ApiOptions } from '../../shared/interfaces/interfaces';
 
 import { DatatableComponent } from '@swimlane/ngx-datatable';
+import { ConversationModel } from '../../shared/store/conversation/conversation.model';
 
 @Component({
   selector: 'app-conversations-list',
@@ -18,8 +19,8 @@ import { DatatableComponent } from '@swimlane/ngx-datatable';
 })
 export class ConversationsListComponent implements OnInit, OnChanges {
   @ViewChild('table') table: DatatableComponent;
-  @Input() apiConversations: ApiConversationHistoryRecord[] = [];
-  @Output() selectConversation = new EventEmitter<ApiConversationHistoryRecord>();
+  @Input() conversations: ConversationModel[] = [];
+  @Output() selectConversation = new EventEmitter<ConversationModel>();
 
   rows = [];
   columns = [];
@@ -31,14 +32,14 @@ export class ConversationsListComponent implements OnInit, OnChanges {
    * @param {any} event
    */
   clickDatatable(event: any): void {
-    if (event.type === 'click') {
-      const conversation = this.apiConversations.find(
-        record => record.info.conversationId === event.row.conversationId
-      );
-      if (conversation) {
-        this.selectConversation.emit(conversation);
-      }
-    }
+    // if (event.type === 'click') {
+    //   const conversation = this.apiConversations.find(
+    //     record => record.info.conversationId === event.row.conversationId
+    //   );
+    //   if (conversation) {
+    //     this.selectConversation.emit(conversation);
+    //   }
+    // }
   }
 
   ngOnInit() {
@@ -50,20 +51,6 @@ export class ConversationsListComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges() {
-    if (this.apiConversations) {
-      // update rows when conversations change
-      this.rows = this.apiConversations.map(conversation => {
-        const message =
-          conversation.messageRecords[0] &&
-          conversation.messageRecords[0].messageData &&
-          conversation.messageRecords[0].messageData.msg &&
-          conversation.messageRecords[0].messageData.msg.text;
-        return {
-          ...conversation.info,
-          startTime: conversation.info && conversation.info.startTime.substr(0, 10),
-          message: message || ''
-        };
-      });
-    }
+    this.rows = this.conversations.slice(0);
   }
 }

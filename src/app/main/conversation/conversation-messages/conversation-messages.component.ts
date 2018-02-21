@@ -27,7 +27,7 @@ import { WatsonService } from '../../../shared/services/watson.service';
 })
 export class ConversationMessagesComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
-  @Input() apiConversation: ApiConversationHistoryRecord;
+  @Input() conversationSelect: any;
 
   messageEvents: any[] = [];
 
@@ -78,21 +78,21 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
    */
   prepareMessageEvents(): any[] {
     // proceed only if we have data
-    if (!this.apiConversation || !this.apiConversation.messageRecords) {
+    if (!this.conversationSelect || !this.conversationSelect.messageRecords) {
       return [];
     }
 
     // combine all events
     const events = [
-      ...this.apiConversation.messageRecords.map(item => ({
+      ...this.conversationSelect.messageRecords.map(item => ({
         ...item,
         eventKey: 'MESSAGE'
       })),
-      ...this.apiConversation.agentParticipants.map(item => ({
+      ...this.conversationSelect.agentParticipants.map(item => ({
         ...item,
         eventKey: 'PARTICIPANT'
       })),
-      ...this.apiConversation.transfers.map(item => ({
+      ...this.conversationSelect.transfers.map(item => ({
         ...item,
         eventKey: 'TRANSFER'
       }))

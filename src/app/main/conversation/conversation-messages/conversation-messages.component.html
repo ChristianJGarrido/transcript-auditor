@@ -6,14 +6,14 @@
     </div>
 
     <!-- Conversation subtitle & download button -->
-    <span *ngIf="apiConversation">
-      <span class="card-subtitle mb-2 text-muted">ID: {{apiConversation?.info.conversationId}}
+    <span *ngIf="conversationSelect">
+      <span class="card-subtitle mb-2 text-muted">ID: {{conversationSelect?.info.conversationId}}
         <i class="far fa-download" aria-hidden="true" matTooltip="Export to CSV" (click)="downloadCsv()"></i>
       </span>
     </span>
 
     <!-- No conversation message -->
-    <app-no-results [results]="apiConversation" [messagePrimary]="'Select a conversation'"></app-no-results>
+    <app-no-results [results]="conversationSelect" [messagePrimary]="'Select a conversation'"></app-no-results>
 
     <!-- Message rows -->
     <div class="container-fluid p-0">

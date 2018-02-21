@@ -50,7 +50,7 @@ export const {
 // Create custom selectors
 const getSelectedId = (state: State) => state.selectedId;
 export const selectId = createSelector(getState, getSelectedId);
-export const selectConversation = createSelector(
+export const selectOne = createSelector(
   selectEntities,
   selectId,
   (entities, id) => entities[id]

@@ -2,10 +2,10 @@
   <div class="row no-gutters mt-2">
     <div class="col-12 col-md-5 pr-2">
       <div class="row no-gutters">
-        <app-conversation-stats [apiConversation]="(apiData$ | async).select"></app-conversation-stats>
+        <app-conversation-stats [conversationSelect]="(conversationSelect$ | async)"></app-conversation-stats>
       </div>
       <div class="row no-gutters pt-2">
-        <app-conversation-messages [apiConversation]="(apiData$ | async).select"></app-conversation-messages>
+        <app-conversation-messages [conversationSelect]="(conversationSelect$ | async)"></app-conversation-messages>
       </div>
     </div>
 

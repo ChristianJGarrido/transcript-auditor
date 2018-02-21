@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input, HostBinding } from '@angular/core';
-import { ApiConversationHistoryRecord } from '../../../shared/interfaces/interfaces';
+import { ConversationModel } from '../../../shared/store/conversation/conversation.model';
 
 import * as _ from 'lodash';
 
@@ -10,7 +10,7 @@ import * as _ from 'lodash';
 })
 export class ConversationStatsComponent implements OnChanges {
   @HostBinding('class') class = 'col-12';
-  @Input() apiConversation: ApiConversationHistoryRecord;
+  @Input() conversationSelect: any;
 
   metrics: {
     value: any;
@@ -24,26 +24,26 @@ export class ConversationStatsComponent implements OnChanges {
    * @return {number}
    */
   calculateResponseTimes(): number {
-    if (!this.apiConversation) {
+    if (!this.conversationSelect) {
       return 0;
     }
     let time = 0;
-    this.apiConversation.messageRecords.forEach((msg, idx, arr) => {
+    this.conversationSelect.messageRecords.forEach((msg, idx, arr) => {
         time += idx > 0 ? msg.timeL - arr[idx - 1].timeL : 0;
     });
-    return (time / this.apiConversation.messageRecords.length) / 1000 / 3600;
+    return (time / this.conversationSelect.messageRecords.length) / 1000 / 3600;
   }
 
   /**
    * Calculate first time to response
    */
   calculateFirstResponseTime(): number {
-    if (!this.apiConversation) {
+    if (!this.conversationSelect) {
       return 0;
     }
     let sentBy: string;
     let time: number;
-    for (const msg of this.apiConversation.messageRecords) {
+    for (const msg of this.conversationSelect.messageRecords) {
       if (!sentBy) {
         sentBy = msg.sentBy;
         time = msg.timeL;

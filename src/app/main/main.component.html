@@ -6,7 +6,7 @@
   <router-outlet></router-outlet>
 
   <mat-sidenav mode="push" position="start" #sideNavList>
-    <app-conversations-list [apiConversations]="(apiData$ | async).msgHist.conversationHistoryRecords"></app-conversations-list>
+    <app-conversations-list [conversations]="(conversations$ | async)"></app-conversations-list>
   </mat-sidenav>
 
 </mat-sidenav-container>
