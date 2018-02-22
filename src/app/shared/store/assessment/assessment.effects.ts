@@ -15,7 +15,9 @@ import { FirestoreService } from '../../services/firestore.service';
 import { StoreModel } from '../../../app.store';
 import { Assessment, AssessmentModel } from './assessment.model';
 import * as assessmentActions from './assessment.actions';
+import * as conversationActions from '../conversation/conversation.actions';
 import * as fromAssessment from './assessment.reducer';
+import * as fromConversation from '../conversation/conversation.reducer';
 
 @Injectable()
 export class AssessmentEffects {
@@ -34,21 +36,32 @@ export class AssessmentEffects {
     );
 
   // select after add
-  @Effect({ dispatch: false })
+  @Effect()
   select$: Observable<Action> = this.actions$
-    .ofType(assessmentActions.ADD_ALL)
+    .ofType(assessmentActions.ADD_ALL, conversationActions.SELECT)
     .pipe(
       withLatestFrom(
+        this.store.select(fromConversation.selectId),
         this.store.select(fromAssessment.selectOne),
-        this.store.select(fromAssessment.selectIds)
+        this.store.select(fromAssessment.selectAll)
       ),
-      map(([action, data, ids]) => {
-        if (!data && ids.length) {
-          const index = 0;
-          const id = ids[index];
-          this.store.dispatch(new assessmentActions.Select(id && id.toString()));
+      map(([action, conversationId, assessmentSelect, assessments]) => {
+        // filter by conversation id
+        if (conversationId) {
+          const filtered = assessments.filter(
+            item => item.conversationId === conversationId
+          );
+          // select assessment if none selected
+          if (!assessmentSelect && filtered.length) {
+            const index = 0;
+            const id = filtered[index].id;
+            this.store.dispatch(
+              new assessmentActions.Select(id && id.toString())
+            );
+          }
+          return new assessmentActions.Filter(filtered);
         }
-        return null;
+        return new assessmentActions.Filter([]);
       })
     );
 
@@ -60,12 +73,13 @@ export class AssessmentEffects {
       map((action: assessmentActions.Create) => action),
       withLatestFrom(
         this.store.select(state => state.apiLogin),
-        this.store.select(state => state.afLogin)
+        this.store.select(state => state.afLogin),
+        this.store.select(fromConversation.selectId)
       ),
-      switchMap(async ([action, apiLogin, afLogin]) => {
+      switchMap(async ([action, apiLogin, afLogin, conversationId]) => {
         const uuid = this.afService.createUUID();
         const data = {
-          ...new Assessment(uuid, afLogin.email, afLogin.email, '123'),
+          ...new Assessment(uuid, afLogin.email, afLogin.email, conversationId),
         };
         const ref = this.afService.getDocument(
           apiLogin.account,
