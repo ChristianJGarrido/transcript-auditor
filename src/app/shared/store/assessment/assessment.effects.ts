@@ -45,8 +45,9 @@ export class AssessmentEffects {
         this.store.select(fromAssessment.selectOne),
         this.store.select(fromAssessment.selectAll)
       ),
-      map(([action, conversationId, assessmentSelect, assessments]) => {
+      switchMap(([action, conversationId, assessmentSelect, assessments]) => {
         // filter by conversation id
+        let select = [];
         if (conversationId) {
           const filtered: string[] = assessments.reduce((prev, curr) => {
             if (curr.conversationId === conversationId) {
@@ -58,15 +59,13 @@ export class AssessmentEffects {
           if (!assessmentSelect && filtered.length) {
             const index = 0;
             const id = filtered[index];
-            this.store.dispatch(
-              new assessmentActions.Select(id && id.toString())
-            );
+            select = [new assessmentActions.Select(id && id.toString())];
           } else if (!filtered.length) {
-            this.store.dispatch(new assessmentActions.Select(''));
+            select = [new assessmentActions.Select('')];
           }
-          return new assessmentActions.Filter(filtered);
+          return [new assessmentActions.Filter(filtered), ...select];
         }
-        return new assessmentActions.Filter([]);
+        return [new assessmentActions.Filter([]), ...select];
       })
     );
 
