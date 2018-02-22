@@ -56,9 +56,16 @@ export const {
 
 // Create custom selectors
 const getSelectedId = (state: State) => state.selectedId;
+const getFilteredIds = (state: State) => state.filteredIds;
 export const selectId = createSelector(getState, getSelectedId);
+export const filteredIds = createSelector(getState, getFilteredIds);
 export const selectOne = createSelector(
   selectEntities,
   selectId,
   (entities, id) => entities[id]
+);
+export const selectFiltered = createSelector(
+  selectEntities,
+  filteredIds,
+  (entities, ids) => ids.map(id => entities[id])
 );

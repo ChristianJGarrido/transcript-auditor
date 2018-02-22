@@ -44,7 +44,7 @@ export class ConversationComponent implements OnInit {
     this.conversationSelect$ = this.store.select(fromConversation.selectOne);
 
     this.assessmentState$ = this.store.select(fromAssessment.getState);
-    this.assessments$ = this.store.select(fromAssessment.selectAll);
+    this.assessments$ = this.store.select(fromAssessment.selectFiltered);
     this.assessmentSelect$ = this.store.select(fromAssessment.selectOne);
 
     this.playlistState$ = this.store.select(fromPlaylist.getState);
