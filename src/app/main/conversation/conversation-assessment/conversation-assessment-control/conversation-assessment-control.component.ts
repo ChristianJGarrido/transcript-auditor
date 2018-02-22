@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, HostBinding } from '@angular/core';
 import { AssessmentModel } from '../../../../shared/store/assessment/assessment.model';
 import * as fromAssessment from '../../../../shared/store/assessment/assessment.reducer';
+import { UtilityService } from '../../../../shared/services/utility.service';
 
 @Component({
   selector: 'app-conversation-assessment-control',
@@ -13,14 +14,11 @@ export class ConversationAssessmentControlComponent implements OnInit {
   @Input() assessments: AssessmentModel[];
   @Input() assessmentSelect: AssessmentModel;
 
-  constructor() { }
+  constructor(private utilityService: UtilityService) { }
 
-  // returns index of the selected assessment
+  // get conversation index
   findIndex(): number {
-    const index = this.assessments.findIndex(
-      assessment => assessment.id === this.assessmentSelect.id
-    );
-    return index ? index : 0;
+    return this.utilityService.findIndex(this.assessmentSelect.id, this.assessments);
   }
 
   ngOnInit() {

@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input } from '@angular/core';
+import { Component, OnChanges, Input, HostBinding } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AfConversationData } from '../../../shared/interfaces/interfaces';
 
@@ -8,6 +8,7 @@ import { AfConversationData } from '../../../shared/interfaces/interfaces';
   styleUrls: ['./assessment-save.component.css']
 })
 export class AssessmentSaveComponent implements OnChanges {
+  @HostBinding('class') class = 'col';
   @Input() updating: boolean = null;
 
   constructor() { }

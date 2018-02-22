@@ -9,12 +9,14 @@ export interface State extends EntityState<AssessmentModel> {
   updating: boolean;
   error: boolean;
   selectedId: string;
+  filteredIds: string[];
 }
 export const initialState: State = adapter.getInitialState({
   loading: false,
   updating: null,
   error: false,
   selectedId: null,
+  filteredIds: [],
 });
 
 // Reducer
@@ -23,6 +25,8 @@ export function AssessmentReducer(
   action: actions.AssessmentActions
 ): State {
   switch (action.type) {
+    case actions.FILTER:
+    return { ...state, filteredIds: action.data };
     case actions.CREATE:
     case actions.DELETE:
       return { ...state, loading: true, error: false };

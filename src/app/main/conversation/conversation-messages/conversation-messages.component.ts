@@ -15,6 +15,7 @@ import {
   MessageEvent
 } from '../../../shared/interfaces/interfaces';
 import { ExportService } from '../../../shared/services/export.service';
+import { UtilityService } from '../../../shared/services/utility.service';
 
 // 3rd party
 import * as _ from 'lodash';
@@ -27,14 +28,21 @@ import { WatsonService } from '../../../shared/services/watson.service';
 })
 export class ConversationMessagesComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
+  @Input() conversations: any[];
   @Input() conversationSelect: any;
 
   messageEvents: any[] = [];
 
   constructor(
+    private utilityService: UtilityService,
     private exportService: ExportService,
     private watsonService: WatsonService
   ) {}
+
+  // get conversation index
+  findIndex(): number {
+    return this.utilityService.findIndex(this.conversationSelect.id, this.conversations);
+  }
 
   /**
    * Analyse messages with Watson API

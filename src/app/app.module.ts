@@ -45,6 +45,7 @@ import { ConversationAssessmentSummaryNotesComponent } from './main/conversation
 import { ConversationAssessmentSummarySelectComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-select/conversation-assessment-summary-select.component';
 import { ConversationAssessmentSummaryStarsComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-stars/conversation-assessment-summary-stars.component';
 import { ConversationAssessmentSummarySliderComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-slider/conversation-assessment-summary-slider.component';
+import { ConversationAssessmentControlComponent } from './main/conversation/conversation-assessment/conversation-assessment-control/conversation-assessment-control.component';
 
 // conversation messages
 import { ConversationMessagesComponent } from './main/conversation/conversation-messages/conversation-messages.component';
@@ -60,6 +61,7 @@ import { ApiLoginService } from './shared/services/api-login.service';
 import { ExportService } from './shared/services/export.service';
 import { WatsonService } from './shared/services/watson.service';
 import { FirestoreService } from './shared/services/firestore.service';
+import { UtilityService } from './shared/services/utility.service';
 
 // routing
 import { AppRoutingModule } from './app-routing.module';
@@ -97,7 +99,6 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { StarRatingModule } from 'angular-star-rating';
 import 'hammerjs';
-import { ConversationAssessmentControlComponent } from './main/conversation/conversation-assessment/conversation-assessment-control/conversation-assessment-control.component';
 
 @NgModule({
   declarations: [
@@ -174,6 +175,7 @@ import { ConversationAssessmentControlComponent } from './main/conversation/conv
     ExportService,
     WatsonService,
     FirestoreService,
+    UtilityService,
   ],
   entryComponents: [ModalComponent, ConversationAssessmentSummarySliderComponent],
   bootstrap: [AppComponent],

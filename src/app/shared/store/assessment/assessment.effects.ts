@@ -48,16 +48,21 @@ export class AssessmentEffects {
       map(([action, conversationId, assessmentSelect, assessments]) => {
         // filter by conversation id
         if (conversationId) {
-          const filtered = assessments.filter(
-            item => item.conversationId === conversationId
-          );
+          const filtered: string[] = assessments.reduce((prev, curr) => {
+            if (curr.conversationId === conversationId) {
+              return [...prev, curr.id];
+            }
+            return prev;
+          }, []);
           // select assessment if none selected
           if (!assessmentSelect && filtered.length) {
             const index = 0;
-            const id = filtered[index].id;
+            const id = filtered[index];
             this.store.dispatch(
               new assessmentActions.Select(id && id.toString())
             );
+          } else if (!filtered.length) {
+            this.store.dispatch(new assessmentActions.Select(''));
           }
           return new assessmentActions.Filter(filtered);
         }

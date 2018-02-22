@@ -1,17 +1,15 @@
 <div class="card" [class.loading-opacity]="assessmentState.loading">
   <div class="card-body">
     <div class="row">
-      <h5 class="card-title col-auto">Summary</h5>
-      <app-assessment-save [updating]="assessmentState.updating"></app-assessment-save>
-    </div>
-    <div class="row">
-      <div class="col-3">
-        <div class="row no-gutters">
-          <app-conversation-assessment-summary-stars [id]="assessmentSelect.id" [rating]="assessmentSelect.rating"></app-conversation-assessment-summary-stars>
-          <button class="btn btn-outline-secondary btn-sm col mt-2" (click)="openDialog()">Personality {{calculatePersonality()}}</button>
+      <div class="col-4">
+        <div class="row">
+            <h5 class="card-title col-auto">Summary</h5>
+            <app-assessment-save [updating]="assessmentState.updating"></app-assessment-save>
+            <app-conversation-assessment-summary-stars [id]="assessmentSelect.id" [rating]="assessmentSelect.rating"></app-conversation-assessment-summary-stars>
+            <button class="btn btn-outline-secondary btn-sm col-12 mt-2" (click)="openDialog()">Personality {{calculatePersonality()}}</button>
         </div>
       </div>
-      <div class="col-9">
+      <div class="col-8">
         <app-conversation-assessment-summary-notes [id]="assessmentSelect.id" [note]="assessmentSelect.note"></app-conversation-assessment-summary-notes>
       </div>
     </div>

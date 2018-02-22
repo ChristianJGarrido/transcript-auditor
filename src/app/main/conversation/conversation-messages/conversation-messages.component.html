@@ -2,18 +2,18 @@
   <div class="card-body">
     <div class="row no-gutters">
       <h5 class="card-title col-auto">Conversation Messages</h5>
-      <app-cycle-items [type]="'conversation'"></app-cycle-items>
+      <app-cycle-items *ngIf="conversationSelect" [type]="'conversation'" [index]="findIndex()" [items]="conversations"></app-cycle-items>
     </div>
 
     <!-- Conversation subtitle & download button -->
     <span *ngIf="conversationSelect">
-      <span class="card-subtitle mb-2 text-muted">ID: {{conversationSelect?.info.conversationId}}
+      <span class="card-subtitle mb-2 text-muted">ID: {{conversationSelect.info.conversationId}}
         <i class="far fa-download" aria-hidden="true" matTooltip="Export to CSV" (click)="downloadCsv()"></i>
       </span>
     </span>
 
     <!-- No conversation message -->
-    <app-no-results [results]="conversationSelect" [messagePrimary]="'Select a conversation'"></app-no-results>
+    <app-no-results [results]="conversationSelect" [messageSecondary]="'Select a conversation'"></app-no-results>
 
     <!-- Message rows -->
     <div class="container-fluid p-0">

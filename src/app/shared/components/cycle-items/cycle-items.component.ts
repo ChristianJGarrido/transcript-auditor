@@ -1,10 +1,9 @@
 import { Component, OnInit, Input, HostBinding } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
-import * as AssessmentActions from '../../store/assessment/assessment.actions';
-import * as PlaylistActions from '../../store/playlist/playlist.actions';
-import { PlaylistModel } from '../../store/playlist/playlist.model';
-import { AssessmentModel } from '../../store/assessment/assessment.model';
+import * as assessmentActions from '../../store/assessment/assessment.actions';
+import * as playlistActions from '../../store/playlist/playlist.actions';
+import * as conversationActions from '../../store/conversation/conversation.actions';
 
 @Component({
   selector: 'app-cycle-items',
@@ -39,11 +38,17 @@ export class CycleItemsComponent implements OnInit {
     const newId = this.items[nextIndex].id;
 
     switch (this.type) {
+      case 'conversation':
+        this.store.dispatch(new conversationActions.Select(newId));
+        break;
       case 'assessment':
-        this.store.dispatch(new AssessmentActions.Select(newId));
+        this.store.dispatch(new assessmentActions.Select(newId));
         break;
       case 'playlist':
-        this.store.dispatch(new AssessmentActions.Select(newId));
+        this.store.dispatch(new playlistActions.Select(newId));
+        break;
+      default:
+        console.log('CYCLE_TYPE_ERROR');
         break;
     }
   }

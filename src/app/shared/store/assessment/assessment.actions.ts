@@ -22,7 +22,7 @@ export class Select implements Action {
 }
 export class Filter implements Action {
   readonly type = FILTER;
-  constructor(public data: AssessmentModel[]) {}
+  constructor(public data: string[]) {}
 }
 
 export class AddAll implements Action {

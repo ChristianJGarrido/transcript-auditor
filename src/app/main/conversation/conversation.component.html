@@ -5,7 +5,7 @@
         <app-conversation-stats [conversationSelect]="(conversationSelect$ | async)"></app-conversation-stats>
       </div>
       <div class="row no-gutters pt-2">
-        <app-conversation-messages [conversationSelect]="(conversationSelect$ | async)"></app-conversation-messages>
+        <app-conversation-messages [conversations]="(conversations$ | async)" [conversationSelect]="(conversationSelect$ | async)"></app-conversation-messages>
       </div>
     </div>
 

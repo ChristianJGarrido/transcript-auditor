@@ -9,7 +9,7 @@ import { StoreModel } from '../../../../../app.store';
   styleUrls: ['./conversation-assessment-summary-stars.component.css']
 })
 export class ConversationAssessmentSummaryStarsComponent implements OnInit {
-  @HostBinding('class') class = 'col';
+  @HostBinding('class') class = 'col-12';
   @Input() id: string;
   @Input() rating: number;
 
