@@ -59,16 +59,15 @@ export class ApiLoginEffects {
           username: user.username,
           password: user.password,
         };
-        return this.http.post<any>(url, body, { headers, observe: 'response' }).pipe(
+        return this.http.post<any>(url, body, { headers }).pipe(
           map(response => {
-            console.log(response.headers);
-            if (response.body.bearer) {
+            if (response.bearer) {
               const session = {
                 domains,
-                bearer: response.body.bearer,
+                bearer: response.bearer,
                 username: user.username,
                 account: user.account,
-                isLPA: response.body.config.isLPA,
+                isLPA: response.config.isLPA,
               };
               return new ApiLoginActions.SaveSession(session);
             }
