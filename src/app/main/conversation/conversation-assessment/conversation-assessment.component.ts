@@ -23,5 +23,10 @@ export class ConversationAssessmentComponent implements OnInit {
 
   constructor(private store: Store<StoreModel>) {}
 
+  // creates a new assessment
+  createAssessment(): void {
+    this.store.dispatch(new AssessmentActions.Create());
+  }
+
   ngOnInit() {}
 }

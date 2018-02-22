@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, HostBinding, ViewChild } from '@angular/core';
-import { AssessmentControlComponent } from '../../../../shared/components/assessment-control/assessment-control.component';
+import { Component, OnInit, Input, HostBinding } from '@angular/core';
 import { AssessmentModel } from '../../../../shared/store/assessment/assessment.model';
 import * as fromAssessment from '../../../../shared/store/assessment/assessment.reducer';
 
@@ -10,18 +9,11 @@ import * as fromAssessment from '../../../../shared/store/assessment/assessment.
 })
 export class ConversationAssessmentControlComponent implements OnInit {
   @HostBinding('class') class = 'col-12';
-  @ViewChild(AssessmentControlComponent)
-    child: AssessmentControlComponent;
   @Input() assessmentState: fromAssessment.State;
   @Input() assessments: AssessmentModel[];
   @Input() assessmentSelect: AssessmentModel;
 
   constructor() { }
-
-  // calls child method to create new assessment
-  createAssessment(): void {
-    this.child.createAssessment();
-  }
 
   // returns index of the selected assessment
   findIndex(): number {

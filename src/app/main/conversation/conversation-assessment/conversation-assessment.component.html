@@ -1,4 +1,4 @@
-<div class="row">
+<div *ngIf="assessmentSelect" class="row">
   <app-conversation-assessment-control [assessmentState]="assessmentState" [assessmentSelect]="assessmentSelect" [assessments]="assessments"></app-conversation-assessment-control>
 </div>
 <div *ngIf="assessmentSelect" class="row mt-2">
@@ -6,4 +6,11 @@
 </div>
 <div *ngIf="assessmentSelect" class="row mt-2">
   <app-conversation-assessment-qa [assessmentState]="assessmentState" [assessmentSelect]="assessmentSelect"></app-conversation-assessment-qa>
+</div>
+<div *ngIf="!assessmentSelect" class="row no-assessment" (click)="createAssessment()">
+  <div class="col">
+    <div class="card">
+      <app-no-results messageSecondary="Click to start new assessment"></app-no-results>
+    </div>
+  </div>
 </div>
