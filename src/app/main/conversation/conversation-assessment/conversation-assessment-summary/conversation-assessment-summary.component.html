@@ -1,12 +1,12 @@
 <div class="card" [class.loading-opacity]="assessmentState.loading">
   <div class="card-body">
-    <div class="row">
-      <div class="col-4">
-        <div class="row">
-            <h5 class="card-title col-auto">Summary</h5>
-            <app-assessment-save [updating]="assessmentState.updating"></app-assessment-save>
-            <app-conversation-assessment-summary-stars [id]="assessmentSelect.id" [rating]="assessmentSelect.rating"></app-conversation-assessment-summary-stars>
-            <button class="btn btn-outline-secondary btn-sm col-12 mt-2" (click)="openDialog()">Personality {{calculatePersonality()}}</button>
+    <div class="row no-gutters">
+      <div class="col-4 pr-2">
+        <div class="row no-gutters">
+          <h5 class="card-title col-auto">Summary</h5>
+          <app-assessment-save [updating]="assessmentState.updating"></app-assessment-save>
+          <app-conversation-assessment-summary-stars [id]="assessmentSelect.id" [rating]="assessmentSelect.rating"></app-conversation-assessment-summary-stars>
+          <button class="btn btn-outline-secondary btn-sm col-12 mt-2" (click)="openDialog()">Personality {{calculatePersonality()}}</button>
         </div>
       </div>
       <div class="col-8">
