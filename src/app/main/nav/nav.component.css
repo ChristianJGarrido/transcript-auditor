@@ -6,7 +6,7 @@
   color: rgb(185, 185, 185);
 }
 .container-fluid {
-  background-color: #4e4e4e;
+  background-color: #343a40;
 }
 .nav-link {
   color: white;
@@ -17,5 +17,6 @@
   color: rgb(185, 185, 185);
 }
 .nav-link.active {
-  border-bottom: 1px solid white;
+  color: #b7d2ff;
+  border-bottom: 1px solid;
 }
