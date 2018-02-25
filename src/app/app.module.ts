@@ -99,6 +99,7 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { StarRatingModule } from 'angular-star-rating';
 import 'hammerjs';
+import { ConversationPlaylistComponent } from './main/conversation/conversation-playlist/conversation-playlist.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +136,7 @@ import 'hammerjs';
     CycleItemsComponent,
     AssessmentControlComponent,
     AssessmentSaveComponent,
+    ConversationPlaylistComponent,
   ],
   imports: [
     StarRatingModule.forRoot(),
