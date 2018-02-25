@@ -24,24 +24,7 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  /**
-   * if api session valid, don't open dialog
-   */
-  checkApiSession(): void {
-    if (this.apiLogin.bearer) {
-      if (this.dialogRef) {
-        this.dialogRef.close();
-      }
-    } else {
-      if (!this.dialogRef) {
-        // timeout required due to known angular bug with opening dialog during change detection
-        setTimeout(() => this.openDialog(), 100);
-      }
-    }
-  }
-
   ngOnInit() {
-    this.checkApiSession();
   }
 
 }

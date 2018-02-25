@@ -15,9 +15,13 @@ import * as ApiLoginActions from '../api-login/api-login.actions';
 import * as AssessmentActions from '../assessment/assessment.actions';
 import * as PlaylistActions from '../playlist/playlist.actions';
 import * as ConversationActions from '../conversation/conversation.actions';
+import { MatDialogRef, MatDialog } from '@angular/material';
+import { ModalComponent } from '../../../main/modal/modal.component';
 
 @Injectable()
 export class ApiLoginEffects {
+  dialogRef: MatDialogRef<ModalComponent>;
+
   @Effect()
   getSession$: Observable<any> = this.actions$
     .ofType<ApiLoginActions.GetSession>(ApiLoginActions.GET_SESSION)
@@ -97,11 +101,16 @@ export class ApiLoginEffects {
   @Effect()
   queryData$: Observable<any> = this.actions$
     .ofType<ApiLoginActions.Authenticated>(ApiLoginActions.AUTHENTICATED)
-    .pipe(switchMap(action => [
-      new ConversationActions.Query(),
-      new AssessmentActions.Query(),
-      new PlaylistActions.Query(),
-    ]));
+    .pipe(
+      switchMap(action => {
+        this.dialogRef.close();
+        return [
+          new ConversationActions.Query(),
+          new AssessmentActions.Query(),
+          new PlaylistActions.Query(),
+        ];
+      })
+    );
 
   @Effect({ dispatch: false })
   apiLogout$: Observable<any> = this.actions$
@@ -109,9 +118,22 @@ export class ApiLoginEffects {
     .pipe(
       map(action => {
         sessionStorage.removeItem('ca_Bearer');
+        setTimeout(() => this.openDialog(), 100);
         return Observable.of(null);
       })
     );
 
-  constructor(private actions$: Actions, private http: HttpClient) {}
+  constructor(
+    private actions$: Actions,
+    private http: HttpClient,
+    public dialog: MatDialog,
+  ) {}
+
+  // opens material dialog
+  openDialog(): void {
+    this.dialogRef = this.dialog.open(ModalComponent, {
+      maxWidth: 400,
+      position: { top: '5%', right: '5%' }
+    });
+  }
 }

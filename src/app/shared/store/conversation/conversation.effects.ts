@@ -59,7 +59,12 @@ export class ConversationEffects {
         return [...msgHistRecords, ...engHistRecords];
       }),
       map(data => new conversationActions.AddAll(data)),
-      catchError(err => [new conversationActions.Error(err)])
+      catchError(err => {
+        if (err.status === 401) {
+          this.store.dispatch(new apiLoginActions.NotAuthenticated());
+        }
+        return [new conversationActions.Error(err)];
+      })
     );
 
   // select after add
