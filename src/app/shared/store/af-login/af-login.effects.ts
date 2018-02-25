@@ -54,7 +54,7 @@ export class AfLoginEffects {
             if (user) {
               return new AfLoginActions.Success();
             }
-            await docRef.set({ ...user, createdAt: new Date() });
+            await docRef.set({ uid, email, displayName, createdAt: new Date() });
             return new AfLoginActions.Success();
           }),
           catchError(error => [new AfLoginActions.Error(error)])
