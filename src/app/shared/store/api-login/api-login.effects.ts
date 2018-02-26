@@ -103,7 +103,9 @@ export class ApiLoginEffects {
     .ofType<ApiLoginActions.Authenticated>(ApiLoginActions.AUTHENTICATED)
     .pipe(
       switchMap(action => {
-        this.dialogRef.close();
+        if (this.dialogRef) {
+          this.dialogRef.close();
+        }
         return [
           new ConversationActions.Query(),
           new AssessmentActions.Query(),
