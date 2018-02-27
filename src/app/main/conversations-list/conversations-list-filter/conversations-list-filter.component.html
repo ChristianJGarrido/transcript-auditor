@@ -32,7 +32,7 @@
         placeholder="Keywords...">
       <!-- search button -->
       <span class="input-group-btn">
-        <button type="button" class="btn btn-outline-success btn-sm" (click)="getData()" [disabled]="(apiLoading$ | async)">{{(apiLoading$ | async) ? 'Loading...' : 'Search'}}</button>
+        <button type="button" class="btn btn-outline-success btn-sm" (click)="getData()" [disabled]="loading">{{loading ? 'Loading...' : 'Search'}}</button>
       </span>
     </div>
   </div>

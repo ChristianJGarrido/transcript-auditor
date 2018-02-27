@@ -9,7 +9,9 @@ import {
   debounceTime,
   distinctUntilChanged,
   combineLatest,
+  merge,
 } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import {
   HttpClient,
@@ -35,12 +37,14 @@ export class ConversationEffects {
   // query collection
   @Effect()
   query$: Observable<Action> = this.actions$
-    .ofType(conversationActions.QUERY)
+    .ofType<conversationActions.Query>(conversationActions.QUERY)
     .pipe(
       withLatestFrom(this.store.select(state => state.apiLogin)),
+      debounceTime(1000),
       switchMap(([action, apiLogin]) => {
-        const msgHistReq = this.generateRequest(true, apiLogin);
-        const engHistReq = this.generateRequest(false, apiLogin);
+        const options = action.options;
+        const msgHistReq = this.generateRequest(true, apiLogin, options);
+        const engHistReq = this.generateRequest(false, apiLogin, options);
         const msgHistObs = this.http.post<MsgHistResponse>(
           msgHistReq.url,
           msgHistReq.body,
@@ -51,24 +55,20 @@ export class ConversationEffects {
           engHistReq.body,
           engHistReq.options
         );
-        return forkJoin(msgHistObs, engHistObs);
-      }),
-      map(([msgHist, engHist]) => {
-        const msgHistRecords = this.transformResponse(msgHist, true);
-        const engHistRecords = this.transformResponse(engHist, false);
-        return [...msgHistRecords, ...engHistRecords];
-      }),
-      map(data => new conversationActions.AddAll(data)),
-      catchError(err => {
-        if (err.status === 401) {
-          this.store.dispatch(new apiLoginActions.NotAuthenticated());
-        }
-        return [new conversationActions.Error(err)];
+        return forkJoin(msgHistObs, engHistObs).pipe(
+          map(([msgHist, engHist]) => {
+            const msgHistRecords = this.transformResponse(msgHist, true);
+            const engHistRecords = this.transformResponse(engHist, false);
+            return [...msgHistRecords, ...engHistRecords];
+          }),
+          map(data => new conversationActions.AddAll(data)),
+          catchError(err => of(new conversationActions.Error(err)))
+        );
       })
     );
 
   // select after add
-  @Effect({ dispatch: false })
+  @Effect()
   select$: Observable<Action> = this.actions$
     .ofType(conversationActions.ADD_ALL)
     .pipe(
@@ -80,9 +80,11 @@ export class ConversationEffects {
         if (!data && ids.length) {
           const index = 0;
           const id = ids[index];
-          this.store.dispatch(new conversationActions.Select(id && id.toString()));
+          this.store.dispatch(
+            new conversationActions.Select(id && id.toString())
+          );
         }
-        return null;
+        return new conversationActions.Success();
       })
     );
 
@@ -98,7 +100,9 @@ export class ConversationEffects {
    * @param {boolean} msgHist
    */
   transformResponse(response: any, msgHist: boolean) {
-    const recordProp = msgHist ? 'conversationHistoryRecords' : 'interactionHistoryRecords';
+    const recordProp = msgHist
+      ? 'conversationHistoryRecords'
+      : 'interactionHistoryRecords';
     const idProp = msgHist ? 'conversationId' : 'engagementId';
     const type = msgHist ? 'message' : 'chat';
     return response[recordProp].map(record => {
@@ -136,8 +140,13 @@ export class ConversationEffects {
    * Get data from either Eng Hist API or Msg Hist API
    * @param {boolean} messagingMode
    * @param {ApiLoginModel} apiLogin
+   * @param {any?} options
    */
-  generateRequest(messagingMode: boolean, apiLogin: ApiLoginModel) {
+  generateRequest(
+    messagingMode: boolean,
+    apiLogin: ApiLoginModel,
+    options?: any
+  ) {
     const { domains, account, bearer } = apiLogin;
     const { msgHist, engHistDomain } = domains;
     const domain = messagingMode ? msgHist : engHistDomain;
@@ -145,7 +154,7 @@ export class ConversationEffects {
     const interaction = messagingMode ? 'conversations' : 'interactions';
     const url = `https://${domain}/${history}/api/account/${account}/${interaction}/search`;
     const start = this.convertDateToMs();
-    const body = { start };
+    const body = options ? options : { start };
     const headers = this.getHeaders(bearer);
     const params: HttpParams = new HttpParams()
       .set('limit', '100')

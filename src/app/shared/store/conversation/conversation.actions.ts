@@ -11,6 +11,7 @@ export const ERROR = '[Conversation] Error';
 
 export class Query implements Action {
   readonly type = QUERY;
+  constructor(public options?: any) {}
 }
 export class Select implements Action {
   readonly type = SELECT;

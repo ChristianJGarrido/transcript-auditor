@@ -1,29 +1,25 @@
-import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ApiOptions, ApiIds, ApiSearchSdes } from '../../../shared/interfaces/interfaces';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
-import { debounceTime, switchMap } from 'rxjs/operators';
-import { Observable } from 'rxjs/Observable';
+import * as conversationActions from '../../../shared/store/conversation/conversation.actions';
+import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
 
 import {
   IMultiSelectOption,
   IMultiSelectSettings,
   IMultiSelectTexts
 } from 'angular-2-dropdown-multiselect';
+import { Store } from '@ngrx/store';
+import { StoreModel } from '../../../app.store';
 
 @Component({
   selector: 'app-conversations-list-filter',
   templateUrl: './conversations-list-filter.component.html',
   styleUrls: ['./conversations-list-filter.component.css']
 })
-export class ConversationsListFilterComponent implements OnInit, OnDestroy {
+export class ConversationsListFilterComponent implements OnInit {
   @HostBinding('class') class = 'col';
-  apiLoading$: BehaviorSubject<boolean>;
-
-  filterSub: Subscription;
-  filter$: Subject<any> = new Subject();
+  @Input() loading: boolean;
 
   to = new Date();
   dateTo = new FormControl(new Date(this.to.setDate(this.to.getDate() - 1)));
@@ -79,7 +75,7 @@ export class ConversationsListFilterComponent implements OnInit, OnDestroy {
   sdeSearch: ApiSearchSdes;
   ids: ApiIds;
 
-  constructor() {}
+  constructor(private store: Store<StoreModel>) {}
 
   /**
    * request new data from API with optional search params
@@ -165,38 +161,18 @@ export class ConversationsListFilterComponent implements OnInit, OnDestroy {
     this.options = {
       ...this.options,
       start: {
-        from: this.dateFrom.value,
-        to: this.dateTo.value
+        from: new Date(this.dateFrom.value).getTime(),
+        to: new Date(this.dateTo.value).getTime(),
       }
     };
 
-    this.filter$.next();
+    console.log(this.options.start);
 
-  }
+    this.store.dispatch(new conversationActions.Query(this.options));
 
-  /**
-   * Method to apply debounce listener to search filter
-   */
-  debounceFilter() {
-    this.filterSub = this.filter$
-      .pipe(
-        debounceTime(700),
-        switchMap(() => {
-          return Observable.of(
-            // this.apiDataService.getData(this.options, this.ids)
-          );
-        })
-      )
-      .subscribe();
   }
 
   ngOnInit() {
-    // this.apiLoading$ = this.apiDataService.apiLoading$;
-    this.debounceFilter();
-  }
-
-  ngOnDestroy() {
-    this.filterSub.unsubscribe();
   }
 
 }
