@@ -43,7 +43,6 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
     defaultTitle: 'Select Playlist',
   };
   playlistName = '';
-  playlistId = null;
 
   constructor(private store: Store<StoreModel>) {}
 
@@ -70,7 +69,7 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
   /**
    * Selects an existing playlist
    */
-  selectPlaylist(): void {
+  selectPlaylist(event): void {
     const id = this.playlistSelectIds[0];
     this.store.dispatch(new playlistActions.Select(id));
   }
@@ -87,23 +86,15 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
     ];
   }
 
-  /**
-   * ensures playlist toggle reflects newly created playlist
-   */
-  updatePlaylistSelect(): void {
-    if (this.playlistSelect && this.playlistSelect.id !== this.playlistId) {
-      this.playlistId = this.playlistSelect.id;
-      this.playlistSelectIds = [this.playlistSelect.id];
-    }
-  }
-
   ngOnInit(): void {
-    this.playlistId = this.playlistOptions[0].id;
-    this.playlistSelectIds = [this.playlistId];
   }
 
   ngOnChanges(): void {
     this.playlistOptions = this.updateOptions();
-    this.updatePlaylistSelect();
+    if (this.playlistSelect) {
+      this.playlistSelectIds = [this.playlistSelect.id];
+    } else {
+      this.playlistSelectIds = [null];
+    }
   }
 }

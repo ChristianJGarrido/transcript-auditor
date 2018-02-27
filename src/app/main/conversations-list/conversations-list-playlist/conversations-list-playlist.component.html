@@ -5,7 +5,7 @@
       <span class="font-primary mt-1 mr-1">Playlist</span>
 
       <!-- select playlist -->
-      <ss-multiselect-dropdown (ngModelChange)="selectPlaylist()" [settings]="playlistSettings" [texts]="playlistTexts" [options]="playlistOptions" [ngModel]="playlistSelectIds"></ss-multiselect-dropdown>
+      <ss-multiselect-dropdown (dropdownClosed)="selectPlaylist()" [settings]="playlistSettings" [texts]="playlistTexts" [options]="playlistOptions" [ngModel]="playlistSelectIds"></ss-multiselect-dropdown>
 
       <!-- update playlist -->
       <span class="input-group-btn">
