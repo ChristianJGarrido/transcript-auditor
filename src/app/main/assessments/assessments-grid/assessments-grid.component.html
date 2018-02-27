@@ -8,19 +8,7 @@
     <div *ngIf="rows.length" class="row mt-2">
       <div class="col">
         <ngx-datatable #table style="cursor: pointer;" [limit]="15" class="material" [columnMode]="'force'" [rowHeight]="30" [headerHeight]="50"
-          [selected]="selected" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows" [columns]="columns"
-          (select)='onSelect($event)'>
-          <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
-            <ng-template ngx-datatable-header-template let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
-              <input type="checkbox" [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)" />
-            </ng-template>
-            <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
-              <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" />
-            </ng-template>
-          </ngx-datatable-column>
-          <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
-          <ngx-datatable-column name="By" prop="createdBy"></ngx-datatable-column>
-          <ngx-datatable-column name="Date" prop="createdAt"></ngx-datatable-column>
+          [selected]="selected" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows" [columns]="columns" (select)='onSelect($event)'>
         </ngx-datatable>
       </div>
     </div>
@@ -30,3 +18,14 @@
 
   </div>
 </div>
+
+<!-- template for checkbox header -->
+<ng-template #checkHeader let-value="value" let-allRowsSelected="allRowsSelected" let-selectFn="selectFn">
+  <input type="checkbox" [checked]="allRowsSelected" (change)="selectFn(!allRowsSelected)" />
+</ng-template>
+
+<!-- template for checkbox cell -->
+<ng-template #checkCell let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
+  <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" />
+</ng-template>
+
