@@ -7,6 +7,8 @@ body {
 }
 
 /* font-awesome */
+.fa-chevron-up,
+.fa-chevron-down,
 .fa-chevron-left,
 .fa-chevron-right,
 .fa-download,
@@ -16,6 +18,8 @@ body {
   color: #b6b6b6;
   cursor: pointer;
 }
+.fa-chevron-up:hover,
+.fa-chevron-down:hover,
 .fa-chevron-left:hover,
 .fa-chevron-right:hover,
 .fa-download:hover,

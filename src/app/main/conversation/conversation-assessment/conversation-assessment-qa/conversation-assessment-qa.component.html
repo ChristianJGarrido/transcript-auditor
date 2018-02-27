@@ -1,23 +1,34 @@
 <div class="card" [class.loading-opacity]="assessmentState.loading">
   <div class="card-body">
-    <div class="row">
+    <div class="row justify-content-between">
       <h5 class="card-title col-auto">Quality Review</h5>
     </div>
     <div id="qa-container">
-      <ng-container *ngFor="let item of assessmentSelect.qa; let first = first; let last = last">
-        <div *ngIf="item.rowType === 1" class="row no-gutters row-header" [class.mt-2]="!first">
+      <ng-container *ngFor="let group of assessmentSelect.qa; let first = first; let last = last; trackBy: trackByFn">
+        <div class="row no-gutters row-header p-2" [class.mt-2]="!first" (click)="group.expanded = !group.expanded">
+          <div [hidden]="group.expanded" class="col-auto font-secondary mr-2">
+            <i class="far fa-chevron-up"></i>
+          </div>
+          <div [hidden]="!group.expanded" class="col-auto font-secondary mr-2">
+            <i class="far fa-chevron-down"></i>
+          </div>
           <div class="col font-secondary">
-            {{item.label}}
+            {{group.title}}
+          </div>
+          <div class="col-auto font-secondary">
+            {{calculateGroupScore(group.section) | percent}}
           </div>
         </div>
-        <div *ngIf="item.rowType === 2" class="row no-gutters row-content">
-          <div class="col pl-2 font-primary">
-            {{item.label}}
+        <ng-container *ngFor="let item of group.section; trackBy: trackByFn">
+          <div *ngIf="group.expanded" class="row no-gutters row-content">
+            <div class="col pl-2 mt-2 pt-1 font-primary">
+              {{item.label}}
+            </div>
+            <div class="col-auto font-primary">
+              <mat-slider min="0" max="5" step="1" thumbLabel [(ngModel)]="item.score" (change)="saveReview()"></mat-slider>
+            </div>
           </div>
-          <div class="col-2 font-primary">
-            {{item.score}}
-          </div>
-        </div>
+        </ng-container>
       </ng-container>
     </div>
   </div>
@@ -30,7 +41,7 @@
       </div>
       <div class="col-auto">
         <span class="font-primary">
-          <h4>100 points</h4>
+          <h4>{{calculateTotalScore(assessmentSelect.qa) | percent}}</h4>
         </span>
       </div>
     </div>

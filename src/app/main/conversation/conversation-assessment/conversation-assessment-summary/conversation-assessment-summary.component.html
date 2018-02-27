@@ -4,7 +4,6 @@
       <div class="col-4 col-md-3 col-lg-2 pr-md-2">
         <div class="row no-gutters">
           <h5 class="card-title col-auto pr-2">Summary</h5>
-          <app-assessment-save [updating]="assessmentState.updating"></app-assessment-save>
           <app-conversation-assessment-summary-stars [id]="assessmentSelect.id" [rating]="assessmentSelect.rating"></app-conversation-assessment-summary-stars>
           <button class="btn btn-outline-secondary btn-sm col-12 mt-2" (click)="openDialog()">Personality {{calculatePersonality()}}</button>
         </div>

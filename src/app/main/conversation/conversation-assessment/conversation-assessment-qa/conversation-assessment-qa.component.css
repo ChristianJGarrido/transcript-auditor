@@ -1,6 +1,10 @@
 .row-header {
   border-bottom: 1px solid rgb(184, 184, 184);
 }
+.row-header:hover {
+  background-color: rgb(241, 241, 241);
+  cursor: pointer;
+}
 .row-content {
   border-bottom: 0.4px solid rgb(228, 228, 228);
 }
