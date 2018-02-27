@@ -1,17 +1,17 @@
-<div id="test"></div>
 <div class="card mr-md-1">
   <div class="card-body">
-    <div class="row no-gutters">
+    <div class="row no-gutters justify-content-start">
       <h5 class="card-title col-auto">Conversation Transcript</h5>
       <app-cycle-items *ngIf="conversationSelect" [type]="'conversation'" [index]="findIndex()" [items]="conversationIds"></app-cycle-items>
+      <div class="col-auto" matTooltip="Export to CSV" (click)="downloadCsv()">
+        <i class="far fa-download" aria-hidden="true"></i>
+      </div>
     </div>
 
     <!-- Conversation subtitle & download button -->
-    <span *ngIf="conversationSelect">
-      <span class="card-subtitle mb-2 text-muted">ID: {{conversationSelect.info.conversationId}}
-        <i class="far fa-download" aria-hidden="true" matTooltip="Export to CSV" (click)="downloadCsv()"></i>
-      </span>
-    </span>
+    <div class="row">
+      <span class="col font-tertiary mb-2">ID: <strong>{{conversationSelect.info.conversationId}}</strong></span>
+    </div>
 
     <!-- Message rows -->
     <div class="container-fluid p-0" id="message-container">
