@@ -16,8 +16,8 @@
 
     <!-- playlist control -->
     <div class="row mt-2">
-      <app-conversations-list-playlist [selected]="selected.length" [playlistSelect]="playlistSelect" [conversationListIds]="conversationState.playlistIds"
-        [playlists]="playlists"></app-conversations-list-playlist>
+      <app-conversations-list-playlist [scope]="scope" [selected]="selected.length" [playlistSelect]="playlistSelect" [conversationListIds]="conversationState.playlistIds"
+        [playlists]="playlists" [playlistState]="playlistState"></app-conversations-list-playlist>
     </div>
 
     <!-- conversation grid -->

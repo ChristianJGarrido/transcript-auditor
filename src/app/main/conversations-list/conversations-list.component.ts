@@ -15,6 +15,7 @@ import {
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { ConversationModel } from '../../shared/store/conversation/conversation.model';
 import * as fromConversation from '../../shared/store/conversation/conversation.reducer';
+import * as fromPlaylist from '../../shared/store/playlist/playlist.reducer';
 import * as conversationActions from '../../shared/store/conversation/conversation.actions';
 import * as playlistActions from '../../shared/store/playlist/playlist.actions';
 import { Store } from '@ngrx/store';
@@ -30,11 +31,14 @@ import { PlaylistModel } from '../../shared/store/playlist/playlist.model';
 export class ConversationsListComponent implements OnInit, OnChanges {
   @ViewChild('table') table: DatatableComponent;
   // TODO properly type the conversation inputs
+  @Input() playlistState: fromPlaylist.State;
   @Input() playlists: PlaylistModel[];
   @Input() playlistSelect: PlaylistModel;
   @Input() conversations: any[] = [];
   @Input() sideNavList: MatDrawer;
   @Input() conversationState: fromConversation.State;
+
+  scope = { preserve: [], change: [] };
 
   selected = [];
   rows = [];
@@ -62,7 +66,8 @@ export class ConversationsListComponent implements OnInit, OnChanges {
     this.selected.splice(0, this.selected.length);
     this.selected = [...selected];
     // get ids to preserve and change
-    const preserveIds = this.getScope().preserve;
+    this.scope = this.getScope();
+    const preserveIds = this.scope.preserve;
     const changeIds = selected.map(select => select.conversationId);
     const ids = [...preserveIds, ...changeIds];
     this.store.dispatch(new conversationActions.FilterPlaylist(ids));
@@ -72,7 +77,8 @@ export class ConversationsListComponent implements OnInit, OnChanges {
    * refresh selected rows
    */
   updateSelect(): void {
-    const change = this.getScope().change.join(',');
+    this.scope = this.getScope();
+    const change = this.scope.change.join(',');
     const selected = this.rows.filter(row =>
       change.includes(row.conversationId)
     );

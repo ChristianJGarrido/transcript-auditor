@@ -1,7 +1,17 @@
-<div class="row no-gutters">
+<div *ngIf="playlistSelect" class="row no-gutters">
   <app-cycle-items [type]="'playlist'" [index]="findIndex()" [items]="playlistIds"></app-cycle-items>
+  <div class="col-auto" matTooltip="Manage Playlists">
+    <i class="far fa-play-circle"></i>
+  </div>
   <h5 class="col-auto card-title m-0 ml-2 mr-2">Playlist ({{findIndex() + 1}} of {{playlistIds.length}})</h5>
-  <span class="col-auto font-secondary">{{playlistSelect.name}} &nbsp; | &nbsp;&nbsp;</span>
-  <span class="font-secondary"> Created: {{playlistSelect.createdAt | date:'medium'}} &nbsp; &nbsp; Updated: {{playlistSelect.lastUpdateAt | date:'medium'}}
-  </span>
+  <span class="col-auto font-primary">"{{playlistSelect.name}}" &nbsp; &nbsp;</span>
+  <span class="font-tertiary pt-1"> Contains {{playlistSelect.conversationIds.length}} conversations &nbsp; | &nbsp;</span>
+  <span class="font-tertiary pt-1"> Updated: {{playlistSelect.lastUpdateAt | date:'medium'}}</span>
+</div>
+
+<div *ngIf="!playlistSelect" class="row no-gutters">
+  <h5 class="col-auto card-title m-0 ml-2 mr-2">Select Playlist</h5>
+  <div class="col-auto" matTooltip="Manage Playlists">
+    <i class="far fa-play-circle"></i>
+  </div>
 </div>

@@ -19,6 +19,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   conversations$: Observable<ConversationModel[]>;
   conversationState$: Observable<fromConversation.State>;
   playlists$: Observable<PlaylistModel[]>;
+  playlistState$: Observable<fromPlaylist.State>;
   playlistSelect$: Observable<PlaylistModel>;
 
   constructor(private store: Store<StoreModel>) {}
@@ -31,6 +32,7 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.conversationState$ = this.store.select(fromConversation.getState);
 
     this.playlists$ = this.store.select(fromPlaylist.selectAll);
+    this.playlistState$ = this.store.select(fromPlaylist.getState);
     this.playlistSelect$ = this.store.select(fromPlaylist.selectOne);
   }
 

@@ -9,6 +9,7 @@ import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
 import * as playlistActions from '../../../shared/store/playlist/playlist.actions';
+import * as fromPlaylist from '../../../shared/store/playlist/playlist.reducer';
 
 import {
   IMultiSelectOption,
@@ -24,9 +25,11 @@ import {
 export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col';
   @Input() playlists: PlaylistModel[];
+  @Input() playlistState: fromPlaylist.State;
   @Input() playlistSelect: PlaylistModel;
   @Input() selected: number;
   @Input() conversationListIds: string[];
+  @Input() scope: { change: string[]; preserve: string[] };
 
   playlistOptions: IMultiSelectOption[] = [];
   playlistSelectIds: string[] = [];
@@ -45,6 +48,41 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
   playlistName = '';
 
   constructor(private store: Store<StoreModel>) {}
+
+  /**
+   * returns true if needs updating
+   * @return {boolean}
+   */
+  needUpdate(): boolean {
+    return this.countUpdate() !== 0;
+  }
+
+  /**
+   * returns the numerical difference between two arrays
+   * @param {string[]} first
+   * @param {string[]} second
+   * @return {number}
+   */
+  checkDifference(first: string[], second: string[]): number {
+    const test = (one: string[], two: string[]) =>
+      one.filter(item => !two.join(',').includes(item));
+    const testFirst = test(first, second).length;
+    const testSecond = test(second, first).length;
+    return testFirst + testSecond;
+  }
+
+  /**
+   * counts the difference for updating
+   * @return {number}
+   */
+  countUpdate(): number {
+    if (this.playlistSelect) {
+      const scope = [...this.scope.change, ...this.scope.preserve];
+      const saved = this.playlistSelect.conversationIds;
+      return this.checkDifference(scope, saved);
+    }
+    return 0;
+  }
 
   /**
    * Creates a new playlist with a new name
@@ -79,15 +117,16 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
    * @return {IMultiSelectOption[]}
    */
   updateOptions(): IMultiSelectOption[] {
-    return [
-      { id: null, name: 'Create new' },
-      { id: 'label', name: 'Select Existing', isLabel: true },
-      ...this.playlists,
-    ];
+    const options = this.playlists.length
+      ? [
+          { id: 'label', name: 'Select Existing', isLabel: true },
+          ...this.playlists,
+        ]
+      : [];
+    return [{ id: null, name: 'Create new Playlist' }, ...options];
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngOnChanges(): void {
     this.playlistOptions = this.updateOptions();

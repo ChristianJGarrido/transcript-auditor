@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <div *ngIf="(playlistSelect$ | async)" class="row mt-2">
+  <div class="row mt-2">
     <div class="col">
       <app-conversation-playlist [playlistState]="(playlistState$ | async)" [playlistIds]="(playlistIds$ | async)" [playlistSelect]="(playlistSelect$ | async)"></app-conversation-playlist>
     </div>

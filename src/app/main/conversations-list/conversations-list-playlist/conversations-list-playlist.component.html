@@ -2,20 +2,24 @@
   <div class="col">
     <div class="input-group">
 
-      <span class="font-primary mt-1 mr-1">Playlist</span>
-
       <!-- select playlist -->
-      <ss-multiselect-dropdown (dropdownClosed)="selectPlaylist()" [settings]="playlistSettings" [texts]="playlistTexts" [options]="playlistOptions" [ngModel]="playlistSelectIds"></ss-multiselect-dropdown>
+      <ss-multiselect-dropdown (dropdownClosed)="selectPlaylist()" [settings]="playlistSettings" [texts]="playlistTexts" [options]="playlistOptions"
+        [ngModel]="playlistSelectIds"></ss-multiselect-dropdown>
 
       <!-- update playlist -->
       <span class="input-group-btn">
-        <button *ngIf="playlistSelectIds[0] !== null" (click)="updatePlaylist()" type="button" class="btn btn-sm btn-outline-warning">Update</button>
+        <button *ngIf="playlistSelect && needUpdate()" [class.disabled]="playlistState.updating" (click)="updatePlaylist()" type="button" class="btn btn-sm btn-success">
+          {{playlistState.updating ? 'Updating...' : 'Update '+countUpdate()+' conversations'}}
+        </button>
       </span>
 
       <!-- create new playlist button -->
-      <input *ngIf="playlistSelectIds[0] === null" [(ngModel)]="playlistName" type="text" class="form-control form-control-sm" placeholder="Enter name">
+      <input *ngIf="!playlistSelect" [(ngModel)]="playlistName" type="text" class="form-control form-control-sm"
+        placeholder="Enter name" (keyup.enter)="createPlaylist()">
       <span class="input-group-btn">
-        <button *ngIf="playlistSelectIds[0] === null" (click)="createPlaylist()" type="button" class="btn btn-sm btn-outline-success">Create</button>
+        <button *ngIf="!playlistSelect" (click)="createPlaylist()" [class.disabled]="playlistState.loading" type="button" class="btn btn-sm btn-outline-success">
+          {{playlistState.loading ? 'Creating...' : 'Create'}}
+        </button>
       </span>
 
     </div>
