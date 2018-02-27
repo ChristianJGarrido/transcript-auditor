@@ -62,7 +62,7 @@ export class ConversationAssessmentSummaryComponent
           return prev + curr.score;
         }, 0)) ||
       0;
-    const personality = Math.round(score / descriptors.length * 100) / 100;
+    const personality = score / (descriptors.length * 5);
     return personality > 0 ? `+${personality}` : `${personality}`;
   }
 

@@ -5,7 +5,7 @@
         <div class="row no-gutters">
           <h5 class="card-title col-auto pr-2">Summary</h5>
           <app-conversation-assessment-summary-stars [id]="assessmentSelect.id" [rating]="assessmentSelect.rating"></app-conversation-assessment-summary-stars>
-          <button class="btn btn-outline-secondary btn-sm col-12 mt-2" (click)="openDialog()">Personality {{calculatePersonality()}}</button>
+          <button class="btn btn-outline-secondary btn-sm col-12 mt-2" (click)="openDialog()">Personality {{calculatePersonality() | percent}}</button>
         </div>
       </div>
       <div class="col">
