@@ -12,8 +12,7 @@
   overflow: auto;
   height: calc(100vh - 525px);
 
-  border-top: 1px thin grey;
-  -webkit-box-shadow: inset 0 20px 20px -20px rgba(0,0,0,0.2);
-  -moz-box-shadow: inset 0 20px 20px -20px rgba(0,0,0,0.2);
-  box-shadow: inset 0 20px 20px -20px rgba(0,0,0,0.2);
+  -webkit-box-shadow: inset 0 24px 5px -22px rgba(0,0,0,0.2);
+  -moz-box-shadow: inset 0 24px 5px -22px rgba(0,0,0,0.2);
+  box-shadow: inset 0 24px 5px -22px rgba(0,0,0,0.2);
 }
