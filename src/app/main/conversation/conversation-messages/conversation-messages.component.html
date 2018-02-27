@@ -1,3 +1,4 @@
+<div id="test"></div>
 <div class="card mr-1">
   <div class="card-body">
     <div class="row no-gutters">
@@ -12,11 +13,8 @@
       </span>
     </span>
 
-    <!-- No conversation message -->
-    <app-no-results [results]="conversationSelect" [messageSecondary]="'Select a conversation'"></app-no-results>
-
     <!-- Message rows -->
-    <div class="container-fluid p-0">
+    <div class="container-fluid p-0" id="message-container">
       <div class="row" *ngFor="let event of messageEvents" [ngSwitch]="event.eventKey">
         <div class="col-12 pt-2">
           <app-conversation-message-text *ngSwitchCase="'MESSAGE'" [message]="event"></app-conversation-message-text>

@@ -4,7 +4,7 @@ import {
   Output,
   Input,
   HostBinding,
-  OnChanges
+  OnChanges,
 } from '@angular/core';
 import {
   ApiConversationHistoryRecord,
@@ -12,7 +12,7 @@ import {
   ApiConversationConsumerParticipants,
   ApiConversationMessageRecord,
   ApiConversationTransfers,
-  MessageEvent
+  MessageEvent,
 } from '../../../shared/interfaces/interfaces';
 import { ExportService } from '../../../shared/services/export.service';
 import { UtilityService } from '../../../shared/services/utility.service';
@@ -24,9 +24,10 @@ import { WatsonService } from '../../../shared/services/watson.service';
 @Component({
   selector: 'app-conversation-messages',
   templateUrl: './conversation-messages.component.html',
-  styleUrls: ['./conversation-messages.component.css']
+  styleUrls: ['./conversation-messages.component.css'],
 })
-export class ConversationMessagesComponent implements OnInit, OnChanges {
+export class ConversationMessagesComponent
+  implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
   @Input() conversations: any[];
   @Input() conversationSelect: any;
@@ -41,7 +42,10 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
 
   // get conversation index
   findIndex(): number {
-    return this.utilityService.findIndex(this.conversationSelect.id, this.conversations);
+    return this.utilityService.findIndex(
+      this.conversationSelect.id,
+      this.conversations
+    );
   }
 
   /**
@@ -75,7 +79,7 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
         text:
           event.messageData &&
           event.messageData.msg &&
-          event.messageData.msg.text
+          event.messageData.msg.text,
       };
     });
     this.exportService.downloadCsvFile(messages, 'Conversation');
@@ -94,16 +98,16 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
     const events = [
       ...this.conversationSelect.messageRecords.map(item => ({
         ...item,
-        eventKey: 'MESSAGE'
+        eventKey: 'MESSAGE',
       })),
       ...this.conversationSelect.agentParticipants.map(item => ({
         ...item,
-        eventKey: 'PARTICIPANT'
+        eventKey: 'PARTICIPANT',
       })),
       ...this.conversationSelect.transfers.map(item => ({
         ...item,
-        eventKey: 'TRANSFER'
-      }))
+        eventKey: 'TRANSFER',
+      })),
       // ...this.conversation.interactions.map(item => ({
       //   ...item,
       //   timeL: item.interactionTimeL,
@@ -114,9 +118,10 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
     return _.orderBy(events, 'timeL', 'asc');
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 
-  ngOnChanges() {
+  ngOnChanges(): void {
     this.messageEvents = this.prepareMessageEvents();
   }
+
 }

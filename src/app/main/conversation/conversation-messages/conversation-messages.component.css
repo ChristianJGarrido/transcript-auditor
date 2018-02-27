@@ -3,3 +3,8 @@
 .fa-download {
   cursor: pointer;
 }
+
+#message-container {
+  overflow: auto;
+  height: calc(100vh - 390px);
+}

@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card" id="grid-container">
   <div class="card-body">
     <h5 class="card-title">{{type}}
       <span class="text-muted">({{rows.length | number:'1.0-0'}})</span>
@@ -7,7 +7,7 @@
     <!-- conversation grid -->
     <div *ngIf="rows.length" class="row mt-2">
       <div class="col">
-        <ngx-datatable #table style="cursor: pointer;" [limit]="15" class="material" [columnMode]="'auto'" [rowHeight]="30" [headerHeight]="50"
+        <ngx-datatable #table style="cursor: pointer;" [limit]="15" class="material" [columnMode]="'force'" [rowHeight]="30" [headerHeight]="50"
           [selected]="selected" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows" [columns]="columns"
           (select)='onSelect($event)'>
           <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
@@ -18,9 +18,9 @@
               <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" />
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Name"></ngx-datatable-column>
-          <ngx-datatable-column name="ID"></ngx-datatable-column>
-          <ngx-datatable-column name="Created"></ngx-datatable-column>
+          <ngx-datatable-column name="Name" prop="name"></ngx-datatable-column>
+          <ngx-datatable-column name="By" prop="createdBy"></ngx-datatable-column>
+          <ngx-datatable-column name="Date" prop="createdAt"></ngx-datatable-column>
         </ngx-datatable>
       </div>
     </div>

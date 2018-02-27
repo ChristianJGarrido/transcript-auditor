@@ -1,9 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Input,
-  HostBinding,
-} from '@angular/core';
+import { Component, OnInit, Input, HostBinding } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
 import { AssessmentModel } from '../../../shared/store/assessment/assessment.model';
@@ -28,5 +23,5 @@ export class ConversationAssessmentComponent implements OnInit {
     this.store.dispatch(new AssessmentActions.Create());
   }
 
-  ngOnInit() {}
+  ngOnInit(): void {}
 }

@@ -1,0 +1,4 @@
+#grid-container {
+  overflow: auto;
+  height: calc(100vh - 100px);
+}

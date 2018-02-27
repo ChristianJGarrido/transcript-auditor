@@ -4,3 +4,7 @@
 .row-content {
   border-bottom: 0.4px solid rgb(228, 228, 228);
 }
+#qa-container {
+  overflow: auto;
+  height: calc(100vh - 460px);
+}

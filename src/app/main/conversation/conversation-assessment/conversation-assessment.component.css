@@ -1,3 +1,7 @@
 .no-assessment {
   cursor: pointer;
 }
+#no-results-container {
+  overflow: auto;
+  height: calc(100vh - 100px);
+}

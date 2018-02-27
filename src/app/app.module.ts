@@ -55,6 +55,9 @@ import { ConversationMessageParticipantComponent } from './main/conversation/con
 import { ConversationMessageTransferComponent } from './main/conversation/conversation-messages/conversation-message-transfer/conversation-message-transfer.component';
 import { ConversationMessageInteractionComponent } from './main/conversation/conversation-messages/conversation-message-interaction/conversation-message-interaction.component';
 
+import { ConversationPlaylistComponent } from './main/conversation/conversation-playlist/conversation-playlist.component';
+import { ConversationsListPlaylistComponent } from './main/conversations-list/conversations-list-playlist/conversations-list-playlist.component';
+
 // services
 import { AfAuthGuardService } from './shared/services/af-auth-guard.service';
 import { ApiLoginService } from './shared/services/api-login.service';
@@ -99,8 +102,6 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { StarRatingModule } from 'angular-star-rating';
 import 'hammerjs';
-import { ConversationPlaylistComponent } from './main/conversation/conversation-playlist/conversation-playlist.component';
-import { ConversationsListPlaylistComponent } from './main/conversations-list/conversations-list-playlist/conversations-list-playlist.component';
 
 @NgModule({
   declarations: [
