@@ -30,6 +30,7 @@
     "@ngrx/effects": "^5.0.1",
     "@ngrx/entity": "^5.1.0",
     "@ngrx/store": "^5.0.0",
+    "@ngrx/store-devtools": "^5.1.0",
     "@swimlane/ngx-datatable": "^11.1.2",
     "angular-2-dropdown-multiselect": "^1.6.1",
     "angular-star-rating": "^3.0.8",

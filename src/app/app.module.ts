@@ -95,6 +95,7 @@ import { ApiLoginEffects } from './shared/store/api-login/api-login.effects';
 import { AssessmentEffects } from './shared/store/assessment/assessment.effects';
 import { PlaylistEffects } from './shared/store/playlist/playlist.effects';
 import { ConversationEffects } from './shared/store/conversation/conversation.effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 // 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -173,6 +174,10 @@ import 'hammerjs';
       ApiLoginEffects,
       ConversationEffects,
     ]),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+      logOnly: environment.production
+    })
   ],
   providers: [
     AfAuthGuardService,
