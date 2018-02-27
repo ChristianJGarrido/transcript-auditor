@@ -37,7 +37,7 @@ export function AssessmentReducer(
     case actions.ADD_ALL:
       return adapter.addAll(action.data, state);
     case actions.SELECT:
-      return { ...state, selectedId: action.id.toString(), loading: false };
+      return { ...state, selectedId: action.id && action.id.toString(), loading: false };
     case actions.ERROR:
       return { ...state, loading: false, updating: false, error: true };
     default:
@@ -58,7 +58,7 @@ export const {
 const getSelectedId = (state: State) => state.selectedId;
 const getFilteredIds = (state: State) => state.filteredIds;
 export const selectId = createSelector(getState, getSelectedId);
-export const filteredIds = createSelector(getState, getFilteredIds);
+export const selectFilteredIds = createSelector(getState, getFilteredIds);
 export const selectOne = createSelector(
   selectEntities,
   selectId,
@@ -66,6 +66,6 @@ export const selectOne = createSelector(
 );
 export const selectFiltered = createSelector(
   selectEntities,
-  filteredIds,
+  selectFilteredIds,
   (entities, ids) => ids.map(id => entities[id])
 );

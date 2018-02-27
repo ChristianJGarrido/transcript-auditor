@@ -3,6 +3,7 @@ import { ConversationModel } from './conversation.model';
 
 export const QUERY = '[Conversation] Query';
 export const SELECT = '[Conversation] Select';
+export const FILTER_PLAYLIST = '[Conversation] Filter by playlist';
 
 export const ADD_ALL = '[Conversation] Add all';
 export const SUCCESS = '[Conversation] Success';
@@ -14,6 +15,10 @@ export class Query implements Action {
 export class Select implements Action {
   readonly type = SELECT;
   constructor(public id: string) {}
+}
+export class FilterPlaylist implements Action {
+  readonly type = FILTER_PLAYLIST;
+  constructor(public ids: string[]) {}
 }
 
 export class AddAll implements Action {
@@ -31,6 +36,7 @@ export class Error implements Action {
 export type ConversationActions =
   | Query
   | Select
+  | FilterPlaylist
   | AddAll
   | Success
   | Error;

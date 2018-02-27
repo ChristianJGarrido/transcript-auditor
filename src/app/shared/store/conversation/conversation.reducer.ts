@@ -9,12 +9,14 @@ export interface State extends EntityState<ConversationModel> {
   updating: boolean;
   error: boolean;
   selectedId: string;
+  playlistIds: string[];
 }
 export const initialState: State = adapter.getInitialState({
   loading: false,
   updating: null,
   error: false,
   selectedId: null,
+  playlistIds: [],
 });
 
 // Reducer
@@ -30,7 +32,9 @@ export function ConversationReducer(
     case actions.ADD_ALL:
       return adapter.addAll(action.data, state);
     case actions.SELECT:
-      return { ...state, selectedId: action.id.toString(), loading: false };
+      return { ...state, selectedId: action.id && action.id.toString(), loading: false };
+    case actions.FILTER_PLAYLIST:
+      return { ...state, playlistIds: action.ids };
     case actions.ERROR:
       return { ...state, loading: false, updating: false, error: true };
     default:
@@ -49,7 +53,9 @@ export const {
 
 // Create custom selectors
 const getSelectedId = (state: State) => state.selectedId;
+const getPlaylistIds = (state: State) => state.playlistIds;
 export const selectId = createSelector(getState, getSelectedId);
+export const selectPlaylistIds = createSelector(getState, getPlaylistIds);
 export const selectOne = createSelector(
   selectEntities,
   selectId,

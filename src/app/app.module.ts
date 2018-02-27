@@ -100,6 +100,7 @@ import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { StarRatingModule } from 'angular-star-rating';
 import 'hammerjs';
 import { ConversationPlaylistComponent } from './main/conversation/conversation-playlist/conversation-playlist.component';
+import { ConversationsListPlaylistComponent } from './main/conversations-list/conversations-list-playlist/conversations-list-playlist.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { ConversationPlaylistComponent } from './main/conversation/conversation-
     AssessmentControlComponent,
     AssessmentSaveComponent,
     ConversationPlaylistComponent,
+    ConversationsListPlaylistComponent,
   ],
   imports: [
     StarRatingModule.forRoot(),

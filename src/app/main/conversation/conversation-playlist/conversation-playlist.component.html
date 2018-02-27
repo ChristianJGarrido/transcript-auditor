@@ -1,5 +1,5 @@
 <div class="row">
     <h5 class="col-auto card-title m-0">Playlist:</h5>
-    <span class="col-auto font-secondary">Great Conversations</span>
-    <app-cycle-items [type]="'playlist'"></app-cycle-items>
+    <app-cycle-items [type]="'playlist'" [index]="findIndex()" [items]="playlists"></app-cycle-items>
+    <span class="col-auto font-secondary">{{playlistSelect.name}}</span>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostBinding } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ApiOptions, ApiIds, ApiSearchSdes } from '../../../shared/interfaces/interfaces';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
@@ -7,7 +7,6 @@ import { Subject } from 'rxjs/Subject';
 import { debounceTime, switchMap } from 'rxjs/operators';
 import { Observable } from 'rxjs/Observable';
 
-// 3rd party
 import {
   IMultiSelectOption,
   IMultiSelectSettings,
@@ -20,6 +19,7 @@ import {
   styleUrls: ['./conversations-list-filter.component.css']
 })
 export class ConversationsListFilterComponent implements OnInit, OnDestroy {
+  @HostBinding('class') class = 'col';
   apiLoading$: BehaviorSubject<boolean>;
 
   filterSub: Subscription;

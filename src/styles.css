@@ -104,8 +104,37 @@ body {
 .card-title {
   font-weight: normal;
 }
+.input-group-addon {
+  padding: 0.5rem 0.75rem;
+  margin-bottom: 0;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.25;
+  color: #464a4c;
+  text-align: center;
+  background-color: #eceeef;
+  border-radius: 0.15rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  white-space: nowrap;
+  vertical-align: middle;
+}
 
-/* drop downs */
+/***********************/
+/* FILTERS & DROPDOWNS */
+/***********************/
+.dropdown-item {
+  font-family: MyriadPro, sans-serif;
+  font-size: 14px;
+  padding: 0.25rem 1rem;
+}
+.dropdown-menu {
+  min-width: 8rem;
+}
+.dropdown-item:active,
+.dropdown-item.active {
+  background: #f8f9fa;
+  color: #5d5e60;
+}
 .dropdown-item > a {
   color: #5d5e60;
 }

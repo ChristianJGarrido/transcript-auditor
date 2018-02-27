@@ -39,17 +39,13 @@ export class CycleItemsComponent implements OnInit {
 
     switch (this.type) {
       case 'conversation':
-        this.store.dispatch(new conversationActions.Select(newId));
-        break;
+        return this.store.dispatch(new conversationActions.Select(newId));
       case 'assessment':
-        this.store.dispatch(new assessmentActions.Select(newId));
-        break;
+        return this.store.dispatch(new assessmentActions.Select(newId));
       case 'playlist':
-        this.store.dispatch(new playlistActions.Select(newId));
-        break;
+        return this.store.dispatch(new playlistActions.Select(newId));
       default:
-        console.log('CYCLE_TYPE_ERROR');
-        break;
+        return console.log('CYCLE_TYPE_ERROR');
     }
   }
 

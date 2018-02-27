@@ -15,7 +15,9 @@ import { FirestoreService } from '../../services/firestore.service';
 import { StoreModel } from '../../../app.store';
 import { Playlist, PlaylistModel } from './playlist.model';
 import * as playlistActions from './playlist.actions';
+import * as conversationActions from '../conversation/conversation.actions';
 import * as fromPlaylist from './playlist.reducer';
+import * as fromConversation from '../conversation/conversation.reducer';
 
 @Injectable()
 export class PlaylistEffects {
@@ -33,7 +35,7 @@ export class PlaylistEffects {
 
   // select after add
   @Effect({ dispatch: false })
-  select$: Observable<Action> = this.actions$
+  add$: Observable<Action> = this.actions$
     .ofType(playlistActions.ADD_ALL)
     .pipe(
       withLatestFrom(
@@ -50,6 +52,24 @@ export class PlaylistEffects {
       })
     );
 
+   // select ids
+   @Effect()
+   select$: Observable<Action> = this.actions$
+     .ofType(playlistActions.SELECT)
+     .pipe(
+       withLatestFrom(
+         this.store.select(fromPlaylist.selectOne),
+        //  this.store.select(fromConversation.selectIds),
+        ),
+       map(([action, playlist]) => {
+          if (playlist) {
+            const ids = playlist.conversationIds;
+            return new conversationActions.FilterPlaylist(ids);
+          }
+          return new conversationActions.FilterPlaylist([]);
+        })
+     );
+
   // create
   @Effect()
   create$: Observable<Action> = this.actions$
@@ -58,21 +78,23 @@ export class PlaylistEffects {
       map((action: playlistActions.Create) => action),
       withLatestFrom(
         this.store.select(state => state.apiLogin),
-        this.store.select(state => state.afLogin)
+        this.store.select(state => state.afLogin),
+        this.store.select(fromConversation.selectPlaylistIds)
       ),
-      switchMap(([action, apiLogin, afLogin]) => {
+      switchMap(async ([action, apiLogin, afLogin, ids]) => {
         const uuid = this.afService.createUUID();
+        const { name } = action;
         const data = {
-          ...new Playlist(uuid, afLogin.email, afLogin.email),
+          ...new Playlist(uuid, name, afLogin.email, afLogin.email, ids),
         };
         const ref = this.afService.getDocument(
           apiLogin.account,
           'playlists',
           data.id
         );
-        return Observable.fromPromise(ref.set(data));
+        await ref.set(data);
+        return new playlistActions.Select(uuid);
       }),
-      map(() => new playlistActions.Success()),
       catchError(err => [new playlistActions.Error(err)])
     );
 
@@ -82,16 +104,25 @@ export class PlaylistEffects {
     .ofType(playlistActions.UPDATE)
     .pipe(
       map((action: playlistActions.Update) => action),
-      withLatestFrom(this.store.select(state => state.apiLogin)),
+      withLatestFrom(
+        this.store.select(state => state.apiLogin),
+        this.store.select(state => state.afLogin)
+      ),
       debounceTime(1000),
       distinctUntilChanged(),
-      switchMap(([data, apiLogin]) => {
+      switchMap(([data, apiLogin, afLogin]) => {
         const ref = this.afService.getDocument(
           apiLogin.account,
           'playlists',
           data.id
         );
-        return Observable.fromPromise(ref.update(data.changes));
+        return Observable.fromPromise(
+          ref.update({
+            lastUpdateBy: afLogin.email,
+            lastUpdateAt: new Date(),
+            ...data.changes,
+          })
+        );
       }),
       map(() => new playlistActions.Success()),
       catchError(err => [new playlistActions.Error(err)])

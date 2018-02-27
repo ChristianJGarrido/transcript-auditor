@@ -1,7 +1,7 @@
 <div class="container-fluid">
-  <div class="row mt-2">
+  <div *ngIf="(playlistSelect$ | async)" class="row mt-2">
     <div class="col">
-      <app-conversation-playlist></app-conversation-playlist>
+      <app-conversation-playlist [playlistState]="(playlistState$ | async)" [playlists]="(playlists$ | async)" [playlistSelect]="(playlistSelect$ | async)"></app-conversation-playlist>
     </div>
   </div>
   <div class="row no-gutters mt-2">

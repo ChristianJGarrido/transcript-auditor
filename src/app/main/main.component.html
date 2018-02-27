@@ -3,10 +3,12 @@
 
 <mat-sidenav-container class="main-container">
 
+  <!-- {{}} -->
+
   <router-outlet></router-outlet>
 
   <mat-sidenav mode="push" position="start" #sideNavList>
-    <app-conversations-list [conversations]="(conversations$ | async)"></app-conversations-list>
+    <app-conversations-list [playlists]="(playlists$ | async)" [playlistSelect]="(playlistSelect$ | async)" [sideNavList]="sideNavList" [conversations]="(conversations$ | async)" [conversationState]="(conversationState$ | async)"></app-conversations-list>
   </mat-sidenav>
 
 </mat-sidenav-container>

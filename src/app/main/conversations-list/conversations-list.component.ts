@@ -5,52 +5,122 @@ import {
   Input,
   Output,
   EventEmitter,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import { ApiConversationHistoryRecord, ApiOptions } from '../../shared/interfaces/interfaces';
+import {
+  ApiConversationHistoryRecord,
+  ApiOptions,
+} from '../../shared/interfaces/interfaces';
 
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { ConversationModel } from '../../shared/store/conversation/conversation.model';
+import * as fromConversation from '../../shared/store/conversation/conversation.reducer';
+import * as conversationActions from '../../shared/store/conversation/conversation.actions';
+import * as playlistActions from '../../shared/store/playlist/playlist.actions';
+import { Store } from '@ngrx/store';
+import { StoreModel } from '../../app.store';
+import { MatDrawer } from '@angular/material/sidenav';
+import { PlaylistModel } from '../../shared/store/playlist/playlist.model';
 
 @Component({
   selector: 'app-conversations-list',
   templateUrl: './conversations-list.component.html',
-  styleUrls: ['./conversations-list.component.css']
+  styleUrls: ['./conversations-list.component.css'],
 })
 export class ConversationsListComponent implements OnInit, OnChanges {
   @ViewChild('table') table: DatatableComponent;
-  @Input() conversations: ConversationModel[] = [];
-  @Output() selectConversation = new EventEmitter<ConversationModel>();
+  // TODO properly type the conversation inputs
+  @Input() playlists: PlaylistModel[];
+  @Input() playlistSelect: PlaylistModel;
+  @Input() conversations: any[] = [];
+  @Input() sideNavList: MatDrawer;
+  @Input() conversationState: fromConversation.State;
 
+  selected = [];
   rows = [];
   columns = [];
 
-  constructor() {}
+  constructor(private store: Store<StoreModel>) {}
 
   /**
    * selects an individual conversation
    * @param {any} event
    */
-  clickDatatable(event: any): void {
-    // if (event.type === 'click') {
-    //   const conversation = this.apiConversations.find(
-    //     record => record.info.conversationId === event.row.conversationId
-    //   );
-    //   if (conversation) {
-    //     this.selectConversation.emit(conversation);
-    //   }
-    // }
+  selectConversation(event: any): void {
+    if (event.type === 'click') {
+      const id = event.row.conversationId;
+      this.store.dispatch(new conversationActions.Select(id));
+    }
   }
 
-  ngOnInit() {
-    // set columns
-    this.columns = [
-      { prop: 'startTime', name: 'Start', flexGrow: 1, cellClass: 'datatable-cells' },
-      { prop: 'message', name: 'Message', flexGrow: 3 }
-    ];
+  /**
+   * adds conversation to local selected list
+   * @param {any} selected
+   */
+  onSelect({ selected }): void {
+    // update selected
+    this.selected.splice(0, this.selected.length);
+    this.selected = [...selected];
+    // get ids to preserve and change
+    const preserveIds = this.getScope().preserve;
+    const changeIds = selected.map(select => select.conversationId);
+    const ids = [...preserveIds, ...changeIds];
+    this.store.dispatch(new conversationActions.FilterPlaylist(ids));
   }
 
-  ngOnChanges() {
-    this.rows = this.conversations.slice(0);
+  /**
+   * refresh selected rows
+   */
+  updateSelect(): void {
+    const change = this.getScope().change.join(',');
+    const selected = this.rows.filter(row =>
+      change.includes(row.conversationId)
+    );
+    this.selected.splice(0, this.selected.length);
+    this.selected = [...selected];
+  }
+
+  /**
+   * refresh data grid rows
+   * @return {any[]}
+   */
+  updateRows(): any[] {
+    return this.conversations.map(conv => {
+      const record = conv.messageRecords && conv.messageRecords[0];
+      const data = record && record.messageData;
+      const message = (data && data.msg && data.msg.text) || '';
+      return {
+        ...conv.info,
+        message,
+      };
+    });
+  }
+
+  /**
+   * gets ids to preserve and change
+   * preserved ids are ids not visible in data rows
+   */
+  getScope(): { preserve: string[]; change: string[] } {
+    const ids = this.conversationState.playlistIds;
+    const idsToChange = this.rows.map(row => row.conversationId).join(',');
+    return ids.reduce(
+      (prev, id) => {
+        const scope = idsToChange.includes(id) ? 'change' : 'preserve';
+        return {
+          ...prev,
+          [scope]: [...prev[scope], id],
+        };
+      },
+      { preserve: [], change: [] }
+    );
+  }
+
+  ngOnInit(): void {}
+
+  ngOnChanges(): void {
+    // refresh rows
+    this.rows = this.updateRows();
+    // update selected
+    this.updateSelect();
   }
 }

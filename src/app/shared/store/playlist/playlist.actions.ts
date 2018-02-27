@@ -34,6 +34,7 @@ export class Error implements Action {
 
 export class Create implements Action {
   readonly type = CREATE;
+  constructor(public name: string) {}
 }
 export class Delete implements Action {
   readonly type = DELETE;
