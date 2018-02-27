@@ -69,7 +69,7 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
   /**
    * Selects an existing playlist
    */
-  selectPlaylist(event): void {
+  selectPlaylist(): void {
     const id = this.playlistSelectIds[0];
     this.store.dispatch(new playlistActions.Select(id));
   }
