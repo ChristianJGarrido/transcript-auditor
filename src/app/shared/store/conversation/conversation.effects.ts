@@ -44,7 +44,7 @@ export class ConversationEffects {
       switchMap(([action, apiLogin]) => {
         const options = action.options;
         const msgHistReq = this.generateRequest(true, apiLogin, options);
-        const engHistReq = this.generateRequest(false, apiLogin, options);
+        const engHistReq = this.generateRequest(false, apiLogin);
         const msgHistObs = this.http.post<MsgHistResponse>(
           msgHistReq.url,
           msgHistReq.body,
