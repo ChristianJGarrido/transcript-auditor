@@ -9,14 +9,14 @@ export interface State extends EntityState<AssessmentModel> {
   updating: boolean;
   error: boolean;
   selectedId: string;
-  filteredIds: string[];
+  conversationIds: string[];
 }
 export const initialState: State = adapter.getInitialState({
   loading: false,
   updating: null,
   error: false,
   selectedId: null,
-  filteredIds: [],
+  conversationIds: [],
 });
 
 // Reducer
@@ -25,8 +25,8 @@ export function AssessmentReducer(
   action: actions.AssessmentActions
 ): State {
   switch (action.type) {
-    case actions.FILTER:
-    return { ...state, filteredIds: action.data };
+    case actions.FILTER_CONVERSATION:
+    return { ...state, conversationIds: action.data };
     case actions.CREATE:
     case actions.DELETE:
       return { ...state, loading: true, error: false };
@@ -56,16 +56,16 @@ export const {
 
 // Create custom selectors
 const getSelectedId = (state: State) => state.selectedId;
-const getFilteredIds = (state: State) => state.filteredIds;
+const getConversationIds = (state: State) => state.conversationIds;
 export const selectId = createSelector(getState, getSelectedId);
-export const selectFilteredIds = createSelector(getState, getFilteredIds);
+export const selectConversationIds = createSelector(getState, getConversationIds);
 export const selectOne = createSelector(
   selectEntities,
   selectId,
   (entities, id) => entities[id]
 );
-export const selectFiltered = createSelector(
+export const selectConversation = createSelector(
   selectEntities,
-  selectFilteredIds,
+  selectConversationIds,
   (entities, ids) => ids.map(id => entities[id])
 );

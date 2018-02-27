@@ -2,7 +2,7 @@
   <div class="card-body">
     <div class="row no-gutters justify-content-between">
       <h5 class="card-title col-auto m-0 mr-2">Conversation Assessment
-        <span class="text-muted">({{findIndex() + 1}} of {{assessments.length | number:'1.0-0'}})</span>
+        <span class="text-muted">({{findIndex() + 1}} of {{assessmentConversationIds.length | number:'1.0-0'}})</span>
         <span *ngIf="assessmentSelect && assessmentSelect.isPrivate">
           <i>(PRIVATE)</i>
         </span>
@@ -10,7 +10,7 @@
       <app-assessment-save [updating]="assessmentState.updating"></app-assessment-save>
       <div class="col-auto">
         <div class="row no-gutters">
-          <app-cycle-items [type]="'assessment'" [index]="findIndex()" [items]="assessments"></app-cycle-items>
+          <app-cycle-items [type]="'assessment'" [index]="findIndex()" [items]="assessmentConversationIds"></app-cycle-items>
           <app-assessment-control [assessmentSelect]="assessmentSelect"></app-assessment-control>
         </div>
       </div>

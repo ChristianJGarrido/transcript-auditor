@@ -3,7 +3,7 @@
   <div class="card-body">
     <div class="row no-gutters">
       <h5 class="card-title col-auto">Conversation Transcript</h5>
-      <app-cycle-items *ngIf="conversationSelect" [type]="'conversation'" [index]="findIndex()" [items]="conversations"></app-cycle-items>
+      <app-cycle-items *ngIf="conversationSelect" [type]="'conversation'" [index]="findIndex()" [items]="conversationIds"></app-cycle-items>
     </div>
 
     <!-- Conversation subtitle & download button -->

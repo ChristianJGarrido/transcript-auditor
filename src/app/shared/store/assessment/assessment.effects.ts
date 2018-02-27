@@ -63,9 +63,9 @@ export class AssessmentEffects {
           } else if (!filtered.length) {
             select = [new assessmentActions.Select('')];
           }
-          return [new assessmentActions.Filter(filtered), ...select];
+          return [new assessmentActions.FilterConversation(filtered), ...select];
         }
-        return [new assessmentActions.Filter([]), ...select];
+        return [new assessmentActions.FilterConversation([]), ...select];
       })
     );
 

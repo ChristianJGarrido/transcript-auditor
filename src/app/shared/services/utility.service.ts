@@ -10,7 +10,7 @@ export class UtilityService {
    * @param {any[]} items
    */
   findIndex(id: string, items: any[]): number {
-    const index = items.findIndex(item => item.id === id);
+    const index = items.indexOf(id);
     return index ? index : 0;
   }
 

@@ -1,5 +1,7 @@
-<div class="row">
-    <h5 class="col-auto card-title m-0">Playlist:</h5>
-    <app-cycle-items [type]="'playlist'" [index]="findIndex()" [items]="playlists"></app-cycle-items>
-    <span class="col-auto font-secondary">{{playlistSelect.name}}</span>
+<div class="row no-gutters">
+  <app-cycle-items [type]="'playlist'" [index]="findIndex()" [items]="playlistIds"></app-cycle-items>
+  <h5 class="col-auto card-title m-0 ml-2 mr-2">Playlist ({{findIndex() + 1}} of {{playlistIds.length}})</h5>
+  <span class="col-auto font-secondary">{{playlistSelect.name}} &nbsp; | &nbsp;&nbsp;</span>
+  <span class="font-secondary"> Created: {{playlistSelect.createdAt | date:'medium'}} &nbsp; &nbsp; Updated: {{playlistSelect.lastUpdateAt | date:'medium'}}
+  </span>
 </div>

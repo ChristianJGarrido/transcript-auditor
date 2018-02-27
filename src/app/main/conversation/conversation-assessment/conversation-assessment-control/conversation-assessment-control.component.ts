@@ -11,14 +11,14 @@ import { UtilityService } from '../../../../shared/services/utility.service';
 export class ConversationAssessmentControlComponent implements OnInit {
   @HostBinding('class') class = 'col-12';
   @Input() assessmentState: fromAssessment.State;
-  @Input() assessments: AssessmentModel[];
   @Input() assessmentSelect: AssessmentModel;
+  @Input() assessmentConversationIds: string[]|number[];
 
   constructor(private utilityService: UtilityService) { }
 
   // get conversation index
   findIndex(): number {
-    return this.utilityService.findIndex(this.assessmentSelect.id, this.assessments);
+    return this.utilityService.findIndex(this.assessmentSelect.id, this.assessmentConversationIds);
   }
 
   ngOnInit() {

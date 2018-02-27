@@ -29,7 +29,8 @@ import { WatsonService } from '../../../shared/services/watson.service';
 export class ConversationMessagesComponent
   implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
-  @Input() conversations: any[];
+  @Input() conversationIds: any[];
+  @Input() conversationPlaylistIds: any[];
   @Input() conversationSelect: any;
 
   messageEvents: any[] = [];
@@ -44,7 +45,7 @@ export class ConversationMessagesComponent
   findIndex(): number {
     return this.utilityService.findIndex(
       this.conversationSelect.id,
-      this.conversations
+      this.conversationIds
     );
   }
 

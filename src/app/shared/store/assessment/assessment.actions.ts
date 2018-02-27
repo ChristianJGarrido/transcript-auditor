@@ -3,7 +3,7 @@ import { AssessmentModel } from './assessment.model';
 
 export const QUERY = '[Assessment] Query';
 export const SELECT = '[Assessment] Select';
-export const FILTER = '[Assessment] Filter';
+export const FILTER_CONVERSATION = '[Assessment] Filter by conversation';
 
 export const CREATE = '[Assessment] Create';
 export const UPDATE = '[Assessment] Update';
@@ -20,8 +20,8 @@ export class Select implements Action {
   readonly type = SELECT;
   constructor(public id: string) {}
 }
-export class Filter implements Action {
-  readonly type = FILTER;
+export class FilterConversation implements Action {
+  readonly type = FILTER_CONVERSATION;
   constructor(public data: string[]) {}
 }
 
@@ -55,7 +55,7 @@ export class Update implements Action {
 export type AssessmentActions =
   | Query
   | Select
-  | Filter
+  | FilterConversation
   | Create
   | Update
   | Delete

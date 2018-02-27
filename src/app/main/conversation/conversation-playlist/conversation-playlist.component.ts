@@ -9,7 +9,7 @@ import { UtilityService } from '../../../shared/services/utility.service';
   styleUrls: ['./conversation-playlist.component.css']
 })
 export class ConversationPlaylistComponent implements OnInit {
-  @Input() playlists: PlaylistModel[];
+  @Input() playlistIds: string[]|number[];
   @Input() playlistSelect: PlaylistModel;
   @Input() playlistState: fromPlaylist.State;
 
@@ -17,7 +17,7 @@ export class ConversationPlaylistComponent implements OnInit {
 
   // get conversation index
   findIndex(): number {
-    return this.utilityService.findIndex(this.playlistSelect.id, this.playlists);
+    return this.utilityService.findIndex(this.playlistSelect.id, this.playlistIds);
   }
 
   ngOnInit() {

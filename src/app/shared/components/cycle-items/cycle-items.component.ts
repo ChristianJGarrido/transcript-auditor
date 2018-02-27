@@ -35,7 +35,7 @@ export class CycleItemsComponent implements OnInit {
       nextIndex = isSafe ? newIndex : safeIndex;
     }
 
-    const newId = this.items[nextIndex].id;
+    const newId = this.items[nextIndex];
 
     switch (this.type) {
       case 'conversation':
