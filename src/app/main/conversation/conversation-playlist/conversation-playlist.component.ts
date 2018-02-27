@@ -2,6 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
 import * as fromPlaylist from '../../../shared/store/playlist/playlist.reducer';
 import { UtilityService } from '../../../shared/services/utility.service';
+import { MatDialog, MatDialogRef } from '@angular/material';
+import { PlaylistManagerComponent } from '../../../shared/components/playlist-manager/playlist-manager.component';
 
 @Component({
   selector: 'app-conversation-playlist',
@@ -12,8 +14,19 @@ export class ConversationPlaylistComponent implements OnInit {
   @Input() playlistIds: string[]|number[];
   @Input() playlistSelect: PlaylistModel;
   @Input() playlistState: fromPlaylist.State;
+  dialogRef: MatDialogRef<PlaylistManagerComponent>;
 
-  constructor(private utilityService: UtilityService) { }
+  constructor(private utilityService: UtilityService, public dialog: MatDialog) { }
+
+  /**
+   * Opens the material dialog modal
+   */
+  openDialog(): void {
+    console.log('hello');
+    this.dialogRef = this.dialog.open(PlaylistManagerComponent, {
+      maxWidth: 400,
+    });
+  }
 
   // get conversation index
   findIndex(): number {

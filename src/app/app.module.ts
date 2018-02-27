@@ -22,6 +22,7 @@ import { MessageByComponent } from './shared/components/message-by/message-by.co
 import { CycleItemsComponent } from './shared/components/cycle-items/cycle-items.component';
 import { AssessmentControlComponent } from './shared/components/assessment-control/assessment-control.component';
 import { AssessmentSaveComponent } from './shared/components/assessment-save/assessment-save.component';
+import { PlaylistManagerComponent } from './shared/components/playlist-manager/playlist-manager.component';
 
 // assessments
 import { AssessmentsComponent } from './main/assessments/assessments.component';
@@ -141,6 +142,7 @@ import 'hammerjs';
     AssessmentSaveComponent,
     ConversationPlaylistComponent,
     ConversationsListPlaylistComponent,
+    PlaylistManagerComponent,
   ],
   imports: [
     StarRatingModule.forRoot(),
@@ -176,8 +178,8 @@ import 'hammerjs';
     ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,
-      logOnly: environment.production
-    })
+      logOnly: environment.production,
+    }),
   ],
   providers: [
     AfAuthGuardService,
@@ -187,7 +189,11 @@ import 'hammerjs';
     FirestoreService,
     UtilityService,
   ],
-  entryComponents: [ModalComponent, ConversationAssessmentSummarySliderComponent],
+  entryComponents: [
+    ModalComponent,
+    ConversationAssessmentSummarySliderComponent,
+    PlaylistManagerComponent,
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
