@@ -1,8 +1,13 @@
 <div class="card">
   <div class="card-body">
-    <h5 class="card-title">Conversation List
-      <span class="text-muted">({{conversations.length | number:'1.0-0'}})</span>
-    </h5>
+    <div class="row">
+      <h5 class="card-title m-0 col">Conversation List
+        <span class="text-muted">({{conversations.length | number:'1.0-0'}})</span>
+      </h5>
+      <div class="col-1" (click)="sideNavList.close()">
+        <i class="far fa-times" aria-hidden="true"></i>
+      </div>
+    </div>
 
     <!-- conversation filters -->
     <div class="row">
@@ -11,7 +16,8 @@
 
     <!-- playlist control -->
     <div class="row mt-2">
-      <app-conversations-list-playlist [selected]="selected.length" [playlistSelect]="playlistSelect" [conversationListIds]="conversationState.playlistIds" [playlists]="playlists"></app-conversations-list-playlist>
+      <app-conversations-list-playlist [selected]="selected.length" [playlistSelect]="playlistSelect" [conversationListIds]="conversationState.playlistIds"
+        [playlists]="playlists"></app-conversations-list-playlist>
     </div>
 
     <!-- conversation grid -->

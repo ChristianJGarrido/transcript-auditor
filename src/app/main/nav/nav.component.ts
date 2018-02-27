@@ -12,10 +12,14 @@ export class NavComponent implements OnInit {
   constructor() { }
 
   /**
-   * opens conversation list panel
+   * toggles conversation list panel open or closed
    */
-  openSideNavList(): void {
-    this.sideNavList.open();
+  toggleSideNavList(): void {
+    if (this.sideNavList.opened) {
+      this.sideNavList.close();
+    } else {
+      this.sideNavList.open();
+    }
   }
 
   ngOnInit() {
