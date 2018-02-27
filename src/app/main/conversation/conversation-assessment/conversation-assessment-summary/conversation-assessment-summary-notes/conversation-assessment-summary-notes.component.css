@@ -1,0 +1,7 @@
+#text-container {
+  display: flex;
+  height: 100px
+}
+textarea {
+  flex: 1; /* consume available width */
+}

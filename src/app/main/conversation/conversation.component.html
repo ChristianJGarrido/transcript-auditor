@@ -7,7 +7,7 @@
   <div class="row no-gutters mt-2">
 
     <!-- Conversation view -->
-    <div *ngIf="(conversationSelect$ | async)" class="col-12 col-md-5 pr-2">
+    <div *ngIf="(conversationSelect$ | async)" class="col-12 col-md-5 pr-md-2">
       <div class="row no-gutters">
         <app-conversation-stats [conversationSelect]="(conversationSelect$ | async)"></app-conversation-stats>
       </div>
@@ -17,14 +17,14 @@
     </div>
 
     <!-- No results -->
-    <div *ngIf="!(conversationSelect$ | async)" class="col-12 col-md-5 pr-2">
+    <div *ngIf="!(conversationSelect$ | async)" class="col-12 col-md-5 pr-md-2">
       <div class="card no-assessment" id="no-results-container">
         <app-no-results messageSecondary="No conversation selected"></app-no-results>
       </div>
     </div>
 
     <!-- Assessment view -->
-    <div class="col-12 col-md-7">
+    <div class="col-12 col-md-7 mt-2 mt-md-0">
       <div class="row no-gutters">
         <app-conversation-assessment [assessmentState]="(assessmentState$ | async)" [assessments]="(assessments$ | async)" [assessmentSelect]="(assessmentSelect$ | async)"></app-conversation-assessment>
       </div>

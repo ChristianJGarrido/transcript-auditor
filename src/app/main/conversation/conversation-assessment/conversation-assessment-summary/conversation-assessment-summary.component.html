@@ -1,7 +1,7 @@
 <div class="card" [class.loading-opacity]="assessmentState.loading">
   <div class="card-body">
     <div class="row no-gutters">
-      <div class="col-4 pr-2">
+      <div class="col-4 col-md-3 col-lg-2 pr-md-2">
         <div class="row no-gutters">
           <h5 class="card-title col-auto pr-2">Summary</h5>
           <app-assessment-save [updating]="assessmentState.updating"></app-assessment-save>
@@ -9,7 +9,7 @@
           <button class="btn btn-outline-secondary btn-sm col-12 mt-2" (click)="openDialog()">Personality {{calculatePersonality()}}</button>
         </div>
       </div>
-      <div class="col-8">
+      <div class="col">
         <app-conversation-assessment-summary-notes [id]="assessmentSelect.id" [note]="assessmentSelect.note"></app-conversation-assessment-summary-notes>
       </div>
     </div>
