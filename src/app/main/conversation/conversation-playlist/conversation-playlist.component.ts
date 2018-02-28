@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
 import * as fromPlaylist from '../../../shared/store/playlist/playlist.reducer';
+import * as fromAssessment from '../../../shared/store/assessment/assessment.reducer';
 import { UtilityService } from '../../../shared/services/utility.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { PlaylistManagerComponent } from '../../../shared/components/playlist-manager/playlist-manager.component';
@@ -11,6 +12,7 @@ import { PlaylistManagerComponent } from '../../../shared/components/playlist-ma
   styleUrls: ['./conversation-playlist.component.css']
 })
 export class ConversationPlaylistComponent implements OnInit {
+  @Input() assessmentState: fromAssessment.State;
   @Input() playlistIds: string[]|number[];
   @Input() playlistSelect: PlaylistModel;
   @Input() playlistState: fromPlaylist.State;

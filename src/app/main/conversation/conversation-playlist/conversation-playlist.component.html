@@ -12,7 +12,9 @@
   <div class="col" *ngIf="playlistSelect">
     <div class="row no-gutters">
       <span class="col-auto font-primary">"{{playlistSelect.name}}" &nbsp; &nbsp;</span>
-      <span class="col-auto font-tertiary pt-1"> Contains {{playlistSelect.conversationIds.length}} conversations &nbsp; | &nbsp;</span>
+      <span class="col-auto font-tertiary pt-1"> Contains
+        <strong>{{playlistSelect.conversationIds.length}} conversations</strong> and
+        <strong>{{assessmentState.idsByPlaylist.length}} assessments</strong> &nbsp; | &nbsp;</span>
       <span class="col-auto font-tertiary pt-1"> Updated: {{playlistSelect.lastUpdateAt | date:'short'}}</span>
     </div>
   </div>
