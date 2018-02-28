@@ -109,7 +109,7 @@ export class ConversationEffects {
         this.store.select(fromConversation.selectIds),
         this.store.select(fromConversation.selectPlaylistIds)
       ),
-      map(([action, selectId, allIds, playlistIds]) => {
+      map(([action, selectId, selectIds, playlistIds]) => {
         // check if current selected exists in new playlist
         const existsInPlaylist = playlistIds.includes(selectId);
         if (!existsInPlaylist && playlistIds.length) {
@@ -117,7 +117,8 @@ export class ConversationEffects {
           const id = playlistIds[0];
           return new conversationActions.Select(id.toString());
         }
-        return new conversationActions.Select(allIds[0].toString());
+        const newId = selectId || selectIds[0].toString();
+        return new conversationActions.Select(newId);
       })
     );
 
