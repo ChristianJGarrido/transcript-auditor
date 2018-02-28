@@ -16,8 +16,8 @@ import {
 } from '../../../shared/interfaces/interfaces';
 import { ExportService } from '../../../shared/services/export.service';
 import { UtilityService } from '../../../shared/services/utility.service';
+import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
 
-// 3rd party
 import * as _ from 'lodash';
 import { WatsonService } from '../../../shared/services/watson.service';
 
@@ -26,9 +26,9 @@ import { WatsonService } from '../../../shared/services/watson.service';
   templateUrl: './conversation-messages.component.html',
   styleUrls: ['./conversation-messages.component.css'],
 })
-export class ConversationMessagesComponent
-  implements OnInit, OnChanges {
+export class ConversationMessagesComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
+  @Input() conversationState: fromConversation.State;
   @Input() conversationIds: any[];
   @Input() conversationPlaylistIds: any[];
   @Input() conversationSelect: any;
@@ -41,11 +41,19 @@ export class ConversationMessagesComponent
     private watsonService: WatsonService
   ) {}
 
+  // returns conversation ids
+  getIds(): any[] {
+    if (this.conversationPlaylistIds.length) {
+      return this.conversationPlaylistIds;
+    }
+    return this.conversationIds;
+  }
+
   // get conversation index
   findIndex(): number {
     return this.utilityService.findIndex(
       this.conversationSelect.id,
-      this.conversationIds
+      this.getIds()
     );
   }
 
@@ -124,5 +132,4 @@ export class ConversationMessagesComponent
   ngOnChanges(): void {
     this.messageEvents = this.prepareMessageEvents();
   }
-
 }

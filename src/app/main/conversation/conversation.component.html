@@ -12,14 +12,15 @@
         <app-conversation-stats [conversationSelect]="(conversationSelect$ | async)"></app-conversation-stats>
       </div>
       <div class="row no-gutters pt-2">
-        <app-conversation-messages [conversationIds]="(conversationIds$ | async)" [conversationPlaylistIds]="(conversationPlaylistIds$ | async)" [conversationSelect]="(conversationSelect$ | async)"></app-conversation-messages>
+        <app-conversation-messages [conversationState]="(conversationState$ | async)" [conversationIds]="(conversationIds$ | async)" [conversationPlaylistIds]="(conversationPlaylistIds$ | async)" [conversationSelect]="(conversationSelect$ | async)"></app-conversation-messages>
       </div>
     </div>
 
     <!-- No results -->
     <div *ngIf="!(conversationSelect$ | async)" class="col-12 col-md-5 pr-md-2">
       <div class="card no-assessment" id="no-results-container">
-        <app-no-results messageSecondary="No conversation selected"></app-no-results>
+        <app-no-results *ngIf="!(conversationState$ | async).loading" messageSecondary="No conversation selected"></app-no-results>
+        <app-loading-results *ngIf="(conversationState$ | async).loading" messagePrimary="Loading your conversation..."></app-loading-results>
       </div>
     </div>
 

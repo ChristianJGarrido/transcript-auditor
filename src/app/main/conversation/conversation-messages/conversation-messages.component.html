@@ -1,16 +1,24 @@
-<div class="card mr-md-1">
+<div class="card mr-md-1" [class.loading-opacity]="conversationState.loading">
   <div class="card-body">
-    <div class="row no-gutters justify-content-start">
-      <h5 class="card-title col-auto">Conversation Transcript</h5>
-      <app-cycle-items *ngIf="conversationSelect" [type]="'conversation'" [index]="findIndex()" [items]="conversationIds"></app-cycle-items>
-      <div class="col-auto" matTooltip="Export to CSV" (click)="downloadCsv()">
-        <i class="far fa-download" aria-hidden="true"></i>
+    <div class="row no-gutters justify-content-between">
+      <h5 class="card-title col-auto m-0 mr-2">Conversation Transcript
+        <span class="text-muted">({{findIndex() + 1}} of {{getIds().length | number:'1.0-0'}})</span>
+      </h5>
+      <div class="col-auto">
+        <div class="row no-gutters">
+          <app-cycle-items *ngIf="conversationSelect" [type]="'conversation'" [index]="findIndex()" [items]="getIds()"></app-cycle-items>
+          <div class="col-auto" matTooltip="Export to CSV" (click)="downloadCsv()">
+            <i class="far fa-download" aria-hidden="true"></i>
+          </div>
+        </div>
       </div>
     </div>
 
     <!-- Conversation subtitle & download button -->
     <div class="row">
-      <span class="col font-tertiary">ID: <strong>{{conversationSelect.info.conversationId}}</strong></span>
+      <span class="col font-tertiary">ID:
+        <strong>{{conversationSelect.info.conversationId}}</strong>
+      </span>
     </div>
 
     <!-- Message rows -->

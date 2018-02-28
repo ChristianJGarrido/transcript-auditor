@@ -7,14 +7,12 @@ export const adapter = createEntityAdapter<ConversationModel>();
 export interface State extends EntityState<ConversationModel> {
   loading: boolean;
   updating: boolean;
-  error: boolean;
   selectedId: string;
   playlistIds: string[];
 }
 export const initialState: State = adapter.getInitialState({
   loading: false,
   updating: null,
-  error: false,
   selectedId: null,
   playlistIds: [],
 });
@@ -26,17 +24,20 @@ export function ConversationReducer(
 ): State {
   switch (action.type) {
     case actions.QUERY:
-      return { ...state, loading: true, error: false };
-    case actions.SUCCESS:
-      return { ...state, loading: false, updating: false, error: false };
-    case actions.ADD_ALL:
-      return adapter.addAll(action.data, state);
-    case actions.SELECT:
-      return { ...state, selectedId: action.id && action.id.toString(), loading: false };
-    case actions.FILTER_PLAYLIST:
-      return { ...state, playlistIds: action.ids };
+    case actions.QUERY_CONV:
+      return { ...state, loading: true };
+    case actions.SUCCESS_SELECT:
+    case actions.SUCCESS_ADD:
     case actions.ERROR:
-      return { ...state, loading: false, updating: false, error: true };
+      return { ...state, loading: false, updating: false };
+    case actions.ADD_ONE:
+      return adapter.addOne(action.data, state);
+    case actions.ADD_MANY:
+      return adapter.addMany(action.data, state);
+    case actions.SELECT:
+      return { ...state, selectedId: action.id, loading: false };
+    case actions.FILTER_PLAYLIST:
+      return { ...state, playlistIds: action.ids, loading: false };
     default:
       return state;
   }

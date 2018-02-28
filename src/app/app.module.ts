@@ -82,6 +82,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatNativeDateModule } from '@angular/material';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 // angular fire
 import { AngularFireModule } from 'angularfire2';
@@ -106,6 +107,7 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { StarRatingModule } from 'angular-star-rating';
 import 'hammerjs';
+import { LoadingResultsComponent } from './shared/components/loading-results/loading-results.component';
 
 @NgModule({
   declarations: [
@@ -145,6 +147,7 @@ import 'hammerjs';
     ConversationPlaylistComponent,
     ConversationsListPlaylistComponent,
     PlaylistManagerComponent,
+    LoadingResultsComponent,
   ],
   imports: [
     StarRatingModule.forRoot(),
@@ -165,6 +168,7 @@ import 'hammerjs';
     MatSliderModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

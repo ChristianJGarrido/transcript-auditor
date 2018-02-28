@@ -29,15 +29,17 @@ import {
 } from './conversation.model';
 import * as apiLoginActions from '../api-login/api-login.actions';
 import * as conversationActions from './conversation.actions';
+import * as playlistActions from '../playlist/playlist.actions';
 import * as fromConversation from './conversation.reducer';
+import * as fromPlaylist from '../playlist/playlist.reducer';
 import { ApiLoginModel } from '../api-login/api-login.model';
 import { NotificationService } from '../../services/notification.service';
 
 @Injectable()
 export class ConversationEffects {
-  // query collection
+  // query all
   @Effect()
-  query$: Observable<Action> = this.actions$
+  queryAll$: Observable<Action> = this.actions$
     .ofType<conversationActions.Query>(conversationActions.QUERY)
     .pipe(
       withLatestFrom(this.store.select(state => state.apiLogin)),
@@ -63,42 +65,88 @@ export class ConversationEffects {
             const engHistRecords = this.transformResponse(engHist, false);
             return [...msgHistRecords, ...engHistRecords];
           }),
-          map(data => new conversationActions.AddAll(data)),
-          catchError(err => {
-            if (err.status === 401) {
-              this.notifcationService.openSnackBar('Session expired');
-              this.store.dispatch(new apiLoginActions.NotAuthenticated);
-              return of(new conversationActions.Error(err));
-            } else {
-              const message = err.error && err.error.debugMessage;
-              this.notifcationService.openSnackBar(`Error: ${message || err.message}`);
-              return of(new conversationActions.Error(err));
-            }
-          })
+          map(data => new conversationActions.AddMany(data)),
+          catchError(err => this.handleError(err))
         );
       })
     );
 
-  // select after add
+  // query one
+  @Effect()
+  queryOne$: Observable<Action> = this.actions$
+    .ofType(conversationActions.QUERY_CONV)
+    .pipe(
+      withLatestFrom(
+        this.store.select(state => state.apiLogin),
+        this.store.select(fromConversation.selectId)
+      ),
+      debounceTime(500),
+      switchMap(([action, apiLogin, selectId]) => {
+        const msgHistReq = this.generateRequest(true, apiLogin, {
+          conversationId: selectId,
+        });
+        return this.http
+          .post<MsgHistResponse>(
+            msgHistReq.url,
+            msgHistReq.body,
+            msgHistReq.options
+          )
+          .pipe(
+            map(msgHist => this.transformResponse(msgHist, true)),
+            map(data => new conversationActions.AddOne(data[0])),
+            catchError(err => this.handleError(err))
+          );
+      })
+    );
+
+  // filter
+  @Effect()
+  filter$: Observable<Action> = this.actions$
+    .ofType(conversationActions.FILTER_PLAYLIST)
+    .pipe(
+      withLatestFrom(
+        this.store.select(fromConversation.selectId),
+        this.store.select(fromConversation.selectIds),
+        this.store.select(fromConversation.selectPlaylistIds)
+      ),
+      map(([action, selectId, allIds, playlistIds]) => {
+        // check if current selected exists in new playlist
+        const existsInPlaylist = playlistIds.includes(selectId);
+        if (!existsInPlaylist && playlistIds.length) {
+          // doesn't exist and playlist ids are available
+          const id = playlistIds[0];
+          return new conversationActions.Select(id.toString());
+        }
+        return new conversationActions.Select(allIds[0].toString());
+      })
+    );
+
+  // select
   @Effect()
   select$: Observable<Action> = this.actions$
-    .ofType(conversationActions.ADD_ALL)
+    .ofType(conversationActions.SELECT)
     .pipe(
       withLatestFrom(
         this.store.select(fromConversation.selectOne),
-        this.store.select(fromConversation.selectIds)
+        this.store.select(fromConversation.selectId)
       ),
-      map(([action, data, ids]) => {
-        if (!data && ids.length) {
-          const index = 0;
-          const id = ids[index];
-          this.store.dispatch(
-            new conversationActions.Select(id && id.toString())
-          );
+      map(([action, conversation, selectId]) => {
+        if (conversation) {
+          return new conversationActions.SuccessSelect();
         }
-        return new conversationActions.Success();
+        return new conversationActions.QueryConv(selectId);
       })
     );
+
+  // success after add
+  @Effect()
+  success$: Observable<Action> = this.actions$
+    .ofType(
+      conversationActions.ADD_ALL,
+      conversationActions.ADD_MANY,
+      conversationActions.ADD_ONE
+    )
+    .pipe(map(() => new conversationActions.SuccessAdd()));
 
   constructor(
     private notifcationService: NotificationService,
@@ -112,7 +160,7 @@ export class ConversationEffects {
    * @param {any} response
    * @param {boolean} msgHist
    */
-  transformResponse(response: any, msgHist: boolean) {
+  transformResponse(response: any, msgHist: boolean): ConversationModel[] {
     const recordProp = msgHist
       ? 'conversationHistoryRecords'
       : 'interactionHistoryRecords';
@@ -164,15 +212,36 @@ export class ConversationEffects {
     const { msgHist, engHistDomain } = domains;
     const domain = messagingMode ? msgHist : engHistDomain;
     const history = messagingMode ? 'messaging_history' : 'interaction_history';
-    const interaction = messagingMode ? 'conversations' : 'interactions';
-    const url = `https://${domain}/${history}/api/account/${account}/${interaction}/search`;
-    const start = this.convertDateToMs();
-    const body = options ? options : { start };
+    const interaction = messagingMode ? 'conversation' : 'interaction';
+    const idParam = messagingMode ? 'conversationId' : 'engagementId';
+    const queryOne = options && options[idParam];
+    const method = `${interaction}s/${queryOne ? interaction + '/' : ''}search`;
+    const url = `https://${domain}/${history}/api/account/${account}/${method}`;
+    const body = options ? options : { start: this.convertDateToMs() };
     const headers = this.getHeaders(bearer);
-    const params: HttpParams = new HttpParams()
-      .set('limit', '100')
-      .set('offset', '0')
-      .set('sort', 'start:desc');
+    const params = queryOne
+      ? null
+      : new HttpParams()
+          .set('limit', '100')
+          .set('offset', '0')
+          .set('sort', 'start:desc');
     return { url, body, options: { headers, params } };
+  }
+
+  /**
+   * handles error from catchError
+   * @param {any} err
+   * @return {Observable<Action>}
+   */
+  handleError(err: any): Observable<Action> {
+    if (err.status === 401) {
+      this.notifcationService.openSnackBar('Session expired');
+      this.store.dispatch(new apiLoginActions.NotAuthenticated());
+      return of(new conversationActions.Error(err));
+    } else {
+      const message = err.error && err.error.debugMessage;
+      this.notifcationService.openSnackBar(`Error: ${message || err.message}`);
+      return of(new conversationActions.Error(err));
+    }
   }
 }

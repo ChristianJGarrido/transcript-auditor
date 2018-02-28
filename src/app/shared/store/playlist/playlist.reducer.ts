@@ -33,7 +33,7 @@ export function PlaylistReducer(
     case actions.ADD_ALL:
       return adapter.addAll(action.data, state);
     case actions.SELECT:
-      return { ...state, selectedId: action.id && action.id.toString(), loading: false };
+      return { ...state, selectedId: action.id, loading: false };
     case actions.ERROR:
       return { ...state, loading: false, updating: false, error: true };
     default:
