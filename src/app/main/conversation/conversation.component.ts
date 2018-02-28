@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AfLoginModel } from '../../shared/store/af-login/af-login.model';
 import { ApiLoginModel } from '../../shared/store/api-login/api-login.model';
@@ -16,6 +16,7 @@ import { ConversationModel } from '../../shared/store/conversation/conversation.
   selector: 'app-conversation',
   templateUrl: './conversation.component.html',
   styleUrls: ['./conversation.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConversationComponent implements OnInit {
   afLogin$: Observable<AfLoginModel>;

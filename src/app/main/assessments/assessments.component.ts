@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { AfLoginModel } from '../../shared/store/af-login/af-login.model';
 import { ApiLoginModel } from '../../shared/store/api-login/api-login.model';
@@ -13,6 +13,7 @@ import { PlaylistModel } from '../../shared/store/playlist/playlist.model';
   selector: 'app-assessments',
   templateUrl: './assessments.component.html',
   styleUrls: ['./assessments.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AssessmentsComponent implements OnInit {
   afLogin$: Observable<AfLoginModel>;
