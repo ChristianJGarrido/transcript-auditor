@@ -66,6 +66,7 @@ import { ExportService } from './shared/services/export.service';
 import { WatsonService } from './shared/services/watson.service';
 import { FirestoreService } from './shared/services/firestore.service';
 import { UtilityService } from './shared/services/utility.service';
+import { NotificationService } from './shared/services/notification.service';
 
 // routing
 import { AppRoutingModule } from './app-routing.module';
@@ -78,8 +79,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatNativeDateModule } from '@angular/material/';
+import { MatNativeDateModule } from '@angular/material';
 import { MatSliderModule } from '@angular/material/slider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 // angular fire
 import { AngularFireModule } from 'angularfire2';
@@ -162,6 +164,7 @@ import 'hammerjs';
     MatNativeDateModule,
     MatSliderModule,
     MatSidenavModule,
+    MatSnackBarModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,
@@ -188,6 +191,7 @@ import 'hammerjs';
     WatsonService,
     FirestoreService,
     UtilityService,
+    NotificationService,
   ],
   entryComponents: [
     ModalComponent,

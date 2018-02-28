@@ -145,7 +145,16 @@ body {
   color: #5d5e60;
 }
 
-/* material */
+/*************/
+/* SNACK BAR */
+/*************/
+.mat-snack-bar-handset {
+  width: auto!important;
+}
+
+/**********/
+/* DIALOG */
+/**********/
 .mat-dialog-container {
   padding: 12px !important;
 }

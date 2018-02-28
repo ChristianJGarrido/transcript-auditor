@@ -31,6 +31,7 @@ import * as apiLoginActions from '../api-login/api-login.actions';
 import * as conversationActions from './conversation.actions';
 import * as fromConversation from './conversation.reducer';
 import { ApiLoginModel } from '../api-login/api-login.model';
+import { NotificationService } from '../../services/notification.service';
 
 @Injectable()
 export class ConversationEffects {
@@ -42,6 +43,7 @@ export class ConversationEffects {
       withLatestFrom(this.store.select(state => state.apiLogin)),
       debounceTime(1000),
       switchMap(([action, apiLogin]) => {
+        this.notifcationService.openSnackBar('Downloading conversations...');
         const options = action.options;
         const msgHistReq = this.generateRequest(true, apiLogin, options);
         const engHistReq = this.generateRequest(false, apiLogin);
@@ -62,7 +64,17 @@ export class ConversationEffects {
             return [...msgHistRecords, ...engHistRecords];
           }),
           map(data => new conversationActions.AddAll(data)),
-          catchError(err => of(new conversationActions.Error(err)))
+          catchError(err => {
+            if (err.status === 401) {
+              this.notifcationService.openSnackBar('Session expired');
+              this.store.dispatch(new apiLoginActions.NotAuthenticated);
+              return of(new conversationActions.Error(err));
+            } else {
+              const message = err.error && err.error.debugMessage;
+              this.notifcationService.openSnackBar(`Error: ${message || err.message}`);
+              return of(new conversationActions.Error(err));
+            }
+          })
         );
       })
     );
@@ -89,6 +101,7 @@ export class ConversationEffects {
     );
 
   constructor(
+    private notifcationService: NotificationService,
     private http: HttpClient,
     private store: Store<StoreModel>,
     private actions$: Actions
