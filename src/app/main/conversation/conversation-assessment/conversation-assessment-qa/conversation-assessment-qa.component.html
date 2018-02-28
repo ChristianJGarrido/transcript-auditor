@@ -25,7 +25,7 @@
               {{item.label}}
             </div>
             <div class="col-auto font-primary">
-              <mat-slider min="0" max="5" step="1" thumbLabel [(ngModel)]="item.score" (change)="saveReview()"></mat-slider>
+              <span class="font-secondary">{{item.score === 0 ? 'N/A' : ''}}</span> <mat-slider min="0" max="5" step="1" thumbLabel [(ngModel)]="item.score" (change)="saveReview()"></mat-slider>
             </div>
           </div>
         </ng-container>

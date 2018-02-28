@@ -1,5 +1,8 @@
-import { Component, OnInit, HostBinding, Input } from '@angular/core';
-import { AssessmentModel, AssessmentQaModel } from '../../../../shared/store/assessment/assessment.model';
+import { Component, OnInit, HostBinding, Input, ChangeDetectionStrategy } from '@angular/core';
+import {
+  AssessmentModel,
+  AssessmentQaModel,
+} from '../../../../shared/store/assessment/assessment.model';
 import * as assessmentActions from '../../../../shared/store/assessment/assessment.actions';
 import * as fromAssessment from '../../../../shared/store/assessment/assessment.reducer';
 import { Store } from '@ngrx/store';
@@ -8,14 +11,15 @@ import { StoreModel } from '../../../../app.store';
 @Component({
   selector: 'app-conversation-assessment-qa',
   templateUrl: './conversation-assessment-qa.component.html',
-  styleUrls: ['./conversation-assessment-qa.component.css']
+  styleUrls: ['./conversation-assessment-qa.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConversationAssessmentQaComponent implements OnInit {
   @HostBinding('class') class = 'col-12';
   @Input() assessmentState: fromAssessment.State;
   @Input() assessmentSelect: AssessmentModel;
 
-  constructor(private store: Store<StoreModel>) { }
+  constructor(private store: Store<StoreModel>) {}
 
   /**
    * calculates the percent score for each qa section
@@ -23,8 +27,19 @@ export class ConversationAssessmentQaComponent implements OnInit {
    * @return {number}
    */
   calculateGroupScore(section: any[]): number {
-    const total = section.reduce((prev, curr) => prev + curr.score, 0);
-    return total / (section.length * 5);
+    const { score, count } = section.reduce(
+      (prev, curr) => {
+        return {
+          score: prev.score + curr.score,
+          count: prev.count + (curr.score > 0 ? 1 : 0),
+        };
+      },
+      {
+        score: 0,
+        count: 0,
+      }
+    );
+    return score / (count * 5);
   }
 
   /**
@@ -33,10 +48,17 @@ export class ConversationAssessmentQaComponent implements OnInit {
    * @return {number}
    */
   calculateTotalScore(qa: AssessmentQaModel[]): number {
-    const total = qa.reduce((prev, curr) => {
-      return prev + this.calculateGroupScore(curr.section);
-    }, 0);
-    return total / qa.length;
+    const { score, count } = qa.reduce(
+      (prev, curr) => {
+        const result = this.calculateGroupScore(curr.section) || 0;
+        return {
+          score: prev.score + result,
+          count: prev.count + (result > 0 ? 1 : 0),
+        };
+      },
+      { score: 0, count: 0 }
+    );
+    return score / count;
   }
 
   /**
@@ -44,14 +66,14 @@ export class ConversationAssessmentQaComponent implements OnInit {
    */
   saveReview(): void {
     const id = this.assessmentSelect.id;
-    this.store.dispatch(new assessmentActions.Update(id, { qa: this.assessmentSelect.qa }));
+    this.store.dispatch(
+      new assessmentActions.Update(id, { qa: this.assessmentSelect.qa })
+    );
   }
 
   trackByFn(index, item) {
     return index;
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
