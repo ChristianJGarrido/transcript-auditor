@@ -30,14 +30,15 @@ export interface AssessmentQaModel {
 }
 
 export class Assessment implements AssessmentModel {
+  date = new Date();
+  createdAt = this.date;
+  lastUpdateAt = this.date;
   constructor(
     public id: string,
     public createdBy: string,
     public lastUpdateBy: string,
     public conversationId: string,
     public isPrivate: boolean = false,
-    public createdAt: Date = new Date(),
-    public lastUpdateAt: Date = new Date(),
     public note: string = '',
     public rating: number = 0,
     public personality: AssessmentPersonalityModel[] = [
