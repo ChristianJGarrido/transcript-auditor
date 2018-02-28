@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { MatDrawer } from '@angular/material/sidenav';
 
 @Component({
@@ -6,8 +6,11 @@ import { MatDrawer } from '@angular/material/sidenav';
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css']
 })
-export class NavComponent implements OnInit {
+export class NavComponent implements OnInit, OnDestroy {
   @Input() sideNavList: MatDrawer;
+
+  clockInterval;
+  time: Date = new Date();
 
   constructor() { }
 
@@ -22,7 +25,12 @@ export class NavComponent implements OnInit {
     }
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    this.clockInterval = setInterval(() => this.time = new Date(), 1000);
+  }
+
+  ngOnDestroy(): void {
+    clearInterval(this.clockInterval);
   }
 
 }
