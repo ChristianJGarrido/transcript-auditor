@@ -13,9 +13,7 @@ import * as fromAssessment from '../../../shared/store/assessment/assessment.red
 export class ConversationAssessmentComponent implements OnInit {
   @HostBinding('class') class = 'col-12';
   @Input() assessmentState: fromAssessment.State;
-  @Input() assessments: AssessmentModel[];
   @Input() assessmentSelect: AssessmentModel;
-  @Input() assessmentConversationIds: string[]|number[];
 
   constructor(private store: Store<StoreModel>) {}
 

@@ -50,9 +50,7 @@ export class ConversationComponent implements OnInit {
     this.conversationPlaylistIds$ = this.store.select(fromConversation.selectPlaylistIds);
 
     this.assessmentState$ = this.store.select(fromAssessment.getState);
-    this.assessments$ = this.store.select(fromAssessment.selectConversation);
     this.assessmentSelect$ = this.store.select(fromAssessment.selectOne);
-    this.assessmentConversationIds$ = this.store.select(fromAssessment.selectConversationIds);
 
     this.playlistState$ = this.store.select(fromPlaylist.getState);
     this.playlists$ = this.store.select(fromPlaylist.selectAll);

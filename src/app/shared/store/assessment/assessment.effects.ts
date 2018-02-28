@@ -72,26 +72,28 @@ export class AssessmentEffects {
   // create
   @Effect()
   create$: Observable<Action> = this.actions$
-    .ofType(assessmentActions.CREATE)
+    .ofType<assessmentActions.Create>(assessmentActions.CREATE)
     .pipe(
-      map((action: assessmentActions.Create) => action),
       withLatestFrom(
         this.store.select(state => state.apiLogin),
         this.store.select(state => state.afLogin),
         this.store.select(fromConversation.selectId)
       ),
       switchMap(async ([action, apiLogin, afLogin, conversationId]) => {
-        const uuid = this.afService.createUUID();
-        const data = {
-          ...new Assessment(uuid, afLogin.email, afLogin.email, conversationId),
-        };
-        const ref = this.afService.getDocument(
-          apiLogin.account,
-          'assessments',
-          data.id
-        );
-        await ref.set(data);
-        return new assessmentActions.Select(uuid);
+        if (conversationId) {
+          const uuid = this.afService.createUUID();
+          const data = {
+            ...new Assessment(uuid, afLogin.email, afLogin.email, conversationId),
+          };
+          const ref = this.afService.getDocument(
+            apiLogin.account,
+            'assessments',
+            data.id
+          );
+          await ref.set(data);
+          return new assessmentActions.Select(uuid);
+        }
+        return new assessmentActions.Select(null);
       }),
       catchError(err => [new assessmentActions.Error(err)])
     );
@@ -99,26 +101,25 @@ export class AssessmentEffects {
   // update
   @Effect()
   update$: Observable<Action> = this.actions$
-    .ofType(assessmentActions.UPDATE)
+    .ofType<assessmentActions.Update>(assessmentActions.UPDATE)
     .pipe(
-      map((action: assessmentActions.Update) => action),
       withLatestFrom(
         this.store.select(state => state.apiLogin),
         this.store.select(state => state.afLogin)
       ),
       debounceTime(1000),
       distinctUntilChanged(),
-      switchMap(([data, apiLogin, afLogin]) => {
+      switchMap(([action, apiLogin, afLogin]) => {
         const ref = this.afService.getDocument(
           apiLogin.account,
           'assessments',
-          data.id
+          action.id
         );
         return Observable.fromPromise(
           ref.update({
             lastUpdateBy: afLogin.email,
             lastUpdateAt: new Date(),
-            ...data.changes,
+            ...action.changes,
           })
         );
       }),
@@ -129,15 +130,14 @@ export class AssessmentEffects {
   // delete
   @Effect()
   delete$: Observable<Action> = this.actions$
-    .ofType(assessmentActions.DELETE)
+    .ofType<assessmentActions.Delete>(assessmentActions.DELETE)
     .pipe(
-      map((action: assessmentActions.Delete) => action.id),
       withLatestFrom(this.store.select(state => state.apiLogin)),
-      switchMap(([id, apiLogin]) => {
+      switchMap(([action, apiLogin]) => {
         const ref = this.afService.getDocument(
           apiLogin.account,
           'assessments',
-          id
+          action.id
         );
         return Observable.fromPromise(ref.delete());
       }),
