@@ -17,7 +17,7 @@ export class ConversationAssessmentControlComponent implements OnInit {
 
   // get conversation index
   findIndex(): number {
-    return this.utilityService.findIndex(this.assessmentSelect.id, this.assessmentState.conversationIds);
+    return this.utilityService.findIndex(this.assessmentSelect.id, this.assessmentState.idsByConversation);
   }
 
   ngOnInit() {

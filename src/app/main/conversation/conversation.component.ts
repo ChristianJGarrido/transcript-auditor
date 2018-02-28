@@ -28,9 +28,7 @@ export class ConversationComponent implements OnInit {
   conversationPlaylistIds$: Observable<string[]>;
 
   assessmentState$: Observable<fromAssessment.State>;
-  assessments$: Observable<AssessmentModel[]>;
   assessmentSelect$: Observable<AssessmentModel>;
-  assessmentConversationIds$: Observable<string[]|number[]>;
 
   playlistState$: Observable<fromPlaylist.State>;
   playlists$: Observable<PlaylistModel[]>;

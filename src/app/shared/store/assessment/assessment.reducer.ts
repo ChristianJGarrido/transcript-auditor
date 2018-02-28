@@ -9,14 +9,16 @@ export interface State extends EntityState<AssessmentModel> {
   updating: boolean;
   error: boolean;
   selectedId: string;
-  conversationIds: string[];
+  idsByConversation: string[];
+  idsByPlaylist: string[];
 }
 export const initialState: State = adapter.getInitialState({
   loading: false,
   updating: null,
   error: false,
   selectedId: null,
-  conversationIds: [],
+  idsByConversation: [],
+  idsByPlaylist: [],
 });
 
 // Reducer
@@ -25,8 +27,12 @@ export function AssessmentReducer(
   action: actions.AssessmentActions
 ): State {
   switch (action.type) {
-    case actions.FILTER_CONVERSATION:
-    return { ...state, conversationIds: action.data };
+    case actions.FILTER:
+      return {
+        ...state,
+        idsByConversation: action.idsByConversation,
+        idsByPlaylist: action.idsByPlaylist,
+      };
     case actions.CREATE:
     case actions.DELETE:
       return { ...state, loading: true, error: false };
@@ -35,9 +41,9 @@ export function AssessmentReducer(
     case actions.SUCCESS:
       return { ...state, loading: false, updating: false, error: false };
     case actions.ADD_ALL:
-      return adapter.addAll(action.data, state);
+      return adapter.addAll(action.assessments, state);
     case actions.SELECT:
-      return { ...state, selectedId: action.id && action.id.toString(), loading: false };
+      return { ...state, selectedId: action.id, loading: false };
     case actions.ERROR:
       return { ...state, loading: false, updating: false, error: true };
     default:
@@ -56,16 +62,9 @@ export const {
 
 // Create custom selectors
 const getSelectedId = (state: State) => state.selectedId;
-const getConversationIds = (state: State) => state.conversationIds;
 export const selectId = createSelector(getState, getSelectedId);
-export const selectConversationIds = createSelector(getState, getConversationIds);
 export const selectOne = createSelector(
   selectEntities,
   selectId,
   (entities, id) => entities[id]
-);
-export const selectConversation = createSelector(
-  selectEntities,
-  selectConversationIds,
-  (entities, ids) => ids.map(id => entities[id])
 );

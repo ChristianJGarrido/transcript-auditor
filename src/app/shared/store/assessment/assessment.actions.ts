@@ -3,7 +3,7 @@ import { AssessmentModel } from './assessment.model';
 
 export const QUERY = '[Assessment] Query';
 export const SELECT = '[Assessment] Select';
-export const FILTER_CONVERSATION = '[Assessment] Filter by conversation';
+export const FILTER = '[Assessment] Filter by conversation and playlist';
 
 export const CREATE = '[Assessment] Create';
 export const UPDATE = '[Assessment] Update';
@@ -20,14 +20,17 @@ export class Select implements Action {
   readonly type = SELECT;
   constructor(public id: string) {}
 }
-export class FilterConversation implements Action {
-  readonly type = FILTER_CONVERSATION;
-  constructor(public data: string[]) {}
+export class Filter implements Action {
+  readonly type = FILTER;
+  constructor(
+    public idsByConversation: string[],
+    public idsByPlaylist: string[]
+  ) {}
 }
 
 export class AddAll implements Action {
   readonly type = ADD_ALL;
-  constructor(public data: AssessmentModel[]) {}
+  constructor(public assessments: AssessmentModel[]) {}
 }
 export class Success implements Action {
   readonly type = SUCCESS;
@@ -46,16 +49,13 @@ export class Delete implements Action {
 }
 export class Update implements Action {
   readonly type = UPDATE;
-  constructor(
-    public id: string,
-    public changes: Partial<AssessmentModel>
-  ) {}
+  constructor(public id: string, public changes: Partial<AssessmentModel>) {}
 }
 
 export type AssessmentActions =
   | Query
   | Select
-  | FilterConversation
+  | Filter
   | Create
   | Update
   | Delete

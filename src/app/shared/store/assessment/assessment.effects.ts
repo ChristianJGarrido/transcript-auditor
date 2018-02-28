@@ -16,8 +16,10 @@ import { StoreModel } from '../../../app.store';
 import { Assessment, AssessmentModel } from './assessment.model';
 import * as assessmentActions from './assessment.actions';
 import * as conversationActions from '../conversation/conversation.actions';
+import * as playlistActions from '../playlist/playlist.actions';
 import * as fromAssessment from './assessment.reducer';
 import * as fromConversation from '../conversation/conversation.reducer';
+import * as fromPlaylist from '../playlist/playlist.reducer';
 
 @Injectable()
 export class AssessmentEffects {
@@ -42,31 +44,38 @@ export class AssessmentEffects {
     .pipe(
       withLatestFrom(
         this.store.select(fromConversation.selectId),
+        this.store.select(fromConversation.selectAll),
         this.store.select(fromAssessment.selectOne),
-        this.store.select(fromAssessment.selectAll)
+        this.store.select(fromAssessment.selectAll),
+        this.store.select(fromPlaylist.selectOne)
       ),
-      switchMap(([action, conversationId, assessmentSelect, assessments]) => {
-        // filter by conversation id
-        let select = [];
-        if (conversationId) {
-          const filtered: string[] = assessments.reduce((prev, curr) => {
-            if (curr.conversationId === conversationId) {
-              return [...prev, curr.id];
-            }
-            return prev;
-          }, []);
+      switchMap(
+        ([
+          action,
+          conversationId,
+          conversations,
+          assessmentSelect,
+          assessments,
+          playlist,
+        ]) => {
+          // filter by conversation id
+          const idsByConversation = conversationId
+            ? this.filterById(assessments, conversationId)
+            : [];
+          // filter by playlist ids
+          const idsByPlaylist = playlist
+            ? this.filterById(assessments, playlist.conversationIds)
+            : [];
+          // prepare filter action
+          const filterAction = new assessmentActions.Filter(idsByConversation, idsByPlaylist);
           // select assessment if none selected
-          if (!assessmentSelect && filtered.length) {
-            const index = 0;
-            const id = filtered[index];
-            select = [new assessmentActions.Select(id && id.toString())];
-          } else if (!filtered.length) {
-            select = [new assessmentActions.Select('')];
-          }
-          return [new assessmentActions.FilterConversation(filtered), ...select];
+          const convId = assessmentSelect && assessmentSelect.conversationId;
+          const match = conversationId === convId;
+          const id = idsByConversation.length && !match ? idsByConversation[0] : null;
+          const select = !match ? [new assessmentActions.Select(id)] : [];
+          return [filterAction, ...select];
         }
-        return [new assessmentActions.FilterConversation([]), ...select];
-      })
+      )
     );
 
   // create
@@ -83,7 +92,12 @@ export class AssessmentEffects {
         if (conversationId) {
           const uuid = this.afService.createUUID();
           const data = {
-            ...new Assessment(uuid, afLogin.email, afLogin.email, conversationId),
+            ...new Assessment(
+              uuid,
+              afLogin.email,
+              afLogin.email,
+              conversationId
+            ),
           };
           const ref = this.afService.getDocument(
             apiLogin.account,
@@ -150,4 +164,10 @@ export class AssessmentEffects {
     private actions$: Actions,
     private afService: FirestoreService
   ) {}
+
+  filterById(assessments: any[], id: string | string[]): string[] {
+    return assessments.reduce((prev, curr) => {
+      return id.includes(curr.conversationId) ? [...prev, curr.id] : prev;
+    }, []);
+  }
 }
