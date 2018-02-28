@@ -22,7 +22,6 @@ export class ConversationPlaylistComponent implements OnInit {
    * Opens the material dialog modal
    */
   openDialog(): void {
-    console.log('hello');
     this.dialogRef = this.dialog.open(PlaylistManagerComponent, {
       maxWidth: 400,
     });

@@ -166,8 +166,6 @@ export class ConversationsListFilterComponent implements OnInit {
       }
     };
 
-    console.log(this.options.start);
-
     this.store.dispatch(new conversationActions.Query(this.options));
 
   }
