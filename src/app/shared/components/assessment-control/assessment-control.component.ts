@@ -13,6 +13,8 @@ export class AssessmentControlComponent implements OnInit {
   @HostBinding('class') class = 'col-auto';
   @Input() assessmentSelect: AssessmentModel;
 
+  confirm = false;
+
   constructor(private store: Store<StoreModel>) { }
 
   // creates a new assessment
@@ -26,6 +28,7 @@ export class AssessmentControlComponent implements OnInit {
     if (id) {
       this.store.dispatch(new AssessmentActions.Delete(id));
     }
+    this.confirm = false;
   }
 
   ngOnInit() {
