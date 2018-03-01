@@ -15,6 +15,7 @@ import { ConversationAssessmentSummarySliderComponent } from './conversation-ass
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../../app.store';
 import { AssessmentModel } from '../../../../shared/store/assessment/assessment.model';
+import { UtilityService } from '../../../../shared/services/utility.service';
 /* tslint:enable:max-line-length */
 
 @Component({
@@ -30,7 +31,11 @@ export class ConversationAssessmentSummaryComponent
 
   dialogRef: MatDialogRef<ConversationAssessmentSummarySliderComponent>;
 
-  constructor(public dialog: MatDialog, private store: Store<StoreModel>) {}
+  constructor(
+    public dialog: MatDialog,
+    private store: Store<StoreModel>,
+    private utilityService: UtilityService
+  ) {}
 
   /**
    * Opens the material dialog modal
@@ -55,15 +60,9 @@ export class ConversationAssessmentSummaryComponent
    * @return {string}
    */
   calculatePersonality(): string {
-    const descriptors = this.assessmentSelect.personality;
-    const score =
-      (descriptors &&
-        descriptors.reduce((prev, curr) => {
-          return prev + curr.score;
-        }, 0)) ||
-      0;
-    const personality = score / (descriptors.length * 5);
-    return personality > 0 ? `+${personality}` : `${personality}`;
+    return this.utilityService.calculatePersonality(
+      this.assessmentSelect.personality
+    );
   }
 
   ngOnInit() {}

@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../../../app.store';
 import * as AssessmentActions from '../../../../../shared/store/assessment/assessment.actions';
 import { Subscription } from 'rxjs/Subscription';
+import { UtilityService } from '../../../../../shared/services/utility.service';
 
 @Component({
   selector: 'app-conversation-assessment-summary-slider',
@@ -15,6 +16,7 @@ export class ConversationAssessmentSummarySliderComponent
   implements OnInit, OnDestroy {
   afterCloseSub: Subscription;
   constructor(
+    private utilityService: UtilityService,
     private store: Store<StoreModel>,
     public dialogRef: MatDialogRef<
       ConversationAssessmentSummarySliderComponent
@@ -30,6 +32,16 @@ export class ConversationAssessmentSummarySliderComponent
     const personality = this.data.personality;
     this.store.dispatch(
       new AssessmentActions.Update(this.data.id, { personality })
+    );
+  }
+
+  /**
+   * Calculates the weighted personality score
+   * @return {string}
+   */
+  calculatePersonality(): string {
+    return this.utilityService.calculatePersonality(
+      this.data.personality
     );
   }
 
