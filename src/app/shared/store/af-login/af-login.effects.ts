@@ -6,6 +6,7 @@ import { of } from 'rxjs/observable/of';
 import { map, switchMap, first, catchError } from 'rxjs/operators';
 
 import * as AfLoginActions from './af-login.actions';
+import * as ApiLoginActions from '../api-login/api-login.actions';
 import { AfLoginState } from './af-login.model';
 
 import {
@@ -14,6 +15,8 @@ import {
 } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
+import { NotificationService } from '../../services/notification.service';
+import { FirebaseError } from '@firebase/util';
 
 @Injectable()
 export class AfLoginEffects {
@@ -54,10 +57,25 @@ export class AfLoginEffects {
             if (user) {
               return new AfLoginActions.Success();
             }
-            await docRef.set({ uid, email, displayName, createdAt: new Date() });
+            await docRef.set({
+              uid,
+              email,
+              displayName,
+              createdAt: new Date(),
+            });
             return new AfLoginActions.Success();
           }),
-          catchError(error => [new AfLoginActions.Error(error)])
+          catchError((error: FirebaseError) => {
+            const message = error.message;
+            this.notificationService.openSnackBar(
+              `Error: ${message || 'permission denied'}`
+            );
+            return [
+              new AfLoginActions.Error(error),
+              new AfLoginActions.Logout(),
+              new ApiLoginActions.NotAuthenticated(false),
+            ];
+          })
         );
       })
     );
@@ -92,7 +110,8 @@ export class AfLoginEffects {
     private actions$: Actions,
     public afStore: AngularFirestore,
     public afAuth: AngularFireAuth,
-    private router: Router
+    private router: Router,
+    private notificationService: NotificationService,
   ) {}
 
   googleLogin(): Promise<any> {

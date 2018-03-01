@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../app.store';
 import * as AfLoginActions from '../shared/store/af-login/af-login.actions';
+import { MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import * as AfLoginActions from '../shared/store/af-login/af-login.actions';
 })
 export class LoginComponent implements OnInit {
 
-  constructor(private store: Store<StoreModel>) {}
+  constructor(private store: Store<StoreModel>, public dialog: MatDialog) {}
 
   /**
    * Login to firebase
@@ -21,5 +22,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.store.dispatch(new AfLoginActions.GetUser());
+    this.dialog.closeAll();
   }
 }

@@ -42,7 +42,7 @@ export class ApiLoginEffects {
         if (bearer) {
           return new ApiLoginActions.Authenticated(user);
         }
-        return new ApiLoginActions.NotAuthenticated();
+        return new ApiLoginActions.NotAuthenticated(true);
       })
     );
 
@@ -75,7 +75,7 @@ export class ApiLoginEffects {
               };
               return new ApiLoginActions.SaveSession(session);
             }
-            return new ApiLoginActions.NotAuthenticated();
+            return new ApiLoginActions.NotAuthenticated(false);
           }),
           catchError(err => [new ApiLoginActions.LoginError(err)])
         );
@@ -120,7 +120,9 @@ export class ApiLoginEffects {
     .pipe(
       map(action => {
         sessionStorage.removeItem('ca_Bearer');
-        setTimeout(() => this.openDialog(), 100);
+        if (action.dialog) {
+          setTimeout(() => this.openDialog(), 100);
+        }
         return Observable.of(null);
       })
     );
@@ -128,14 +130,14 @@ export class ApiLoginEffects {
   constructor(
     private actions$: Actions,
     private http: HttpClient,
-    public dialog: MatDialog,
+    public dialog: MatDialog
   ) {}
 
   // opens material dialog
   openDialog(): void {
     this.dialogRef = this.dialog.open(ModalComponent, {
       maxWidth: 400,
-      position: { top: '5%', right: '5%' }
+      position: { top: '5%', right: '5%' },
     });
   }
 }

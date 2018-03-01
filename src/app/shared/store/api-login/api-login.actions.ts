@@ -29,6 +29,7 @@ export class Authenticated implements Action {
 }
 export class NotAuthenticated implements Action {
   readonly type = NOT_AUTHENTICATED;
+  constructor(public dialog: boolean) {}
 }
 export class LoginError implements Action {
   readonly type = LOGIN_ERROR;

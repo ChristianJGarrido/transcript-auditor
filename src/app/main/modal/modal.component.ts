@@ -47,7 +47,7 @@ export class ModalComponent implements OnInit {
    * Logout of LiveEngage
    */
   lelogout(): void {
-    this.store.dispatch(new ApiLoginActions.NotAuthenticated());
+    this.store.dispatch(new ApiLoginActions.NotAuthenticated(false));
   }
 
   /**

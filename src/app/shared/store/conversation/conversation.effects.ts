@@ -237,7 +237,7 @@ export class ConversationEffects {
   handleError(err: any): Observable<Action> {
     if (err.status === 401) {
       this.notifcationService.openSnackBar('Session expired');
-      this.store.dispatch(new apiLoginActions.NotAuthenticated());
+      this.store.dispatch(new apiLoginActions.NotAuthenticated(false));
       return of(new conversationActions.Error(err));
     } else {
       const message = err.error && err.error.debugMessage;
