@@ -14,13 +14,13 @@ import {
   ApiConversationTransfers,
   MessageEvent,
 } from '../../../shared/interfaces/interfaces';
-import { ExportService } from '../../../shared/services/export.service';
 import { UtilityService } from '../../../shared/services/utility.service';
 import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
 import { AssessmentModel } from '../../../shared/store/assessment/assessment.model';
 
 import * as _ from 'lodash';
 import { WatsonService } from '../../../shared/services/watson.service';
+import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
 
 @Component({
   selector: 'app-conversation-messages',
@@ -34,12 +34,12 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
   @Input() conversationPlaylistIds: any[];
   @Input() conversationSelect: any;
   @Input() assessmentSelect: AssessmentModel;
+  @Input() playlistSelect: PlaylistModel;
 
   messageEvents: any[] = [];
 
   constructor(
     private utilityService: UtilityService,
-    private exportService: ExportService,
     private watsonService: WatsonService
   ) {}
 
@@ -74,26 +74,6 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
           message.messageData.msg.text
       );
     this.watsonService.analyseMessages(messages);
-  }
-
-  /**
-   * Download message data to CSV
-   */
-  downloadCsv() {
-    // prepare message records
-    const messages = this.messageEvents.map(event => {
-      return {
-        event: event.eventKey,
-        sentBy: event.sentBy,
-        agentFullName: event.agentFullName,
-        time: event.time,
-        text:
-          event.messageData &&
-          event.messageData.msg &&
-          event.messageData.msg.text,
-      };
-    });
-    this.exportService.downloadCsvFile(messages, 'Conversation');
   }
 
   /**

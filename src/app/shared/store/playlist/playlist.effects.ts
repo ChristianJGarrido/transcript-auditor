@@ -81,15 +81,15 @@ export class PlaylistEffects {
       switchMap(async ([action, apiLogin, afLogin, conversationIds]) => {
         const uuid = this.afService.createUUID();
         const { name } = action;
-        const data = {
+        const playlist = {
           ...new Playlist(uuid, name, afLogin.email, afLogin.email, conversationIds),
         };
         const ref = this.afService.getDocument(
           apiLogin.account,
           'playlists',
-          data.id
+          playlist.id
         );
-        await ref.set(data);
+        await ref.set(playlist);
         return new playlistActions.Select(uuid);
       }),
       catchError(err => [new playlistActions.Error(err)])
@@ -107,21 +107,19 @@ export class PlaylistEffects {
       ),
       debounceTime(1000),
       distinctUntilChanged(),
-      switchMap(([data, apiLogin, afLogin]) => {
+      switchMap(async ([playlist, apiLogin, afLogin]) => {
         const ref = this.afService.getDocument(
           apiLogin.account,
           'playlists',
-          data.id
+          playlist.id
         );
-        return Observable.fromPromise(
-          ref.update({
+        await ref.update({
             lastUpdateBy: afLogin.email,
             lastUpdateAt: new Date(),
-            ...data.changes,
-          })
-        );
+            ...playlist.changes,
+          });
+        return new playlistActions.Select(playlist.id);
       }),
-      map(() => new playlistActions.Success()),
       catchError(err => [new playlistActions.Error(err)])
     );
 

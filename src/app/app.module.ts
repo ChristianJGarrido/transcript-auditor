@@ -110,6 +110,7 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { StarRatingModule } from 'angular-star-rating';
 import 'hammerjs';
+import { TranscriptControlComponent } from './shared/components/transcript-control/transcript-control.component';
 
 @NgModule({
   declarations: [
@@ -152,6 +153,7 @@ import 'hammerjs';
     LoadingResultsComponent,
     ConversationMessageTextNoteComponent,
     AssessmentsStatsComponent,
+    TranscriptControlComponent,
   ],
   imports: [
     StarRatingModule.forRoot(),

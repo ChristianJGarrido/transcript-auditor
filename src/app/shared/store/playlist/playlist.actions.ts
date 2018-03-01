@@ -22,7 +22,7 @@ export class Select implements Action {
 
 export class AddAll implements Action {
   readonly type = ADD_ALL;
-  constructor(public data: PlaylistModel[]) {}
+  constructor(public playlists: PlaylistModel[]) {}
 }
 export class Success implements Action {
   readonly type = SUCCESS;
