@@ -16,7 +16,7 @@ body {
 .fa-plus-circle,
 .fa-minus-circle,
 .fa-times {
-  color: #b6b6b6;
+  color: #46474a;
   cursor: pointer;
 }
 .fa-check-circle {
@@ -34,7 +34,7 @@ body {
 .fa-minus-circle:hover,
 .fa-times:hover,
 .fa-check-circle:hover {
-  color: black;
+  color: #818181;
 }
 
 /* sprites */
@@ -85,7 +85,7 @@ body {
   font-size: 0.8rem;
 }
 .font-primary {
-  color: black;
+  color: #46474a;
 }
 .font-secondary,
 .font-tertiary,
@@ -118,6 +118,7 @@ body {
 }
 .card-title {
   font-weight: normal;
+  color: #46474a;
 }
 .input-group-addon {
   padding: 0.5rem 0.75rem;

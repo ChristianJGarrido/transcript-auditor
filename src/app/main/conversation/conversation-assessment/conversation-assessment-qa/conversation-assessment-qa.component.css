@@ -8,9 +8,12 @@
 .row-content {
   border-bottom: 0.4px solid rgb(228, 228, 228);
 }
+.row-content:hover {
+  background-color: rgb(247, 247, 247);
+}
 #qa-container {
   overflow: auto;
-  height: calc(100vh - 525px);
+  height: calc(100vh - 472px);
 
   -webkit-box-shadow: inset 0 24px 5px -22px rgba(0,0,0,0.2);
   -moz-box-shadow: inset 0 24px 5px -22px rgba(0,0,0,0.2);
