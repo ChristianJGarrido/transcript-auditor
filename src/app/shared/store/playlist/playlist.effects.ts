@@ -33,25 +33,6 @@ export class PlaylistEffects {
     catchError(err => [new playlistActions.Error(err)])
   );
 
-  // select a playlist after add
-  @Effect()
-  add$: Observable<Action> = this.actions$
-    .ofType(playlistActions.ADD_ALL)
-    .pipe(
-      withLatestFrom(
-        this.store.select(fromPlaylist.selectOne),
-        this.store.select(fromPlaylist.selectIds)
-      ),
-      map(([action, playlist, playlistIds]) => {
-        if (!playlist && playlistIds.length) {
-          const index = 0;
-          const id = playlistIds[index];
-          return new playlistActions.Select(id && id.toString());
-        }
-        return new playlistActions.Success();
-      })
-    );
-
   // get ids associated with selected playlist
   @Effect()
   filter$: Observable<Action> = this.actions$
