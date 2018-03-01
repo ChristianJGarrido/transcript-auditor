@@ -23,7 +23,7 @@ export class CreateUser implements Action {
 }
 export class Authenticated implements Action {
   readonly type = AUTHENTICATED;
-  constructor(public user: AfLoginState) {}
+  constructor(public user: AfLoginState, public navigate: boolean) {}
 }
 export class NotAuthenticated implements Action {
   readonly type = NOT_AUTHENTICATED;

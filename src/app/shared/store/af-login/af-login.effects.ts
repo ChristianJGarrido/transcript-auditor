@@ -28,7 +28,7 @@ export class AfLoginEffects {
       map(auth => {
         if (auth) {
           const user = new AfLoginState(auth.uid, auth.displayName, auth.email);
-          return new AfLoginActions.Authenticated(user);
+          return new AfLoginActions.Authenticated(user, true);
         }
         return new AfLoginActions.NotAuthenticated();
       })
@@ -39,7 +39,9 @@ export class AfLoginEffects {
     .ofType<AfLoginActions.Authenticated>(AfLoginActions.AUTHENTICATED)
     .pipe(
       map(action => {
-        this.router.navigate(['/app']);
+        if (action.navigate) {
+          this.router.navigate(['/app']);
+        }
         return new AfLoginActions.CreateUser(action.user);
       })
     );

@@ -19,7 +19,7 @@ export class AfAuthGuardService implements CanActivate {
     return this.afAuth.authState.map(auth => {
       if (auth) {
         const user = new AfLoginState(auth.uid, auth.displayName, auth.email);
-        this.store.dispatch(new AfLoginActions.Authenticated(user));
+        this.store.dispatch(new AfLoginActions.Authenticated(user, false));
         return true;
       } else {
         this.store.dispatch(new AfLoginActions.NotAuthenticated());
