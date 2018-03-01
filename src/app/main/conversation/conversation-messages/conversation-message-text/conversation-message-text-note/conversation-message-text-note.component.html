@@ -1,0 +1,12 @@
+<table style="height: 100%;">
+  <tbody>
+    <tr>
+      <td *ngIf="!toggle" class="align-middle" (click)="openDialog()">
+        <i class="fal fa-plus-circle fa-2x"></i>
+      </td>
+      <td *ngIf="toggle" class="align-middle" (click)="openDialog()" [matTooltip]="tooltip" matTooltipClass="material-tooltip"  matTooltipPosition="right">
+        <i class="fal fa-check-circle fa-2x"></i>
+      </td>
+    </tr>
+  </tbody>
+</table>

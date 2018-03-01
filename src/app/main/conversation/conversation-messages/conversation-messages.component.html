@@ -7,7 +7,7 @@
       <div class="col-auto">
         <div class="row no-gutters">
           <app-cycle-items *ngIf="conversationSelect" [type]="'conversation'" [index]="findIndex()" [items]="getIds()"></app-cycle-items>
-          <div class="col-auto" matTooltip="Export to CSV" (click)="downloadCsv()">
+          <div class="col-auto" matTooltip="Export to CSV" matTooltipClass="material-tooltip" (click)="downloadCsv()">
             <i class="far fa-download" aria-hidden="true"></i>
           </div>
         </div>

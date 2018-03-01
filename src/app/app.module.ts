@@ -51,6 +51,7 @@ import { ConversationAssessmentControlComponent } from './main/conversation/conv
 // conversation messages
 import { ConversationMessagesComponent } from './main/conversation/conversation-messages/conversation-messages.component';
 import { ConversationMessageTextComponent } from './main/conversation/conversation-messages/conversation-message-text/conversation-message-text.component';
+import { ConversationMessageTextNoteComponent } from './main/conversation/conversation-messages/conversation-message-text/conversation-message-text-note/conversation-message-text-note.component';
 import { ConversationMessageLinkComponent } from './main/conversation/conversation-messages/conversation-message-link/conversation-message-link.component';
 import { ConversationMessageParticipantComponent } from './main/conversation/conversation-messages/conversation-message-participant/conversation-message-participant.component';
 import { ConversationMessageTransferComponent } from './main/conversation/conversation-messages/conversation-message-transfer/conversation-message-transfer.component';
@@ -148,6 +149,7 @@ import { LoadingResultsComponent } from './shared/components/loading-results/loa
     ConversationsListPlaylistComponent,
     PlaylistManagerComponent,
     LoadingResultsComponent,
+    ConversationMessageTextNoteComponent,
   ],
   imports: [
     StarRatingModule.forRoot(),

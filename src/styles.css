@@ -19,6 +19,11 @@ body {
   color: #b6b6b6;
   cursor: pointer;
 }
+.fa-check-circle {
+  color: #11b14e;
+  cursor: pointer;
+}
+
 .fa-play-circle:hover,
 .fa-chevron-up:hover,
 .fa-chevron-down:hover,
@@ -27,7 +32,8 @@ body {
 .fa-download:hover,
 .fa-plus-circle:hover,
 .fa-minus-circle:hover,
-.fa-times:hover {
+.fa-times:hover,
+.fa-check-circle:hover {
   color: black;
 }
 
@@ -86,8 +92,11 @@ body {
 .font-by {
   color: #9c9c9c;
 }
+.font-by.consumer {
+  color: white;
+}
 .font-by {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 .font-agent {
   color: #707070;
@@ -157,6 +166,16 @@ body {
 /**********/
 .mat-dialog-container {
   padding: 12px !important;
+}
+
+/************/
+/* TOOLTIPS */
+/************/
+.material-tooltip {
+  white-space: pre-line;
+  font-family: MyriadPro, sans-serif;
+  color: white;
+  font-size: 12px;
 }
 
 /*

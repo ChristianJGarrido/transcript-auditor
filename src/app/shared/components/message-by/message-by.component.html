@@ -1,8 +1,8 @@
-<div class="row font-by">
+<div class="row no-gutters font-by" [ngClass]="by === 'Consumer' ? 'consumer' : 'agent'">
+  <div class="col-auto mr-2">
+    {{time | date:'shortTime'}}
+  </div>
   <div class="col-auto">
     {{by}}
-  </div>
-  <div class="col">
-    {{time | slice:11:19}}
   </div>
 </div>

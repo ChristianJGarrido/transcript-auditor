@@ -1,7 +1,7 @@
 <div class="row no-gutters">
   <!-- playlist controls -->
   <app-cycle-items *ngIf="playlistSelect" [type]="'playlist'" [index]="findIndex()" [items]="playlistIds"></app-cycle-items>
-  <div class="col-auto" matTooltip="Manage Playlists" (click)="openDialog()">
+  <div class="col-auto" matTooltip="Manage Playlists" matTooltipClass="material-tooltip" (click)="openDialog()">
     <i class="far fa-play-circle"></i>
   </div>
   <!-- playlist title -->

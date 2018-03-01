@@ -1,10 +1,15 @@
-<app-message-by [by]="message.sentBy" [time]="message.time"></app-message-by>
-<div class="row">
-  <div class="col font-primary">
+<div class="row no-gutters">
+  <div class="col-md-10 col-lg-11 font-primary mr-2">
     <div class="card" [ngClass]="message.sentBy === 'Agent' ? 'message-card-agent' : 'message-card-consumer'">
+      <div class="row no-gutters pt-1 pl-2">
+        <div class="col">
+          <app-message-by [by]="message.sentBy" [time]="message.time"></app-message-by>
+        </div>
+      </div>
       <div class="card-body p-2" [ngClass]="message.sentBy === 'Agent' ? 'font-agent' : 'font-consumer'">
         {{message.messageData?.msg?.text}}
       </div>
     </div>
   </div>
+  <app-conversation-message-text-note [messageId]="message.messageId"></app-conversation-message-text-note>
 </div>
