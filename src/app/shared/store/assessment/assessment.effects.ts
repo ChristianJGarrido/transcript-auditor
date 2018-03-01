@@ -67,11 +67,15 @@ export class AssessmentEffects {
             ? this.filterById(assessments, playlist.conversationIds)
             : [];
           // prepare filter action
-          const filterAction = new assessmentActions.Filter(idsByConversation, idsByPlaylist);
+          const filterAction = new assessmentActions.Filter(
+            idsByConversation,
+            idsByPlaylist
+          );
           // select assessment if none selected
           const convId = assessmentSelect && assessmentSelect.conversationId;
           const match = conversationId === convId;
-          const id = idsByConversation.length && !match ? idsByConversation[0] : null;
+          const id =
+            idsByConversation.length && !match ? idsByConversation[0] : null;
           const select = !match ? [new assessmentActions.Select(id)] : [];
           return [filterAction, ...select];
         }
@@ -123,21 +127,19 @@ export class AssessmentEffects {
       ),
       debounceTime(1000),
       distinctUntilChanged(),
-      switchMap(([action, apiLogin, afLogin]) => {
+      switchMap(async ([action, apiLogin, afLogin]) => {
         const ref = this.afService.getDocument(
           apiLogin.account,
           'assessments',
           action.id
         );
-        return Observable.fromPromise(
-          ref.update({
-            lastUpdateBy: afLogin.email,
-            lastUpdateAt: new Date(),
-            ...action.changes,
-          })
-        );
+        await ref.update({
+          lastUpdateBy: afLogin.email,
+          lastUpdateAt: new Date(),
+          ...action.changes,
+        });
+        return new assessmentActions.Success();
       }),
-      map(() => new assessmentActions.Success()),
       catchError(err => [new assessmentActions.Error(err)])
     );
 
@@ -147,15 +149,15 @@ export class AssessmentEffects {
     .ofType<assessmentActions.Delete>(assessmentActions.DELETE)
     .pipe(
       withLatestFrom(this.store.select(state => state.apiLogin)),
-      switchMap(([action, apiLogin]) => {
+      switchMap(async ([action, apiLogin]) => {
         const ref = this.afService.getDocument(
           apiLogin.account,
           'assessments',
           action.id
         );
-        return Observable.fromPromise(ref.delete());
+        await ref.delete();
+        return new assessmentActions.Success();
       }),
-      map(() => new assessmentActions.Success()),
       catchError(err => [new assessmentActions.Error(err)])
     );
 

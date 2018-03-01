@@ -118,7 +118,7 @@ export class PlaylistEffects {
             lastUpdateAt: new Date(),
             ...playlist.changes,
           });
-        return new playlistActions.Select(playlist.id);
+        return new playlistActions.Success();
       }),
       catchError(err => [new playlistActions.Error(err)])
     );
@@ -130,15 +130,15 @@ export class PlaylistEffects {
     .pipe(
       map((action: playlistActions.Delete) => action.id),
       withLatestFrom(this.store.select(state => state.apiLogin)),
-      switchMap(([playlistId, apiLogin]) => {
+      switchMap(async ([playlistId, apiLogin]) => {
         const ref = this.afService.getDocument(
           apiLogin.account,
           'playlists',
           playlistId
         );
-        return Observable.fromPromise(ref.delete());
+        await ref.delete();
+        return new playlistActions.Success();
       }),
-      map(() => new playlistActions.Success()),
       catchError(err => [new playlistActions.Error(err)])
     );
 

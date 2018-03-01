@@ -65,6 +65,9 @@ export class TranscriptControlComponent implements OnInit {
       this.store.dispatch(
         new playlistActions.Update(playlistId, { conversationIds })
       );
+      this.store.dispatch(
+        new conversationActions.FilterPlaylist(conversationIds)
+      );
     }
     this.confirm = false;
   }
