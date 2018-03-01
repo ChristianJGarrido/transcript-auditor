@@ -3,7 +3,7 @@ import { AssessmentModel } from './assessment.model';
 
 export const QUERY = '[Assessment] Query';
 export const SELECT = '[Assessment] Select';
-export const FILTER = '[Assessment] Filter by conversation and playlist';
+export const FILTER = '[Assessment] Filter';
 
 export const CREATE = '[Assessment] Create';
 export const UPDATE = '[Assessment] Update';

@@ -33,15 +33,15 @@ export class FilterPlaylist implements Action {
 
 export class AddAll implements Action {
   readonly type = ADD_ALL;
-  constructor(public data: ConversationModel[]) {}
+  constructor(public conversations: ConversationModel[]) {}
 }
 export class AddMany implements Action {
   readonly type = ADD_MANY;
-  constructor(public data: ConversationModel[]) {}
+  constructor(public conversations: ConversationModel[]) {}
 }
 export class AddOne implements Action {
   readonly type = ADD_ONE;
-  constructor(public data: ConversationModel) {}
+  constructor(public conversation: ConversationModel) {}
 }
 
 export class SuccessSelect implements Action {

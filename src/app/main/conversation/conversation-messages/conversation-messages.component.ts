@@ -30,8 +30,6 @@ import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
 export class ConversationMessagesComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col-12';
   @Input() conversationState: fromConversation.State;
-  @Input() conversationIds: any[];
-  @Input() conversationPlaylistIds: any[];
   @Input() conversationSelect: any;
   @Input() assessmentSelect: AssessmentModel;
   @Input() playlistSelect: PlaylistModel;
@@ -45,10 +43,10 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
 
   // returns conversation ids
   getIds(): any[] {
-    if (this.conversationPlaylistIds.length) {
-      return this.conversationPlaylistIds;
+    if (this.conversationState.playlistIds.length) {
+      return this.conversationState.playlistIds;
     }
-    return this.conversationIds;
+    return this.conversationState.ids;
   }
 
   // get conversation index

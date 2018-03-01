@@ -25,8 +25,6 @@ export class ConversationComponent implements OnInit {
   conversationState$: Observable<fromConversation.State>;
   conversations$: Observable<ConversationModel[]>;
   conversationSelect$: Observable<ConversationModel>;
-  conversationIds$: Observable<string[]|number[]>;
-  conversationPlaylistIds$: Observable<string[]>;
 
   assessmentState$: Observable<fromAssessment.State>;
   assessmentSelect$: Observable<AssessmentModel>;
@@ -34,7 +32,6 @@ export class ConversationComponent implements OnInit {
   playlistState$: Observable<fromPlaylist.State>;
   playlists$: Observable<PlaylistModel[]>;
   playlistSelect$: Observable<PlaylistModel>;
-  playlistIds$: Observable<string[]|number[]>;
 
   constructor(private store: Store<StoreModel>) {}
 
@@ -45,8 +42,6 @@ export class ConversationComponent implements OnInit {
     this.conversationState$ = this.store.select(fromConversation.getState);
     this.conversations$ = this.store.select(fromConversation.selectAll);
     this.conversationSelect$ = this.store.select(fromConversation.selectOne);
-    this.conversationIds$ = this.store.select(fromConversation.selectIds);
-    this.conversationPlaylistIds$ = this.store.select(fromConversation.selectPlaylistIds);
 
     this.assessmentState$ = this.store.select(fromAssessment.getState);
     this.assessmentSelect$ = this.store.select(fromAssessment.selectOne);
@@ -54,6 +49,5 @@ export class ConversationComponent implements OnInit {
     this.playlistState$ = this.store.select(fromPlaylist.getState);
     this.playlists$ = this.store.select(fromPlaylist.selectAll);
     this.playlistSelect$ = this.store.select(fromPlaylist.selectOne);
-    this.playlistIds$ = this.store.select(fromPlaylist.selectIds);
   }
 }

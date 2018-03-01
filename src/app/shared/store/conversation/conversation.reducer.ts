@@ -31,9 +31,9 @@ export function ConversationReducer(
     case actions.ERROR:
       return { ...state, loading: false, updating: false };
     case actions.ADD_ONE:
-      return adapter.addOne(action.data, state);
+      return adapter.addOne(action.conversation, state);
     case actions.ADD_MANY:
-      return adapter.addMany(action.data, state);
+      return adapter.addMany(action.conversations, state);
     case actions.SELECT:
       return { ...state, selectedId: action.id, loading: false };
     case actions.FILTER_PLAYLIST:

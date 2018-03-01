@@ -1,9 +1,10 @@
 <div class="row no-gutters">
-  <div *ngIf="!confirm && playlistSelect && conversationIndex() !== -1" class="col-auto" (click)="confirm = true" matTooltip="Remove from playlist" matTooltipClass="material-tooltip">
+  <div *ngIf="!confirm && playlistSelect && conversationIndex() !== -1" class="col-auto" (click)="confirm = true" matTooltip="Remove from playlist"
+    matTooltipClass="material-tooltip">
     <i class="far fa-minus-circle"></i>
   </div>
-  <div *ngIf="confirm && playlistSelect && conversationIndex() !== -1" class="col-auto" (mouseout)="confirm = false" (click)="removeFromPlaylist()" matTooltip="Remove from playlist"
-    matTooltipClass="material-tooltip">
+  <div *ngIf="confirm && playlistSelect && conversationIndex() !== -1" class="col-auto" (mouseout)="confirm = false" (click)="removeFromPlaylist()"
+    matTooltip="Remove from playlist" matTooltipClass="material-tooltip">
     <button type="button" class="btn btn-sm btn-danger py-0">Really remove?</button>
   </div>
   <div class="ml-2 col-auto" matTooltip="Export to CSV" matTooltipClass="material-tooltip" (click)="downloadCsv()">

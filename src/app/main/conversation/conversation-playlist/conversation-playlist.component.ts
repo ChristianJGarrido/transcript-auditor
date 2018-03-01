@@ -13,7 +13,6 @@ import { PlaylistManagerComponent } from '../../../shared/components/playlist-ma
 })
 export class ConversationPlaylistComponent implements OnInit {
   @Input() assessmentState: fromAssessment.State;
-  @Input() playlistIds: string[]|number[];
   @Input() playlistSelect: PlaylistModel;
   @Input() playlistState: fromPlaylist.State;
   dialogRef: MatDialogRef<PlaylistManagerComponent>;
@@ -34,7 +33,7 @@ export class ConversationPlaylistComponent implements OnInit {
 
   // get conversation index
   findIndex(): number {
-    return this.utilityService.findIndex(this.playlistSelect.id, this.playlistIds);
+    return this.utilityService.findIndex(this.playlistSelect.id, this.playlistState.ids);
   }
 
   ngOnInit() {
