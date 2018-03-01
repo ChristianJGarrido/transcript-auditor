@@ -71,7 +71,6 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    // console.log(this.data)
-    // this.rows = this.data;
+    this.rows = this.data;
   }
 }
