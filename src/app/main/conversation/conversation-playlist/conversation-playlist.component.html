@@ -2,7 +2,7 @@
   <!-- playlist controls -->
   <app-cycle-items *ngIf="playlistSelect" [type]="'playlist'" [index]="findIndex()" [items]="playlistIds"></app-cycle-items>
   <!-- playlist title -->
-  <h5 class="col-auto card-title m-0 ml-2 mr-2" matTooltip="Manage Playlists" matTooltipClass="material-tooltip" (click)="openDialog()">
+  <h5 class="col-auto card-title m-0 ml-2 mr-2" matTooltip="Manage Playlists" matTooltipClass="material-tooltip" (click)="openDialog($event)">
     {{playlistSelect ? 'Playlist ('+(findIndex()+1)+' of '+playlistIds.length+')' : 'Select Playlist'}}
   </h5>
   <!-- playlist metadata -->

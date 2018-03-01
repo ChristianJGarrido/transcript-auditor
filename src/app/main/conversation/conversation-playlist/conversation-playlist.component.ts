@@ -23,9 +23,12 @@ export class ConversationPlaylistComponent implements OnInit {
   /**
    * Opens the material dialog modal
    */
-  openDialog(): void {
+  openDialog(event: any): void {
+    const left = (event && `${event.clientX}px`) || '10%';
+    const top = (event && `${event.clientY}px`) || '10%';
     this.dialogRef = this.dialog.open(PlaylistManagerComponent, {
-      maxWidth: 400,
+      position: { left, top },
+      width: '300px',
     });
   }
 
