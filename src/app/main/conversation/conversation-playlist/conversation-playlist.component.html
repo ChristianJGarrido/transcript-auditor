@@ -1,11 +1,8 @@
 <div class="row no-gutters">
   <!-- playlist controls -->
   <app-cycle-items *ngIf="playlistSelect" [type]="'playlist'" [index]="findIndex()" [items]="playlistIds"></app-cycle-items>
-  <div class="col-auto" matTooltip="Manage Playlists" matTooltipClass="material-tooltip" (click)="openDialog()">
-    <i class="far fa-play-circle"></i>
-  </div>
   <!-- playlist title -->
-  <h5 class="col-auto card-title m-0 ml-2 mr-2">
+  <h5 class="col-auto card-title m-0 ml-2 mr-2" matTooltip="Manage Playlists" matTooltipClass="material-tooltip" (click)="openDialog()">
     {{playlistSelect ? 'Playlist ('+(findIndex()+1)+' of '+playlistIds.length+')' : 'Select Playlist'}}
   </h5>
   <!-- playlist metadata -->
