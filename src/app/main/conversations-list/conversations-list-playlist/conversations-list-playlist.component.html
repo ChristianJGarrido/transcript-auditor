@@ -18,7 +18,7 @@
       <input *ngIf="!playlistSelect" [(ngModel)]="playlistName" type="text" class="form-control form-control-sm"
         placeholder="Enter name" (keyup.enter)="createPlaylist()">
       <span class="input-group-btn">
-        <button *ngIf="!playlistSelect" (click)="createPlaylist()" [class.disabled]="playlistState.loading" type="button" class="btn btn-sm btn-outline-success">
+        <button *ngIf="!playlistSelect" [disabled]="!this.conversationListIds.length" (click)="createPlaylist()" [class.disabled]="playlistState.loading" type="button" class="btn btn-sm btn-outline-success">
           {{playlistState.loading ? 'Creating...' : 'Create'}}
         </button>
       </span>
