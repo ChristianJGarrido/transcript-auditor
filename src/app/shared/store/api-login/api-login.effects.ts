@@ -8,6 +8,7 @@ import {
   HttpHeaders,
   HttpResponse,
   HttpParams,
+  HttpErrorResponse,
 } from '@angular/common/http';
 
 import { ApiLoginModel } from '../api-login/api-login.model';
@@ -17,6 +18,7 @@ import * as PlaylistActions from '../playlist/playlist.actions';
 import * as ConversationActions from '../conversation/conversation.actions';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { ModalComponent } from '../../../main/modal/modal.component';
+import { NotificationService } from '../../services/notification.service';
 
 @Injectable()
 export class ApiLoginEffects {
@@ -77,7 +79,13 @@ export class ApiLoginEffects {
             }
             return new ApiLoginActions.NotAuthenticated(false);
           }),
-          catchError(err => [new ApiLoginActions.LoginError(err)])
+          catchError((error: HttpErrorResponse) => {
+            const message = error.message;
+            this.notificationService.openSnackBar(
+              `Error: username or password incorrect`
+            );
+            return [new ApiLoginActions.LoginError(error)];
+          })
         );
       })
     );
@@ -130,7 +138,8 @@ export class ApiLoginEffects {
   constructor(
     private actions$: Actions,
     private http: HttpClient,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private notificationService: NotificationService
   ) {}
 
   // opens material dialog

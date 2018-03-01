@@ -18,6 +18,7 @@ import {
   HttpHeaders,
   HttpResponse,
   HttpParams,
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { Action, Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
@@ -234,15 +235,15 @@ export class ConversationEffects {
    * @param {any} err
    * @return {Observable<Action>}
    */
-  handleError(err: any): Observable<Action> {
-    if (err.status === 401) {
+  handleError(error: HttpErrorResponse): Observable<Action> {
+    if (error.status === 401) {
       this.notifcationService.openSnackBar('Session expired');
       this.store.dispatch(new apiLoginActions.NotAuthenticated(false));
-      return of(new conversationActions.Error(err));
+      return of(new conversationActions.Error(error));
     } else {
-      const message = err.error && err.error.debugMessage;
-      this.notifcationService.openSnackBar(`Error: ${message || err.message}`);
-      return of(new conversationActions.Error(err));
+      const message = error.error && error.error.debugMessage;
+      this.notifcationService.openSnackBar(`Error: ${message || error.message}`);
+      return of(new conversationActions.Error(error));
     }
   }
 }
