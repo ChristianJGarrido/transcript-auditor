@@ -19,6 +19,7 @@ export class AssessmentsStatsComponent implements OnInit, OnChanges {
   @Input() stats: StatsModel;
 
   metrics = [
+    { key: 'reviewers', value: 0, name: 'Reviewers' },
     { key: 'playlists', value: 0, name: 'Playlists' },
     { key: 'assessments', value: 0, name: 'Assessments' },
     { key: 'rating', value: 0, name: 'Rating' },

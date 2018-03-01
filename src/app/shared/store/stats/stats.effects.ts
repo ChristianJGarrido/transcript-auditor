@@ -19,6 +19,8 @@ import { StatsMetrics, StatsModel } from './stats.model';
 import { AssessmentModel } from '../assessment/assessment.model';
 import { Dictionary } from '@ngrx/entity/src/models';
 
+import * as _ from 'lodash';
+
 @Injectable()
 export class StatsEffects {
   // select playlist
@@ -80,11 +82,12 @@ export class StatsEffects {
     const results = stats.assesmentFilter.reduce(
       (prev, id) => {
         const assessment = assessments[id];
-        const { qa, rating, personality } = assessment;
+        const { qa, rating, personality, createdBy } = assessment;
         const score = this.utilityService.calculateTotalScore(qa) || 0;
         const person = this.utilityService.calculatePersonality(personality);
         return {
           ...prev,
+          createdBy: [...prev.createdBy, createdBy],
           qa: {
             score: prev.qa.score + score,
             count: prev.qa.count + (score > 0 ? 1 : 0),
@@ -100,6 +103,7 @@ export class StatsEffects {
         };
       },
       {
+        createdBy: [],
         qa: { score: 0, count: 0 },
         rating: { score: 0, count: 0 },
         person: { score: 0, count: 0 },
@@ -114,6 +118,7 @@ export class StatsEffects {
       personality:
         Math.round(results.person.score / results.person.count * 100) || 0,
       rating: results.rating.score / results.rating.count || 0,
+      reviewers: _.uniq(results.createdBy).length,
     };
   }
 }

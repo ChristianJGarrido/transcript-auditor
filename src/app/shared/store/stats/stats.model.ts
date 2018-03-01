@@ -16,6 +16,7 @@ export interface StatsMetrics {
   rating: number;
   personality: number;
   qaScore: number;
+  reviewers: number;
 }
 
 export class StatsState implements StatsModel {
@@ -24,6 +25,7 @@ export class StatsState implements StatsModel {
   assesmentFilter = [];
   assessmentSelect = [];
   metrics = {
+    reviewers: 0,
     playlists: 0,
     assessments: 0,
     conversations: 0,
