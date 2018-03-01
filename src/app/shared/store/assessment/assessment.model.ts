@@ -32,10 +32,12 @@ export interface AssessmentMessagesModel {
 export interface AssessmentQaModel {
   expanded: boolean;
   title: string;
-  section: {
-    label: string;
-    score?: number;
-  }[];
+  section: AssessmentQaGroupModel[];
+}
+
+export interface AssessmentQaGroupModel {
+  label: string;
+  score?: number;
 }
 
 export class Assessment implements AssessmentModel {

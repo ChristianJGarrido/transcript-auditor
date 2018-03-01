@@ -9,6 +9,10 @@ import {
 } from '@angular/core';
 import { Store, select } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
+import * as statsActions from '../../../shared/store/stats/stats.actions';
+import { StatsModel } from '../../../shared/store/stats/stats.model';
+import * as fromAssessment from '../../../shared/store/assessment/assessment.reducer';
+import * as fromPlaylist from '../../../shared/store/playlist/playlist.reducer';
 
 import { DatatableComponent, TableColumn } from '@swimlane/ngx-datatable';
 
@@ -24,6 +28,8 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
   @ViewChild('checkHeader') checkHeader: TemplateRef<any>;
   @Input() data: any[];
   @Input() type: string;
+  @Input() dataState: fromAssessment.State | fromPlaylist.State;
+  @Input() stats: StatsModel;
 
   selected = [];
   columns: TableColumn[] = [];
@@ -31,16 +37,25 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
 
   constructor(private store: Store<StoreModel>) {}
 
+  // select item in grid
   onSelect({ selected }) {
     this.selected.splice(0, this.selected.length);
     this.selected = [...selected];
+    switch (this.type) {
+      case 'playlists':
+        this.store.dispatch(new statsActions.SelectPlaylist(this.selected));
+        break;
+      case 'assessments':
+        this.store.dispatch(new statsActions.SelectAssessment(this.selected));
+        break;
+    }
   }
 
   /**
    * returns columns for data grid depending on type of grid
    * @return {TableColumn[]}
    */
-  getColums(): TableColumn[] {
+  setColums(): TableColumn[] {
     const common = {
       cellTemplate: this.checkCell,
       headerTemplate: this.checkHeader,
@@ -65,12 +80,37 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
     return columns;
   }
 
+  // refresh rows
+  updateRows() {
+    switch (this.type) {
+      case 'playlists':
+        return this.data;
+      case 'assessments':
+        const { playlistSelect, assesmentFilter } = this.stats;
+        if (playlistSelect.length) {
+          return this.data.filter(row => assesmentFilter.includes(row.id));
+        } else {
+          return this.data;
+        }
+    }
+  }
+
+  // refresh selected
+  setSelected() {
+    switch (this.type) {
+      case 'playlists':
+        return this.stats.playlistSelect;
+      case 'assessments':
+        return this.stats.assessmentSelect;
+    }
+  }
+
   ngOnInit(): void {
-    this.rows = this.data;
-    this.columns = this.getColums();
+    this.columns = this.setColums();
+    this.selected = this.setSelected();
   }
 
   ngOnChanges(): void {
-    this.rows = this.data;
+    this.rows = this.updateRows();
   }
 }

@@ -102,6 +102,7 @@ import { ApiLoginEffects } from './shared/store/api-login/api-login.effects';
 import { AssessmentEffects } from './shared/store/assessment/assessment.effects';
 import { PlaylistEffects } from './shared/store/playlist/playlist.effects';
 import { ConversationEffects } from './shared/store/conversation/conversation.effects';
+import { StatsEffects } from './shared/store/stats/stats.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 // 3rd party
@@ -188,6 +189,7 @@ import { TranscriptControlComponent } from './shared/components/transcript-contr
       AfLoginEffects,
       ApiLoginEffects,
       ConversationEffects,
+      StatsEffects,
     ]),
     StoreDevtoolsModule.instrument({
       maxAge: 25,

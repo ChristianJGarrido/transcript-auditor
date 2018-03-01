@@ -8,6 +8,7 @@ import * as fromAssessment from '../../shared/store/assessment/assessment.reduce
 import * as fromPlaylist from '../../shared/store/playlist/playlist.reducer';
 import { AssessmentModel } from '../../shared/store/assessment/assessment.model';
 import { PlaylistModel } from '../../shared/store/playlist/playlist.model';
+import { StatsModel } from '../../shared/store/stats/stats.model';
 
 @Component({
   selector: 'app-assessments',
@@ -20,7 +21,11 @@ export class AssessmentsComponent implements OnInit {
   apiLogin$: Observable<ApiLoginModel>;
 
   assessments$: Observable<AssessmentModel[]>;
+  assessmentState$: Observable<fromAssessment.State>;
   playlists$: Observable<PlaylistModel[]>;
+  playlistState$: Observable<fromPlaylist.State>;
+
+  stats$: Observable<StatsModel>;
 
   constructor(private store: Store<StoreModel>) {}
 
@@ -29,6 +34,10 @@ export class AssessmentsComponent implements OnInit {
     this.apiLogin$ = this.store.select(state => state.apiLogin);
 
     this.assessments$ = this.store.select(fromAssessment.selectAll);
+    this.assessmentState$ = this.store.select(fromAssessment.getState);
     this.playlists$ = this.store.select(fromPlaylist.selectAll);
+    this.playlistState$ = this.store.select(fromPlaylist.getState);
+
+    this.stats$ = this.store.select(state => state.stats);
   }
 }

@@ -6,47 +6,15 @@
           <h5 class="col mb-0 card-title">Account</h5>
         </div>
         <div class="row">
-          <h5 class="col mb-0 card-title text-muted">6432342</h5>
+          <h5 class="col mb-0 card-title text-muted">{{apiLogin.account}}</h5>
         </div>
       </div>
-      <div class="col">
+      <div *ngFor="let metric of metrics" class="col">
         <div class="row">
-          <h5 class="col mb-0 card-title">Playlists</h5>
+          <h5 class="col mb-0 card-title">{{metric.name}}</h5>
         </div>
         <div class="row">
-          <h5 class="col mb-0 card-title text-muted">12</h5>
-        </div>
-      </div>
-      <div class="col">
-        <div class="row">
-          <h5 class="col mb-0 card-title">Assessments</h5>
-        </div>
-        <div class="row">
-          <h5 class="col mb-0 card-title text-muted">84</h5>
-        </div>
-      </div>
-      <div class="col">
-        <div class="row">
-          <h5 class="col mb-0 card-title">Rank</h5>
-        </div>
-        <div class="row">
-          <h5 class="col mb-0 card-title text-muted">***</h5>
-        </div>
-      </div>
-      <div class="col">
-        <div class="row">
-          <h5 class="col mb-0 card-title">Personality</h5>
-        </div>
-        <div class="row">
-          <h5 class="col mb-0 card-title text-muted">83%</h5>
-        </div>
-      </div>
-      <div class="col">
-        <div class="row">
-          <h5 class="col mb-0 card-title">QA Score</h5>
-        </div>
-        <div class="row">
-          <h5 class="col mb-0 card-title text-muted">38</h5>
+          <h5 class="col mb-0 card-title text-muted">{{metric.value}}</h5>
         </div>
       </div>
     </div>

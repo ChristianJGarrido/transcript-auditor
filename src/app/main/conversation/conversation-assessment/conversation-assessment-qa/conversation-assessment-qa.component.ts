@@ -2,11 +2,13 @@ import { Component, OnInit, HostBinding, Input } from '@angular/core';
 import {
   AssessmentModel,
   AssessmentQaModel,
+  AssessmentQaGroupModel,
 } from '../../../../shared/store/assessment/assessment.model';
 import * as assessmentActions from '../../../../shared/store/assessment/assessment.actions';
 import * as fromAssessment from '../../../../shared/store/assessment/assessment.reducer';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../../app.store';
+import { UtilityService } from '../../../../shared/services/utility.service';
 
 @Component({
   selector: 'app-conversation-assessment-qa',
@@ -18,27 +20,15 @@ export class ConversationAssessmentQaComponent implements OnInit {
   @Input() assessmentState: fromAssessment.State;
   @Input() assessmentSelect: AssessmentModel;
 
-  constructor(private store: Store<StoreModel>) {}
+  constructor(private store: Store<StoreModel>, private utilityService: UtilityService) {}
 
   /**
    * calculates the percent score for each qa section
-   * @param {any[]} section
+   * @param {AssessmentQaGroupModel[]} section
    * @return {number}
    */
-  calculateGroupScore(section: any[]): number {
-    const { score, count } = section.reduce(
-      (prev, curr) => {
-        return {
-          score: prev.score + curr.score,
-          count: prev.count + (curr.score > 0 ? 1 : 0),
-        };
-      },
-      {
-        score: 0,
-        count: 0,
-      }
-    );
-    return score / (count * 5);
+  calculateGroupScore(section: AssessmentQaGroupModel[]): number {
+    return this.utilityService.calculateGroupScore(section);
   }
 
   /**
@@ -47,17 +37,7 @@ export class ConversationAssessmentQaComponent implements OnInit {
    * @return {number}
    */
   calculateTotalScore(qa: AssessmentQaModel[]): number {
-    const { score, count } = qa.reduce(
-      (prev, curr) => {
-        const result = this.calculateGroupScore(curr.section) || 0;
-        return {
-          score: prev.score + result,
-          count: prev.count + (result > 0 ? 1 : 0),
-        };
-      },
-      { score: 0, count: 0 }
-    );
-    return score / count;
+    return this.utilityService.calculateTotalScore(qa);
   }
 
   /**

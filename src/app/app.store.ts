@@ -6,6 +6,7 @@ import { ApiLoginReducer } from './shared/store/api-login/api-login.reducer';
 import { AssessmentReducer } from './shared/store/assessment/assessment.reducer';
 import { PlaylistReducer } from './shared/store/playlist/playlist.reducer';
 import { ConversationReducer } from './shared/store/conversation/conversation.reducer';
+import { StatsReducer } from './shared/store/stats/stats.reducer';
 
 // models
 import { AfLoginModel } from './shared/store/af-login/af-login.model';
@@ -13,6 +14,7 @@ import { ApiLoginModel } from './shared/store/api-login/api-login.model';
 import { AssessmentModel } from './shared/store/assessment/assessment.model';
 import { PlaylistModel } from './shared/store/playlist/playlist.model';
 import { ConversationModel } from './shared/store/conversation/conversation.model';
+import { StatsModel } from './shared/store/stats/stats.model';
 
 /**
  * combineReducers is another useful metareducer that takes a map of reducer
@@ -43,6 +45,7 @@ export interface StoreModel {
   assessment: AssessmentModel;
   playlist: PlaylistModel;
   conversation: ConversationModel;
+  stats: StatsModel;
 }
 
 // store reducers
@@ -52,6 +55,7 @@ export const reducers: ActionReducerMap<any> = {
   assessment: AssessmentReducer,
   playlist: PlaylistReducer,
   conversation: ConversationReducer,
+  stats: StatsReducer,
 };
 
 // declare metaReducers
