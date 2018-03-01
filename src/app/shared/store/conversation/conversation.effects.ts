@@ -118,7 +118,8 @@ export class ConversationEffects {
           const id = playlistIds[0];
           return new conversationActions.Select(id.toString());
         }
-        const newId = selectId || selectIds[0].toString();
+        const fallbackId = selectIds[0] && selectIds[0].toString();
+        const newId = selectId || fallbackId || null;
         return new conversationActions.Select(newId);
       })
     );
