@@ -2,6 +2,7 @@ import {
   Component,
   OnInit,
   Input,
+  OnChanges,
   ViewChild,
   HostBinding,
   TemplateRef,
@@ -16,7 +17,7 @@ import { DatatableComponent, TableColumn } from '@swimlane/ngx-datatable';
   templateUrl: './assessments-grid.component.html',
   styleUrls: ['./assessments-grid.component.css'],
 })
-export class AssessmentsGridComponent implements OnInit {
+export class AssessmentsGridComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col';
   @ViewChild('table') table: DatatableComponent;
   @ViewChild('checkCell') checkCell: TemplateRef<any>;
@@ -67,5 +68,10 @@ export class AssessmentsGridComponent implements OnInit {
   ngOnInit(): void {
     this.rows = this.data;
     this.columns = this.getColums();
+  }
+
+  ngOnChanges(): void {
+    // console.log(this.data)
+    // this.rows = this.data;
   }
 }

@@ -23,10 +23,12 @@ import { CycleItemsComponent } from './shared/components/cycle-items/cycle-items
 import { AssessmentControlComponent } from './shared/components/assessment-control/assessment-control.component';
 import { AssessmentSaveComponent } from './shared/components/assessment-save/assessment-save.component';
 import { PlaylistManagerComponent } from './shared/components/playlist-manager/playlist-manager.component';
+import { LoadingResultsComponent } from './shared/components/loading-results/loading-results.component';
 
 // assessments
 import { AssessmentsComponent } from './main/assessments/assessments.component';
 import { AssessmentsGridComponent } from './main/assessments/assessments-grid/assessments-grid.component';
+import { AssessmentsStatsComponent } from './main/assessments/assessments-stats/assessments-stats.component';
 
 // conversations
 import { ConversationComponent } from './main/conversation/conversation.component';
@@ -108,7 +110,6 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { StarRatingModule } from 'angular-star-rating';
 import 'hammerjs';
-import { LoadingResultsComponent } from './shared/components/loading-results/loading-results.component';
 
 @NgModule({
   declarations: [
@@ -150,6 +151,7 @@ import { LoadingResultsComponent } from './shared/components/loading-results/loa
     PlaylistManagerComponent,
     LoadingResultsComponent,
     ConversationMessageTextNoteComponent,
+    AssessmentsStatsComponent,
   ],
   imports: [
     StarRatingModule.forRoot(),
