@@ -203,6 +203,7 @@ import { LoadingResultsComponent } from './shared/components/loading-results/loa
     ModalComponent,
     ConversationAssessmentSummarySliderComponent,
     PlaylistManagerComponent,
+    ConversationMessageTextNoteComponent,
   ],
   bootstrap: [AppComponent],
 })

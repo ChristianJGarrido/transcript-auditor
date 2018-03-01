@@ -23,8 +23,8 @@
     </mat-form-field>
 
     <!-- LiveEngage login/logout buttons -->
-    <button class="col btn btn-primary btn-sm" (click)="lelogin()" [hidden]="(apiLogin$ | async).bearer" [disabled]="(apiLogin$ | async).loading">{{(apiLogin$ | async).loading ? 'Logging in...' : 'Login to LiveEngage'}}</button>
-    <button class="col btn btn-danger btn-sm" (click)="lelogout()" [hidden]="!(apiLogin$ | async).bearer">Logout of LiveEngage</button>
+    <button type="button" class="col btn btn-primary btn-sm" (click)="lelogin()" [hidden]="(apiLogin$ | async).bearer" [disabled]="(apiLogin$ | async).loading">{{(apiLogin$ | async).loading ? 'Logging in...' : 'Login to LiveEngage'}}</button>
+    <button type="button" class="col btn btn-danger btn-sm" (click)="lelogout()" [hidden]="!(apiLogin$ | async).bearer">Logout of LiveEngage</button>
   </form>
 
 </div>

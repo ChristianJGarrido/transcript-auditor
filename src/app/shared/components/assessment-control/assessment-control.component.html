@@ -6,6 +6,6 @@
     <i class="far fa-minus-circle"></i>
   </div>
   <div *ngIf="confirm" class="col-auto" (mouseout)="confirm = false" (click)="deleteAssessment()" matTooltip="Delete assessment" matTooltipClass="material-tooltip">
-    <button class="btn btn-sm btn-danger py-0">Really delete?</button>
+    <button type="button" class="btn btn-sm btn-danger py-0">Really delete?</button>
   </div>
 </div>

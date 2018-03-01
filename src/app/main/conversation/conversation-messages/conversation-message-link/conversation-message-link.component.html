@@ -1,4 +1,4 @@
-<app-message-by [by]="message.sentBy" [time]="message.time"></app-message-by>
+<app-message-by [by]="''" [time]="message.time"></app-message-by>
 <div class="row">
   <div class="col font-primary" [ngClass]="message.sentBy === 'Agent' ? 'font-agent' : 'font-consumer'">
     <img [src]="message.messageData.link.externalFileLink">

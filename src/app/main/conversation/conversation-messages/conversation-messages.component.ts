@@ -17,6 +17,7 @@ import {
 import { ExportService } from '../../../shared/services/export.service';
 import { UtilityService } from '../../../shared/services/utility.service';
 import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
+import { AssessmentModel } from '../../../shared/store/assessment/assessment.model';
 
 import * as _ from 'lodash';
 import { WatsonService } from '../../../shared/services/watson.service';
@@ -32,6 +33,7 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
   @Input() conversationIds: any[];
   @Input() conversationPlaylistIds: any[];
   @Input() conversationSelect: any;
+  @Input() assessmentSelect: AssessmentModel;
 
   messageEvents: any[] = [];
 
