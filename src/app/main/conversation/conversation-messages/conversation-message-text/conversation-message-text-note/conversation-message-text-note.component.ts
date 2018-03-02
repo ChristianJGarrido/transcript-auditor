@@ -52,10 +52,9 @@ export class ConversationMessageTextNoteComponent implements OnInit {
     this.confirm = false;
   }
 
-
   ngOnInit(): void {
     const msgs = this.data.assessmentSelect.messages;
-    const messageNote = msgs[this.data.msgId];
+    const messageNote = msgs && msgs[this.data.msgId];
     if (messageNote) {
       this.note = messageNote.note || '';
     }
