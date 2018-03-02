@@ -8,7 +8,8 @@
     <div *ngIf="rows.length" class="row mt-2">
       <div class="col">
         <ngx-datatable #table style="cursor: pointer;" [limit]="15" class="material" [columnMode]="'force'" [rowHeight]="30" [headerHeight]="50"
-          [selected]="selected" (activate)="selectRow($event)" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows" [columns]="columns" (select)='onCheck($event)'>
+          [selected]="selected" (activate)="selectRow($event)" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows"
+          [columns]="columns" (select)='onCheck($event)'>
         </ngx-datatable>
       </div>
     </div>
@@ -29,3 +30,12 @@
   <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" />
 </ng-template>
 
+<!-- template for dates -->
+<ng-template #dateCell let-value="value">
+  {{ value | date:'short'}}
+</ng-template>
+
+<!-- cell for percents -->
+<ng-template #percentCell let-value="value" let-row="row">
+  {{value | percent}}
+</ng-template>

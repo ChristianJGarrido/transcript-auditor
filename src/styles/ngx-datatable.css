@@ -37,13 +37,6 @@
   background-color: #007aff;
   color: #fff;
 }
-.page-count > span {
-  display: none;
-}
-
-.ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell {
-  padding: 0.2rem;
-}
 
 .datatable-cells {
   color: #9c9c9c!important;

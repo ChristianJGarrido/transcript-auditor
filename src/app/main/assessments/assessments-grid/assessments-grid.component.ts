@@ -20,8 +20,13 @@ import * as conversationActions from '../../../shared/store/conversation/convers
 
 import { DatatableComponent, TableColumn } from '@swimlane/ngx-datatable';
 import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
-import { AssessmentModel } from '../../../shared/store/assessment/assessment.model';
+import {
+  AssessmentModel,
+  AssessmentQaModel,
+  AssessmentPersonalityModel,
+} from '../../../shared/store/assessment/assessment.model';
 import { Router } from '@angular/router';
+import { UtilityService } from '../../../shared/services/utility.service';
 
 @Component({
   selector: 'app-assessments-grid',
@@ -30,9 +35,13 @@ import { Router } from '@angular/router';
 })
 export class AssessmentsGridComponent implements OnInit, OnChanges {
   @HostBinding('class') class = 'col';
+
   @ViewChild('table') table: DatatableComponent;
   @ViewChild('checkCell') checkCell: TemplateRef<any>;
   @ViewChild('checkHeader') checkHeader: TemplateRef<any>;
+  @ViewChild('dateCell') dateCell: TemplateRef<any>;
+  @ViewChild('percentCell') percentCell: TemplateRef<any>;
+
   @Input() data: any[];
   @Input() type: string;
   @Input() dataState: fromAssessment.State | fromPlaylist.State;
@@ -45,7 +54,11 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
   PLAYLIST = 'playlists';
   ASSESSMENT = 'assessments';
 
-  constructor(private store: Store<StoreModel>, private router: Router) {}
+  constructor(
+    private store: Store<StoreModel>,
+    private router: Router,
+    private utilityService: UtilityService
+  ) {}
 
   /**
    * selects a given row based on type of grid
@@ -91,33 +104,103 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
     }
   }
 
+  // returns qa score
+  getQaScore(qa: AssessmentQaModel[]): number {
+    return this.utilityService.calculateTotalScore(qa);
+  }
+
+  // returns qa score
+  getPersonality(personality: AssessmentPersonalityModel[]): string {
+    return this.utilityService.calculatePersonality(personality);
+  }
+
+  /**
+   * counts and returns number of keys
+   * @param {any} messages
+   */
+  countKeys(messages: any): number {
+    return messages ? Object.keys(messages).length : 0;
+  }
+
   /**
    * returns columns for data grid depending on type
    * @return {TableColumn[]}
    */
   setColums(): TableColumn[] {
-    const common = {
+    const check: TableColumn = {
       cellTemplate: this.checkCell,
       headerTemplate: this.checkHeader,
-      width: 30,
+      maxWidth: 20,
     };
-    let columns = [];
-    if (this.type === 'playlists') {
-      columns = [
-        common,
-        { prop: 'createdBy', name: 'By', cellClass: 'datatable-cells' },
-        { prop: 'createdAt', name: 'Created', cellClass: 'datatable-cells' },
-        { prop: 'id', name: 'ID' },
-      ];
-    } else {
-      columns = [
-        common,
-        { prop: 'createdBy', name: 'By', cellClass: 'datatable-cells' },
-        { prop: 'createdAt', name: 'Created', cellClass: 'datatable-cells' },
-        { prop: 'id', name: 'ID' },
-      ];
+    const common: TableColumn[] = [
+      { prop: 'createdBy', name: 'By', cellClass: 'font-tertiary' },
+      { prop: 'lastUpdateAt', name: 'Updated', cellTemplate: this.dateCell },
+    ];
+    switch (this.type) {
+      case this.PLAYLIST:
+        return [
+          check,
+          { prop: 'name', name: 'Name', cellClass: 'font-tertiary' },
+          ...common,
+          {
+            prop: 'convCount',
+            name: 'IDs',
+            maxWidth: 60,
+          },
+        ];
+      case this.ASSESSMENT:
+        return [
+          check,
+          {
+            prop: 'conversationId',
+            name: 'Conv ID',
+            cellClass: 'font-tertiary',
+          },
+          ...common,
+          {
+            prop: 'messagesCount',
+            name: 'Msgs',
+            maxWidth: 70,
+          },
+          { prop: 'rating', name: 'Rating', maxWidth: 80 },
+          {
+            prop: 'personalityScore',
+            name: 'Personality',
+            maxWidth: 90,
+            cellTemplate: this.percentCell,
+          },
+          {
+            prop: 'qaScore',
+            name: 'Score',
+            maxWidth: 70,
+            cellTemplate: this.percentCell,
+          },
+          { prop: 'note', name: 'Note', cellClass: 'font-tertiary' },
+        ];
     }
-    return columns;
+  }
+
+  // add new properties to grid
+  hydrateDate(type: string, rows: any[]): any[] {
+    return rows.map(row => {
+      switch (type) {
+        case this.PLAYLIST:
+          return {
+            ...row,
+            convCount: row.conversationIds.length,
+          };
+        case this.ASSESSMENT:
+          return {
+            ...row,
+            qaScore: this.utilityService.calculateTotalScore(row.qa),
+            personalityScore: this.utilityService.calculatePersonality(
+              row.personality
+            ),
+            messagesCount:
+              (row.messages && Object.keys(row.messages).length) || 0,
+          };
+      }
+    });
   }
 
   /**
@@ -157,6 +240,6 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.rows = this.updateRows();
+    this.rows = this.hydrateDate(this.type, this.updateRows());
   }
 }
