@@ -94,13 +94,9 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
     this.selected = [...selected];
     switch (this.type) {
       case this.PLAYLIST:
-        return this.store.dispatch(
-          new statsActions.SelectPlaylist(this.selected)
-        );
+        return this.store.dispatch(new statsActions.SelectPlaylist(selected));
       case this.ASSESSMENT:
-        return this.store.dispatch(
-          new statsActions.SelectAssessment(this.selected)
-        );
+        return this.store.dispatch(new statsActions.SelectAssessment(selected));
     }
   }
 
@@ -181,24 +177,20 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
   }
 
   // add new properties to grid
-  hydrateDate(type: string, rows: any[]): any[] {
-    return rows.map(row => {
-      switch (type) {
+  hydrateDate(): void {
+    this.data.forEach(row => {
+      switch (this.type) {
         case this.PLAYLIST:
-          return {
-            ...row,
-            convCount: row.conversationIds.length,
-          };
+          row.convCount = row.conversationIds.length;
+          break;
         case this.ASSESSMENT:
-          return {
-            ...row,
-            qaScore: this.utilityService.calculateTotalScore(row.qa),
-            personalityScore: this.utilityService.calculatePersonality(
-              row.personality
-            ),
-            messagesCount:
-              (row.messages && Object.keys(row.messages).length) || 0,
-          };
+          row.qaScore = this.utilityService.calculateTotalScore(row.qa);
+          row.personalityScore = this.utilityService.calculatePersonality(
+            row.personality
+          );
+          row.messagesCount =
+            (row.messages && Object.keys(row.messages).length) || 0;
+          break;
       }
     });
   }
@@ -208,6 +200,7 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
    * @return {any[]}
    */
   updateRows(): any[] {
+    this.hydrateDate();
     switch (this.type) {
       case this.PLAYLIST:
         return this.data;
@@ -240,6 +233,6 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(): void {
-    this.rows = this.hydrateDate(this.type, this.updateRows());
+    this.rows = this.updateRows();
   }
 }
