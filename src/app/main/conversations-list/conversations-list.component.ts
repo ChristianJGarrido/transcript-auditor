@@ -61,7 +61,7 @@ export class ConversationsListComponent implements OnInit, OnChanges {
    * adds conversation to local selected list
    * @param {any} selected
    */
-  onSelect({ selected }): void {
+  onCheck({ selected }): void {
     // update selected
     this.selected.splice(0, this.selected.length);
     this.selected = [...selected];

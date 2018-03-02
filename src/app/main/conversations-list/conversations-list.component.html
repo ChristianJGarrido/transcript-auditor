@@ -24,7 +24,7 @@
     <div *ngIf="rows.length" class="row mt-2">
       <div class="col">
         <ngx-datatable #table style="cursor: pointer;" [limit]="15" class="material" [columnMode]="'force'" [rowHeight]="30" [headerHeight]="30"
-          [selected]="selected" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows" [columns]="columns" (select)="onSelect($event)"
+          [selected]="selected" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows" [columns]="columns" (select)="onCheck($event)"
           (activate)="selectConversation($event)">
           <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
             <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
