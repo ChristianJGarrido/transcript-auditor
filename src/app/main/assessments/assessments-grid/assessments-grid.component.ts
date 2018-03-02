@@ -12,9 +12,16 @@ import { StoreModel } from '../../../app.store';
 import * as statsActions from '../../../shared/store/stats/stats.actions';
 import { StatsModel } from '../../../shared/store/stats/stats.model';
 import * as fromAssessment from '../../../shared/store/assessment/assessment.reducer';
+import * as assessmentActions from '../../../shared/store/assessment/assessment.actions';
 import * as fromPlaylist from '../../../shared/store/playlist/playlist.reducer';
+import * as playlistActions from '../../../shared/store/playlist/playlist.actions';
+import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
+import * as conversationActions from '../../../shared/store/conversation/conversation.actions';
 
 import { DatatableComponent, TableColumn } from '@swimlane/ngx-datatable';
+import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
+import { AssessmentModel } from '../../../shared/store/assessment/assessment.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assessments-grid',
@@ -35,24 +42,57 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
   columns: TableColumn[] = [];
   rows = [];
 
-  constructor(private store: Store<StoreModel>) {}
+  PLAYLIST = 'playlists';
+  ASSESSMENT = 'assessments';
 
-  // select item in grid
-  onSelect({ selected }) {
-    this.selected.splice(0, this.selected.length);
-    this.selected = [...selected];
-    switch (this.type) {
-      case 'playlists':
-        this.store.dispatch(new statsActions.SelectPlaylist(this.selected));
-        break;
-      case 'assessments':
-        this.store.dispatch(new statsActions.SelectAssessment(this.selected));
-        break;
+  constructor(private store: Store<StoreModel>, private router: Router) {}
+
+  /**
+   * selects a given row based on type of grid
+   * @param {any} event
+   */
+  selectRow(event: any): void {
+    if (event.type === 'click') {
+      const id = event.row.id;
+      const convId = event.row.conversationId;
+      const name = event.column.name;
+      if (name) {
+        switch (this.type) {
+          case this.PLAYLIST:
+            this.store.dispatch(new playlistActions.Select(id));
+            break;
+          case this.ASSESSMENT:
+            this.store.dispatch(new playlistActions.Select(null));
+            this.store.dispatch(new conversationActions.Select(convId));
+            this.store.dispatch(new assessmentActions.Select(id));
+            break;
+        }
+        this.router.navigate(['app/conversations']);
+      }
     }
   }
 
   /**
-   * returns columns for data grid depending on type of grid
+   * selects checkbox in grid
+   * @param {{string[]}} selected
+   */
+  onCheck({ selected }): void {
+    this.selected.splice(0, this.selected.length);
+    this.selected = [...selected];
+    switch (this.type) {
+      case this.PLAYLIST:
+        return this.store.dispatch(
+          new statsActions.SelectPlaylist(this.selected)
+        );
+      case this.ASSESSMENT:
+        return this.store.dispatch(
+          new statsActions.SelectAssessment(this.selected)
+        );
+    }
+  }
+
+  /**
+   * returns columns for data grid depending on type
    * @return {TableColumn[]}
    */
   setColums(): TableColumn[] {
@@ -80,12 +120,15 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
     return columns;
   }
 
-  // refresh rows
-  updateRows() {
+  /**
+   * refresh rows
+   * @return {any[]}
+   */
+  updateRows(): any[] {
     switch (this.type) {
-      case 'playlists':
+      case this.PLAYLIST:
         return this.data;
-      case 'assessments':
+      case this.ASSESSMENT:
         const { playlistSelect, assesmentFilter } = this.stats;
         if (playlistSelect.length) {
           return this.data.filter(row => assesmentFilter.includes(row.id));
@@ -95,12 +138,15 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
     }
   }
 
-  // refresh selected
-  setSelected() {
+  /**
+   * sets checked items on load
+   * @return {PlaylistModel[] | AssessmentModel[]}
+   */
+  setSelected(): PlaylistModel[] | AssessmentModel[] {
     switch (this.type) {
-      case 'playlists':
+      case this.PLAYLIST:
         return this.stats.playlistSelect;
-      case 'assessments':
+      case this.ASSESSMENT:
         return this.stats.assessmentSelect;
     }
   }

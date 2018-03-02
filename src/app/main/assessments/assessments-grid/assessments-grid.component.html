@@ -8,7 +8,7 @@
     <div *ngIf="rows.length" class="row mt-2">
       <div class="col">
         <ngx-datatable #table style="cursor: pointer;" [limit]="15" class="material" [columnMode]="'force'" [rowHeight]="30" [headerHeight]="50"
-          [selected]="selected" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows" [columns]="columns" (select)='onSelect($event)'>
+          [selected]="selected" (activate)="selectRow($event)" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows" [columns]="columns" (select)='onCheck($event)'>
         </ngx-datatable>
       </div>
     </div>
