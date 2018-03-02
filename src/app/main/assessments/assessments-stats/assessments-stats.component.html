@@ -14,7 +14,14 @@
           <h5 class="col mb-0 card-title">{{metric.name}}</h5>
         </div>
         <div class="row">
-          <h5 class="col mb-0 card-title text-muted">{{metric.value}}</h5>
+          <h5 class="col mb-0 card-title text-muted">
+            <span *ngIf="metric.format === 'number'">
+                {{metric.value | number:'1.0-1'}}
+            </span>
+            <span *ngIf="metric.format === 'percent'">
+                {{metric.value | percent}}
+            </span>
+          </h5>
         </div>
       </div>
     </div>

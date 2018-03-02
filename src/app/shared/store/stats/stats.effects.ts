@@ -12,6 +12,7 @@ import { Actions, Effect } from '@ngrx/effects';
 import { StoreModel } from '../../../app.store';
 import * as statsActions from './stats.actions';
 import * as fromPlaylist from '../playlist/playlist.reducer';
+import * as playlistActions from '../playlist/playlist.actions';
 import * as fromAssessment from '../assessment/assessment.reducer';
 import * as assessmentActions from '../assessment/assessment.actions';
 import * as fromConversation from '../conversation/conversation.reducer';
@@ -56,19 +57,22 @@ export class StatsEffects {
       statsActions.UPDATE_FILTERS,
       statsActions.BUILD,
       assessmentActions.ADD_ALL,
+      playlistActions.ADD_ALL,
       statsActions.SELECT_ASSESSMENT
     )
     .pipe(
       withLatestFrom(
         this.store.select(state => state.stats),
         this.store.select(fromAssessment.selectIds),
-        this.store.select(fromAssessment.selectEntities)
+        this.store.select(fromAssessment.selectEntities),
+        this.store.select(fromPlaylist.selectIds),
       ),
-      map(([action, stats, assessmentIds, assessmentEntities]) => {
+      map(([action, stats, assessmentIds, assessmentEntities, playlistIds]) => {
         const metrics = this.buildStats(
           stats,
           assessmentIds,
-          assessmentEntities
+          assessmentEntities,
+          playlistIds
         );
         return new statsActions.UpdateMetrics(metrics);
       }),
@@ -89,13 +93,13 @@ export class StatsEffects {
   buildStats(
     stats: StatsModel,
     ids: string[] | number[],
-    entities: Dictionary<AssessmentModel>
+    entities: Dictionary<AssessmentModel>,
+    playlistIds: string[] | number[]
   ): StatsMetrics {
-    // TODO WTF IS THIS
     const statsArray = stats.assessmentSelect.length
       ? stats.assessmentSelect.map(item => item.id)
       : stats.assesmentFilter;
-    const arrayToUse = stats.playlistSelect.length ? statsArray : [...ids];
+    const arrayToUse = statsArray.length ? statsArray : [...ids];
     const results = arrayToUse.reduce(
       (prev, id) => {
         const assessment = entities[id];
@@ -127,13 +131,11 @@ export class StatsEffects {
       }
     );
     return {
-      playlists: stats.playlistSelect.length,
-      assessments:
-        stats.assessmentSelect.length || stats.assesmentFilter.length,
+      playlists: stats.playlistSelect.length || playlistIds.length,
+      assessments: arrayToUse.length,
       conversations: stats.conversationFilter.length,
-      qaScore: results.qa.score / results.qa.count * 100 || 0,
-      personality:
-        Math.round(results.person.score / results.person.count * 100) || 0,
+      qaScore: results.qa.score / results.qa.count || 0,
+      personality: results.person.score / results.person.count || 0,
       rating: results.rating.score / results.rating.count || 0,
       reviewers: _.uniq(results.createdBy).length,
     };
