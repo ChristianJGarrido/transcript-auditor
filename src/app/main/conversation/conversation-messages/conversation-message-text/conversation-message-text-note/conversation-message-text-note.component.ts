@@ -27,28 +27,33 @@ export class ConversationMessageTextNoteComponent implements OnInit {
   ) {}
 
   // updates note
-  updateNote(): void {
+  updateNote(add: boolean): void {
     const { msgId } = this.data;
     const { id, messages } = this.data.assessmentSelect;
-    const createdAt = new Date();
-    this.store.dispatch(
-      new assessmentActions.Update(id, {
-        messages: {
-          ...messages,
-          [msgId]: {
-            note: this.note,
-            createdAt,
-            createdBy: 'User',
+    if (add) {
+      const createdAt = new Date();
+      this.store.dispatch(
+        new assessmentActions.Update(id, {
+          messages: {
+            ...messages,
+            [msgId]: {
+              note: this.note,
+              createdAt,
+              createdBy: 'User',
+            },
           },
-        },
-      })
-    );
+        })
+      );
+    } else {
+      delete messages[msgId];
+      this.store.dispatch(new assessmentActions.Update(id, { messages }));
+    }
   }
 
   // deletes note
   clearNote(): void {
     this.note = '';
-    this.updateNote();
+    this.updateNote(false);
     this.confirm = false;
   }
 

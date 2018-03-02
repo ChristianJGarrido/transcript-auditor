@@ -54,7 +54,7 @@ export class Assessment implements AssessmentModel {
   lastUpdateAt = this.date;
   note = '';
   rating = 0;
-  messages = null;
+  messages = {};
 
   personality: AssessmentPersonalityModel[] = [
     { descriptor: 'Natural', antonym: 'Stiff', score: 0, min: -5, max: 5 },
