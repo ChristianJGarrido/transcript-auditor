@@ -31,7 +31,7 @@
               <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" />
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column name="Start" prop="startTime">
+          <ngx-datatable-column [maxWidth]="140" name="Start" prop="startTime">
             <ng-template let-value="value" ngx-datatable-cell-template>
               <span class="font-secondary">{{value | date:'short'}}</span>
             </ng-template>
