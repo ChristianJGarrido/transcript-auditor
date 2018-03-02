@@ -15,7 +15,8 @@ body {
 .fa-download,
 .fa-plus-circle,
 .fa-minus-circle,
-.fa-times {
+.fa-times,
+.fa-font {
   color: #46474a;
   cursor: pointer;
 }
@@ -33,7 +34,8 @@ body {
 .fa-plus-circle:hover,
 .fa-minus-circle:hover,
 .fa-times:hover,
-.fa-check-circle:hover {
+.fa-check-circle:hover,
+.fa-font:hover {
   color: #818181;
 }
 

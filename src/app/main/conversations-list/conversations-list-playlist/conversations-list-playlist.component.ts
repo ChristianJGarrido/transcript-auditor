@@ -47,6 +47,9 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
   };
   playlistName = '';
 
+  confirm = false;
+  rename = false;
+
   constructor(private store: Store<StoreModel>) {}
 
   /**
@@ -55,6 +58,25 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
    */
   needUpdate(): boolean {
     return this.countUpdate() !== 0;
+  }
+
+  /**
+   * deletes selected playlist
+   */
+  deletePlaylist(): void {
+    const { id } = this.playlistSelect;
+    this.store.dispatch(new playlistActions.Select(null));
+    this.store.dispatch(new playlistActions.Delete(id));
+    this.confirm = false;
+  }
+
+  /**
+   * updates playlist nmae
+   */
+  renamePlaylist(): void {
+    const { id } = this.playlistSelect;
+    this.store.dispatch(new playlistActions.Update(id, { name: this.playlistName }));
+    this.rename = false;
   }
 
   /**
@@ -89,14 +111,13 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
    */
   createPlaylist(): void {
     this.store.dispatch(new playlistActions.Create(this.playlistName));
-    this.playlistName = '';
   }
 
   /**
    * Updates an exsiting playlist with selected conversation ids
    */
   updatePlaylist(): void {
-    const id = this.playlistSelectIds[0];
+    const { id } = this.playlistSelect;
     this.store.dispatch(
       new playlistActions.Update(id, {
         conversationIds: this.conversationListIds,

@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row mt-2">
   <div class="col">
     <div class="input-group">
 
@@ -9,20 +9,55 @@
 
       <!-- update playlist -->
       <span class="input-group-btn">
-        <button *ngIf="playlistSelect && needUpdate()" [class.disabled]="playlistState.updating" (click)="updatePlaylist()" type="button" class="btn btn-sm btn-success">
-          {{playlistState.updating ? 'Updating...' : 'Update '+countUpdate()+' conversations'}}
+        <button *ngIf="playlistSelect && needUpdate()" [class.disabled]="playlistState.updating" (click)="updatePlaylist()" type="button"
+          class="btn btn-sm btn-success">
+          {{playlistState.updating ? 'Updating...' : 'Update '+countUpdate()}}
         </button>
       </span>
 
+      <!-- playlist controls -->
+      <div *ngIf="playlistSelect" class="row no-gutters ml-2">
+
+        <!-- rename fields -->
+        <div *ngIf="!rename" class="pt-1 mr-2" (click)="rename = true" matTooltip="Rename playlist" matTooltipClass="material-tooltip">
+          <i class="far fa-font"></i>
+        </div>
+        <input *ngIf="rename" [(ngModel)]="playlistName" type="text" class="col pl-2 form-control form-control-sm" placeholder="New name"
+          (keyup.enter)="renamePlaylist()">
+        <span *ngIf="rename" class="input-group-btn">
+          <button (click)="renamePlaylist()" type="button" class="btn btn-sm btn-outline-success">
+            Save
+          </button>
+        </span>
+
+        <!-- delete fields -->
+        <div *ngIf="!confirm && !rename" class="col-auto pt-1" (click)="confirm = true" matTooltip="Delete playlist" matTooltipClass="material-tooltip">
+          <i class="far fa-minus-circle"></i>
+        </div>
+        <div *ngIf="confirm" class="col-auto" (mouseout)="confirm = false" (click)="deletePlaylist()" matTooltip="Delete playlist"
+          matTooltipClass="material-tooltip">
+          <button type="button" class="btn btn-sm btn-danger">Really delete?</button>
+        </div>
+
+        <!-- save notification -->
+        <span class="pt-1">
+          <app-save-notification [updating]="playlistState.updating"></app-save-notification>
+        </span>
+
+      </div>
+
       <!-- create new playlist button -->
-      <input *ngIf="!playlistSelect" [(ngModel)]="playlistName" type="text" class="form-control form-control-sm"
-        placeholder="Enter name" (keyup.enter)="createPlaylist()">
-      <span class="input-group-btn">
-        <button *ngIf="!playlistSelect" (click)="createPlaylist()" [class.disabled]="playlistState.loading" type="button" class="btn btn-sm btn-outline-success">
-          {{playlistState.loading ? 'Creating...' : 'Create'}}
+      <input *ngIf="!playlistSelect" [(ngModel)]="playlistName" type="text" class="form-control form-control-sm" placeholder="Enter name"
+        (keyup.enter)="createPlaylist()">
+      <span *ngIf="!playlistSelect" class="input-group-btn">
+        <button (click)="createPlaylist()" [class.disabled]="playlistState.updating" type="button" class="btn btn-sm btn-outline-success">
+          {{playlistState.updating ? 'Creating...' : 'Create'}}
         </button>
       </span>
 
     </div>
   </div>
+
+
+
 </div>

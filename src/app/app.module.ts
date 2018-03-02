@@ -21,7 +21,7 @@ import { NoResultsComponent } from './shared/components/no-results/no-results.co
 import { MessageByComponent } from './shared/components/message-by/message-by.component';
 import { CycleItemsComponent } from './shared/components/cycle-items/cycle-items.component';
 import { AssessmentControlComponent } from './shared/components/assessment-control/assessment-control.component';
-import { AssessmentSaveComponent } from './shared/components/assessment-save/assessment-save.component';
+import { SaveNotificationComponent } from './shared/components/save-notification/save-notification.component';
 import { PlaylistManagerComponent } from './shared/components/playlist-manager/playlist-manager.component';
 import { LoadingResultsComponent } from './shared/components/loading-results/loading-results.component';
 
@@ -147,7 +147,7 @@ import { TranscriptControlComponent } from './shared/components/transcript-contr
     AssessmentsGridComponent,
     CycleItemsComponent,
     AssessmentControlComponent,
-    AssessmentSaveComponent,
+    SaveNotificationComponent,
     ConversationPlaylistComponent,
     ConversationsListPlaylistComponent,
     PlaylistManagerComponent,
