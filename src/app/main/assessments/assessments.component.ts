@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { StoreModel } from '../../app.store';
 import * as fromAssessment from '../../shared/store/assessment/assessment.reducer';
 import * as fromPlaylist from '../../shared/store/playlist/playlist.reducer';
+import * as statsActions from '../../shared/store/stats/stats.actions';
 import { AssessmentModel } from '../../shared/store/assessment/assessment.model';
 import { PlaylistModel } from '../../shared/store/playlist/playlist.model';
 import { StatsModel } from '../../shared/store/stats/stats.model';
@@ -30,6 +31,8 @@ export class AssessmentsComponent implements OnInit {
   constructor(private store: Store<StoreModel>) {}
 
   ngOnInit() {
+    this.store.dispatch(new statsActions.Build());
+
     this.afLogin$ = this.store.select(state => state.afLogin);
     this.apiLogin$ = this.store.select(state => state.apiLogin);
 

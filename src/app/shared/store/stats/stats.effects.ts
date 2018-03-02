@@ -13,6 +13,7 @@ import { StoreModel } from '../../../app.store';
 import * as statsActions from './stats.actions';
 import * as fromPlaylist from '../playlist/playlist.reducer';
 import * as fromAssessment from '../assessment/assessment.reducer';
+import * as assessmentActions from '../assessment/assessment.actions';
 import * as fromConversation from '../conversation/conversation.reducer';
 import { UtilityService } from '../../services/utility.service';
 import { StatsMetrics, StatsModel } from './stats.model';
@@ -51,14 +52,24 @@ export class StatsEffects {
   // build stats
   @Effect()
   stats$: Observable<Action> = this.actions$
-    .ofType<statsActions.UpdateFilters>(statsActions.UPDATE_FILTERS)
+    .ofType(
+      statsActions.UPDATE_FILTERS,
+      statsActions.BUILD,
+      assessmentActions.ADD_ALL,
+      statsActions.SELECT_ASSESSMENT
+    )
     .pipe(
       withLatestFrom(
         this.store.select(state => state.stats),
+        this.store.select(fromAssessment.selectIds),
         this.store.select(fromAssessment.selectEntities)
       ),
-      map(([action, stats, assessments]) => {
-        const metrics = this.buildStats(stats, assessments);
+      map(([action, stats, assessmentIds, assessmentEntities]) => {
+        const metrics = this.buildStats(
+          stats,
+          assessmentIds,
+          assessmentEntities
+        );
         return new statsActions.UpdateMetrics(metrics);
       }),
       catchError(err => [new statsActions.Error(err)])
@@ -77,11 +88,17 @@ export class StatsEffects {
    */
   buildStats(
     stats: StatsModel,
-    assessments: Dictionary<AssessmentModel>
+    ids: string[] | number[],
+    entities: Dictionary<AssessmentModel>
   ): StatsMetrics {
-    const results = stats.assesmentFilter.reduce(
+    // TODO WTF IS THIS
+    const statsArray = stats.assessmentSelect.length
+      ? stats.assessmentSelect.map(item => item.id)
+      : stats.assesmentFilter;
+    const arrayToUse = stats.playlistSelect.length ? statsArray : [...ids];
+    const results = arrayToUse.reduce(
       (prev, id) => {
-        const assessment = assessments[id];
+        const assessment = entities[id];
         const { qa, rating, personality, createdBy } = assessment;
         const score = this.utilityService.calculateTotalScore(qa) || 0;
         const person = this.utilityService.calculatePersonality(personality);
