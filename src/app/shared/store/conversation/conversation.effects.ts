@@ -72,6 +72,21 @@ export class ConversationEffects {
       })
     );
 
+  // select after add
+  @Effect()
+  selectAfterAdd$: Observable<Action> = this.actions$
+    .ofType(conversationActions.ADD_MANY)
+    .pipe(
+      withLatestFrom(this.store.select(fromConversation.selectOne), this.store.select(fromConversation.selectAll)),
+      map(([action, conversation, conversations]) => {
+        if (conversation) {
+          return new conversationActions.SuccessSelect();
+        }
+        const index = Math.floor(Math.random() * conversations.length);
+        return new conversationActions.Select(conversations[index].id);
+      })
+    );
+
   // query one
   @Effect()
   queryOne$: Observable<Action> = this.actions$
@@ -243,7 +258,9 @@ export class ConversationEffects {
       return of(new conversationActions.Error(error));
     } else {
       const message = error.error && error.error.debugMessage;
-      this.notifcationService.openSnackBar(`Error: ${message || error.message}`);
+      this.notifcationService.openSnackBar(
+        `Error: ${message || error.message}`
+      );
       return of(new conversationActions.Error(error));
     }
   }
