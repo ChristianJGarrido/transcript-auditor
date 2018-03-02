@@ -77,6 +77,7 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
     const { id } = this.playlistSelect;
     this.store.dispatch(new playlistActions.Update(id, { name: this.playlistName }));
     this.rename = false;
+    this.playlistName = '';
   }
 
   /**
@@ -111,6 +112,7 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
    */
   createPlaylist(): void {
     this.store.dispatch(new playlistActions.Create(this.playlistName));
+    this.playlistName = '';
   }
 
   /**
