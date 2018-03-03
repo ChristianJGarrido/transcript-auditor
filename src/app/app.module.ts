@@ -37,15 +37,11 @@ import { ConversationComponent } from './main/conversation/conversation.componen
 import { ConversationStatsComponent } from './main/conversation/conversation-stats/conversation-stats.component';
 import { ConversationStatsWidgetComponent } from './main/conversation/conversation-stats/conversation-stats-widget/conversation-stats-widget.component';
 
-// conversation chart
-import { ConversationChartComponent } from './main/conversation/conversation-chart/conversation-chart.component';
-
 // conversation assessment
 import { ConversationAssessmentComponent } from './main/conversation/conversation-assessment/conversation-assessment.component';
 import { ConversationAssessmentQaComponent } from './main/conversation/conversation-assessment/conversation-assessment-qa/conversation-assessment-qa.component';
 import { ConversationAssessmentSummaryComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary.component';
 import { ConversationAssessmentSummaryNotesComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-notes/conversation-assessment-summary-notes.component';
-import { ConversationAssessmentSummarySelectComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-select/conversation-assessment-summary-select.component';
 import { ConversationAssessmentSummaryStarsComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-stars/conversation-assessment-summary-stars.component';
 import { ConversationAssessmentSummarySliderComponent } from './main/conversation/conversation-assessment/conversation-assessment-summary/conversation-assessment-summary-slider/conversation-assessment-summary-slider.component';
 import { ConversationAssessmentControlComponent } from './main/conversation/conversation-assessment/conversation-assessment-control/conversation-assessment-control.component';
@@ -124,13 +120,11 @@ import { TranscriptControlComponent } from './shared/components/transcript-contr
     ConversationComponent,
     ConversationStatsComponent,
     ConversationStatsWidgetComponent,
-    ConversationChartComponent,
     ConversationAssessmentComponent,
     ConversationAssessmentControlComponent,
     ConversationAssessmentQaComponent,
     ConversationAssessmentSummaryComponent,
     ConversationAssessmentSummaryNotesComponent,
-    ConversationAssessmentSummarySelectComponent,
     ConversationAssessmentSummaryStarsComponent,
     ConversationAssessmentSummarySliderComponent,
     NoResultsComponent,
@@ -191,10 +185,10 @@ import { TranscriptControlComponent } from './shared/components/transcript-contr
       ConversationEffects,
       StatsEffects,
     ]),
-    StoreDevtoolsModule.instrument({
-      maxAge: 25,
-      logOnly: environment.production,
-    }),
+    // StoreDevtoolsModule.instrument({
+    //   maxAge: 25,
+    //   logOnly: environment.production,
+    // }),
   ],
   providers: [
     AfAuthGuardService,

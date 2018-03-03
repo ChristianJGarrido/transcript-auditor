@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostBinding } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-conversation-stats-widget',
@@ -6,9 +6,9 @@ import { Component, OnInit, Input, HostBinding } from '@angular/core';
   styleUrls: ['./conversation-stats-widget.component.css']
 })
 export class ConversationStatsWidgetComponent implements OnInit {
-  @Input() metricName: any;
-  @Input() metricValue: any;
-  @HostBinding('class') class = 'col-3 pr-1 pb-1';
+  @Input() name: any;
+  @Input() value: any;
+  @Input() format: string;
 
   constructor() { }
 

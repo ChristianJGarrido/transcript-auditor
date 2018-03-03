@@ -1,14 +1,5 @@
 <div class="row no-gutters">
-  <app-conversation-stats-widget [metricName]="'Close Reason'" [metricValue]="conversationSelect?.info.closeReason"></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'Duration Hrs'" [metricValue]="(conversationSelect?.info.duration / 1000 / 3600 || 0) | number:'1.0-1'"></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'Messages'" [metricValue]="conversationSelect?.messageRecords.length"></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'TTFR Min'" [metricValue]="calculateFirstResponseTime() | number:'1.0-1'"></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'ART Hrs'" [metricValue]="calculateResponseTimes() | number:'1.0-1'"></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'MCS'" [metricValue]="conversationSelect?.info.mcs"></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'CSAT'" [metricValue]="conversationSelect?.info.csatRate ? conversationSelect?.info.csatRate / 100 : 'NA' "></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'Source'" [metricValue]="conversationSelect?.info.source"></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'Status'" [metricValue]="conversationSelect?.info.status"></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'Transfers'" [metricValue]="conversationSelect?.transfers.length"></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'Participants'" [metricValue]="conversationSelect?.agentParticipants.length"></app-conversation-stats-widget>
-  <app-conversation-stats-widget [metricName]="'Assignments'" [metricValue]="conversationSelect?.interactions.length"></app-conversation-stats-widget>
+  <div *ngFor="let metric of metrics" class="col-3 pr-1 pb-1">
+    <app-conversation-stats-widget [name]="metric.name" [value]="metric.value" [format]="metric.format"></app-conversation-stats-widget>
+  </div>
 </div>

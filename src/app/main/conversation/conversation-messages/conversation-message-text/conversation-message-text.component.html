@@ -1,13 +1,13 @@
 <div class="row no-gutters">
   <div class="col font-primary mr-2">
-    <div class="card" [ngClass]="message.sentBy === 'Agent' ? 'message-card-agent' : 'message-card-consumer'">
+    <div class="card" [ngClass]="getClass(true)">
       <div class="row no-gutters pt-1 pl-2">
         <div class="col">
-          <app-message-by [by]="message.sentBy" [time]="message.time"></app-message-by>
+          <app-message-by [by]="getSource()" [time]="message.time"></app-message-by>
         </div>
       </div>
-      <div class="card-body p-2" [ngClass]="message.sentBy === 'Agent' ? 'font-agent' : 'font-consumer'">
-        {{message.messageData?.msg?.text}}
+      <div class="card-body p-2" [ngClass]="getClass(false)">
+        {{getMessageText()}}
       </div>
     </div>
   </div>
@@ -17,11 +17,11 @@
     <table style="height: 100%;">
       <tbody>
         <tr>
-          <td *ngIf="!hasMessageNote(message.messageId)" class="align-middle" (click)="openDialog($event)">
+          <td *ngIf="!hasMessageNote(getMessageId())" class="align-middle" (click)="openDialog($event)">
             <i class="fal fa-plus-circle fa-2x"></i>
           </td>
-          <td *ngIf="hasMessageNote(message.messageId)" class="align-middle" (click)="openDialog($event)" [matTooltip]="getMessageNote(message.messageId)" matTooltipClass="material-tooltip"
-            matTooltipPosition="right">
+          <td *ngIf="hasMessageNote(getMessageId())" class="align-middle" (click)="openDialog($event)" [matTooltip]="getMessageNote(getMessageId())"
+            matTooltipClass="material-tooltip" matTooltipPosition="right">
             <i class="fas fa-check-circle fa-2x"></i>
           </td>
         </tr>

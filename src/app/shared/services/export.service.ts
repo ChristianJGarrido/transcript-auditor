@@ -1,11 +1,4 @@
 import { Injectable } from '@angular/core';
-import {
-  AfUser,
-  AfConversationData,
-  AfConversation,
-  AfConversationForm,
-  AfAccount
-} from '../interfaces/interfaces';
 
 import { take } from 'rxjs/operators';
 
@@ -24,11 +17,11 @@ export class ExportService {
    * takes 1 users data and exports to csv
    * @param {AfUser} data
    */
-  downloadNotes(afConversations: AfConversationData[]) {
+  downloadNotes(afConversations: any[]) {
     if (!afConversations.length) {
       return;
     }
-    const notes: AfConversationForm[] = afConversations.map(conversation => ({
+    const notes: any[] = afConversations.map(conversation => ({
       conversationId: conversation.conversationId,
       lastUpdateBy: conversation.lastUpdateBy,
       lastUpdateTime: conversation.lastUpdateTime,
@@ -41,11 +34,11 @@ export class ExportService {
    * takes all users data and exports to csv
    * @param {AfAccount[]} data
    */
-  downloadAllNotes(data: AfAccount[]) {
+  downloadAllNotes(data: any[]) {
     if (!data.length) {
       return;
     }
-    const allData: AfConversationData[] = [];
+    const allData: any[] = [];
     const accountData = data.forEach(account => {
       // if (user.conversations) {
       //   Object.keys(user.conversations).forEach(key => {

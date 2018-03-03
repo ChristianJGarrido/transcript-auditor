@@ -7,10 +7,6 @@ import {
   EventEmitter,
   ViewChild,
 } from '@angular/core';
-import {
-  ApiConversationHistoryRecord,
-  ApiOptions,
-} from '../../shared/interfaces/interfaces';
 
 import { DatatableComponent } from '@swimlane/ngx-datatable';
 import { ConversationModel } from '../../shared/store/conversation/conversation.model';
@@ -22,6 +18,8 @@ import { Store } from '@ngrx/store';
 import { StoreModel } from '../../app.store';
 import { MatDrawer } from '@angular/material/sidenav';
 import { PlaylistModel } from '../../shared/store/playlist/playlist.model';
+import { ApiChatHistoryRecord } from '../../shared/interfaces/chat';
+import { ApiConversationHistoryRecord } from '../../shared/interfaces/conversation';
 
 @Component({
   selector: 'app-conversations-list',
@@ -30,7 +28,6 @@ import { PlaylistModel } from '../../shared/store/playlist/playlist.model';
 })
 export class ConversationsListComponent implements OnInit, OnChanges {
   @ViewChild('table') table: DatatableComponent;
-  // TODO properly type the conversation inputs
   @Input() playlistState: fromPlaylist.State;
   @Input() playlists: PlaylistModel[];
   @Input() playlistSelect: PlaylistModel;
@@ -52,7 +49,7 @@ export class ConversationsListComponent implements OnInit, OnChanges {
    */
   selectConversation(event: any): void {
     if (event.type === 'click') {
-      const id = event.row.conversationId;
+      const { id } = event.row;
       this.store.dispatch(new conversationActions.Select(id));
     }
   }
@@ -67,9 +64,9 @@ export class ConversationsListComponent implements OnInit, OnChanges {
     this.selected = [...selected];
     // get ids to preserve and change
     this.scope = this.getScope();
-    const preserveIds = this.scope.preserve;
-    const changeIds = selected.map(select => select.conversationId);
-    const ids = [...preserveIds, ...changeIds];
+    const { preserve } = this.scope;
+    const changeIds = selected.map(select => select.id);
+    const ids = [...preserve, ...changeIds];
     this.store.dispatch(new conversationActions.FilterPlaylist(ids));
   }
 
@@ -78,12 +75,29 @@ export class ConversationsListComponent implements OnInit, OnChanges {
    */
   updateSelect(): void {
     this.scope = this.getScope();
-    const change = this.scope.change.join(',');
-    const selected = this.rows.filter(row =>
-      change.includes(row.conversationId)
-    );
+    const { change } = this.scope;
+    const selected = this.rows.filter(row => change.includes(row.id));
     this.selected.splice(0, this.selected.length);
     this.selected = [...selected];
+  }
+
+  /**
+   * returns chat text
+   * @param {ApiChatHistoryRecord} record
+   */
+  getChatText(record: ApiChatHistoryRecord): string {
+    const line = record.transcript.lines[0];
+    return line.text || '';
+  }
+
+  /**
+   * returns conversation text
+   * @param {ApiConversationHistoryRecord} record
+   */
+  getConversationText(record: ApiConversationHistoryRecord): string {
+    const lines = record.messageRecords && record.messageRecords[0];
+    const data = lines && lines.messageData;
+    return (data.msg && data.msg.text) || '';
   }
 
   /**
@@ -92,11 +106,14 @@ export class ConversationsListComponent implements OnInit, OnChanges {
    */
   updateRows(): any[] {
     return this.conversations.map(conv => {
-      const record = conv.messageRecords && conv.messageRecords[0];
-      const data = record && record.messageData;
-      const message = (data && data.msg && data.msg.text) || '';
+      const { isChat, id } = conv;
+      const message = isChat
+        ? this.getChatText(conv)
+        : this.getConversationText(conv);
       return {
         ...conv.info,
+        isChat,
+        id,
         message,
       };
     });
@@ -107,9 +124,9 @@ export class ConversationsListComponent implements OnInit, OnChanges {
    * preserved ids are ids not visible in data rows
    */
   getScope(): { preserve: string[]; change: string[] } {
-    const ids = this.conversationState.playlistIds;
-    const idsToChange = this.rows.map(row => row.conversationId).join(',');
-    return ids.reduce(
+    const { playlistIds } = this.conversationState;
+    const idsToChange = this.rows.map(row => row.id).join(',');
+    return playlistIds.reduce(
       (prev, id) => {
         const scope = idsToChange.includes(id) ? 'change' : 'preserve';
         return {

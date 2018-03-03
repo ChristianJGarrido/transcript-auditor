@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ApiConversationMessageRecord } from '../../../../shared/interfaces/interfaces';
+import { ApiConversationMessageRecord } from '../../../../shared/interfaces/conversation';
 
 @Component({
   selector: 'app-conversation-message-link',

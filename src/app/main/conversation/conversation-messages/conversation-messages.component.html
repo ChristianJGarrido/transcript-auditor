@@ -1,7 +1,7 @@
 <div class="card mr-md-1" [class.loading-opacity]="conversationState.loading">
   <div class="card-body">
     <div class="row no-gutters justify-content-between">
-      <h5 class="card-title col-auto m-0 mr-2">Transcript
+      <h5 class="card-title col-auto m-0 mr-2">{{getType()}} Transcript
         <span class="text-muted">({{findIndex() + 1}} of {{getIds().length | number:'1.0-0'}})</span>
       </h5>
       <div class="col-auto">
@@ -15,7 +15,7 @@
     <!-- Conversation subtitle & download button -->
     <div class="row">
       <span class="col font-tertiary">ID:
-        <strong>{{conversationSelect.info.conversationId}}</strong>
+        <strong>{{getId()}}</strong>
       </span>
     </div>
 
@@ -23,7 +23,7 @@
     <div class="container-fluid p-0" id="message-container">
       <div class="row" *ngFor="let event of messageEvents" [ngSwitch]="event.eventKey">
         <div class="col-12 pt-2">
-          <app-conversation-message-text *ngSwitchCase="'MESSAGE'" [message]="event" [assessmentSelect]="assessmentSelect"></app-conversation-message-text>
+          <app-conversation-message-text *ngSwitchCase="'MESSAGE'" [isChat]="conversationSelect.isChat" [message]="event" [assessmentSelect]="assessmentSelect"></app-conversation-message-text>
           <app-conversation-message-interaction *ngSwitchCase="'INTERACTION'" [interaction]="event"></app-conversation-message-interaction>
           <app-conversation-message-link *ngSwitchCase="'LINK'" [message]="event"></app-conversation-message-link>
           <app-conversation-message-participant *ngSwitchCase="'PARTICIPANT'" [participant]="event"></app-conversation-message-participant>

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ApiConversationTransfers } from '../../../../shared/interfaces/interfaces';
+import { ApiConversationTransfers } from '../../../../shared/interfaces/conversation';
 
 @Component({
   selector: 'app-conversation-message-transfer',

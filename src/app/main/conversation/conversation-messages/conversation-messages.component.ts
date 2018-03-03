@@ -6,14 +6,6 @@ import {
   HostBinding,
   OnChanges,
 } from '@angular/core';
-import {
-  ApiConversationHistoryRecord,
-  ApiConversationAgentParticipants,
-  ApiConversationConsumerParticipants,
-  ApiConversationMessageRecord,
-  ApiConversationTransfers,
-  MessageEvent,
-} from '../../../shared/interfaces/interfaces';
 import { UtilityService } from '../../../shared/services/utility.service';
 import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
 import { AssessmentModel } from '../../../shared/store/assessment/assessment.model';
@@ -21,6 +13,11 @@ import { AssessmentModel } from '../../../shared/store/assessment/assessment.mod
 import * as _ from 'lodash';
 import { WatsonService } from '../../../shared/services/watson.service';
 import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
+import {
+  ConversationChatModel,
+  ConversationMessageModel,
+  ConversationModel,
+} from '../../../shared/store/conversation/conversation.model';
 
 @Component({
   selector: 'app-conversation-messages',
@@ -34,7 +31,7 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
   @Input() assessmentSelect: AssessmentModel;
   @Input() playlistSelect: PlaylistModel;
 
-  messageEvents: any[] = [];
+  messageEvents = [];
 
   constructor(
     private utilityService: UtilityService,
@@ -57,59 +54,67 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
     );
   }
 
-  /**
-   * Analyse messages with Watson API
-   */
-  analyseMessages() {
-    const messages = this.messageEvents
-      .filter(message => {
-        return message.eventKey === 'MESSAGE' && message.sentBy === 'Consumer';
-      })
-      .map(
-        message =>
-          message.messageData &&
-          message.messageData.msg &&
-          message.messageData.msg.text
-      );
-    this.watsonService.analyseMessages(messages);
+  // get conversation type
+  getType(): string {
+    return this.conversationSelect.isChat ? 'Chat' : 'Conversation';
   }
 
-  /**
-   * Function to recreate time series of message events
-   */
-  prepareMessageEvents(): any[] {
+  // get conversation id
+  getId(): string {
+    const { isChat } = this.conversationSelect;
+    const param = isChat ? 'engagementId' : 'conversationId';
+    return this.conversationSelect.info[param];
+  }
+
+  // sort chat events
+  prepareChatEvents(conversationChat: ConversationChatModel): any[] {
     // proceed only if we have data
-    if (!this.conversationSelect || !this.conversationSelect.messageRecords) {
+    if (!conversationChat || !conversationChat.transcript.lines) {
       return [];
     }
+    return conversationChat.transcript.lines.map(item => {
+      return {
+        ...item,
+        eventKey: 'MESSAGE',
+      };
+    });
+  }
 
+  // sort conversation message events
+  prepareMessageEvents(conversationMessage: ConversationMessageModel): any[] {
+    // proceed only if we have data
+    if (!conversationMessage || !conversationMessage.messageRecords) {
+      return [];
+    }
     // combine all events
     const events = [
-      ...this.conversationSelect.messageRecords.map(item => ({
+      ...conversationMessage.messageRecords.map(item => ({
         ...item,
         eventKey: 'MESSAGE',
       })),
-      ...this.conversationSelect.agentParticipants.map(item => ({
+      ...conversationMessage.agentParticipants.map(item => ({
         ...item,
         eventKey: 'PARTICIPANT',
       })),
-      ...this.conversationSelect.transfers.map(item => ({
+      ...conversationMessage.transfers.map(item => ({
         ...item,
         eventKey: 'TRANSFER',
       })),
-      // ...this.conversation.interactions.map(item => ({
-      //   ...item,
-      //   timeL: item.interactionTimeL,
-      //   eventKey: 'INTERACTION'
-      // }))
     ];
-
     return _.orderBy(events, 'timeL', 'asc');
+  }
+
+  // update message events according to type
+  updateMessageEvents(): any[] {
+    const { isChat } = this.conversationSelect;
+    return isChat
+      ? this.prepareChatEvents(this.conversationSelect)
+      : this.prepareMessageEvents(this.conversationSelect);
   }
 
   ngOnInit(): void {}
 
   ngOnChanges(): void {
-    this.messageEvents = this.prepareMessageEvents();
+    this.messageEvents = this.updateMessageEvents();
   }
 }

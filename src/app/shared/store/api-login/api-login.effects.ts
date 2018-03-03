@@ -115,7 +115,7 @@ export class ApiLoginEffects {
           this.dialogRef.close();
         }
         return [
-          new ConversationActions.Query(),
+          new ConversationActions.Query('many'),
           new AssessmentActions.Query(),
           new PlaylistActions.Query(),
         ];

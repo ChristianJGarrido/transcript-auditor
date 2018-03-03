@@ -100,19 +100,29 @@ body {
 .font-by {
   font-size: 0.8rem;
 }
+.font-system {
+  color: #707070;
+}
 .font-agent {
   color: #707070;
 }
 .font-consumer {
   color: white;
 }
+.message-card-system,
+.message-card-consumer,
+.message-card-agent {
+  border: none;
+}
+.message-card-system {
+  background: #eeeeee;
+  font-style: italic;
+}
 .message-card-consumer {
   background: #5879da;
-  border: none;
 }
 .message-card-agent {
   background: #dedddd;
-  border: none;
 }
 .navbar-brand {
   font-weight: lighter;

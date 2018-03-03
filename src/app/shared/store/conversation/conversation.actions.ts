@@ -1,8 +1,7 @@
 import { Action } from '@ngrx/store';
 import { ConversationModel } from './conversation.model';
 
-export const QUERY = '[Conversation] Query all';
-export const QUERY_CONV = '[Conversation] Query by conversation ID';
+export const QUERY = '[Conversation] Query';
 export const SELECT = '[Conversation] Select';
 export const FILTER_PLAYLIST = '[Conversation] Filter by playlist';
 
@@ -16,11 +15,7 @@ export const ERROR = '[Conversation] Error';
 
 export class Query implements Action {
   readonly type = QUERY;
-  constructor(public options?: any) {}
-}
-export class QueryConv implements Action {
-  readonly type = QUERY_CONV;
-  constructor(public id: string) {}
+  constructor(public queryType: string, public options?: any) {}
 }
 export class Select implements Action {
   readonly type = SELECT;
@@ -57,7 +52,6 @@ export class Error implements Action {
 
 export type ConversationActions =
   | Query
-  | QueryConv
   | Select
   | FilterPlaylist
   | AddAll

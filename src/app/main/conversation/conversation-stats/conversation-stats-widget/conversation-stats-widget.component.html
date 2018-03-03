@@ -1,11 +1,13 @@
 <div class="card" style="height: 3.5rem;">
   <div class="card-body p-0 pt-1">
     <div class="row justify-content-center text-center">
-      <div class="col-12 font-primary">
-        {{metricValue}}
+      <div [ngSwitch]="format" class="col-12 font-primary text-truncate text-nowrap">
+        <span *ngSwitchCase="'number'">{{value | number:'1.0-1'}}</span>
+        <span *ngSwitchCase="'percent'">{{value | percent}}</span>
+        <span *ngSwitchCase="'string'">{{value}}</span>
       </div>
       <div class="col-12 font-secondary text-truncate">
-        {{metricName}}
+        {{name}}
       </div>
     </div>
   </div>

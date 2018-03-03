@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { LeUser, LoginEvents } from '../interfaces/interfaces';
 import * as ApiLoginActions from '../store/api-login/api-login.actions';
 
 // 3rd party

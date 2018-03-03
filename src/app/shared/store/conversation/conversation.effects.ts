@@ -38,35 +38,39 @@ import { NotificationService } from '../../services/notification.service';
 
 @Injectable()
 export class ConversationEffects {
-  // query all
+  // query
   @Effect()
-  queryAll$: Observable<Action> = this.actions$
+  query$: Observable<Action> = this.actions$
     .ofType<conversationActions.Query>(conversationActions.QUERY)
     .pipe(
-      withLatestFrom(this.store.select(state => state.apiLogin)),
+      withLatestFrom(
+        this.store.select(state => state.apiLogin),
+        this.store.select(fromConversation.selectId)
+      ),
       debounceTime(1000),
-      switchMap(([action, apiLogin]) => {
-        this.notifcationService.openSnackBar('Downloading conversations...');
-        const options = action.options;
-        const msgHistReq = this.generateRequest(true, apiLogin, options);
-        const engHistReq = this.generateRequest(false, apiLogin);
-        const msgHistObs = this.http.post<MsgHistResponse>(
-          msgHistReq.url,
-          msgHistReq.body,
-          msgHistReq.options
-        );
-        const engHistObs = this.http.post<EngHistResponse>(
-          engHistReq.url,
-          engHistReq.body,
-          engHistReq.options
-        );
-        return forkJoin(msgHistObs, engHistObs).pipe(
+      switchMap(([action, apiLogin, selectId]) => {
+        const { queryType, options } = action;
+        const queryOne = queryType === 'conversation';
+        if (!queryOne) {
+          this.notifcationService.openSnackBar('Downloading conversations...');
+        }
+        const payload = queryOne ? selectId : null;
+        return forkJoin(
+          this.getHttpObs<MsgHistResponse>(true, apiLogin, payload),
+          this.getHttpObs<EngHistResponse>(false, apiLogin, payload)
+        ).pipe(
           map(([msgHist, engHist]) => {
             const msgHistRecords = this.transformResponse(msgHist, true);
             const engHistRecords = this.transformResponse(engHist, false);
             return [...msgHistRecords, ...engHistRecords];
           }),
-          map(data => new conversationActions.AddMany(data)),
+          map(data => {
+            if (queryType === 'many' || queryType === 'conversation') {
+              return new conversationActions.AddMany(data);
+            } else if (action.queryType === 'all') {
+              return new conversationActions.AddAll(data);
+            }
+          }),
           catchError(err => this.handleError(err))
         );
       })
@@ -77,41 +81,16 @@ export class ConversationEffects {
   selectAfterAdd$: Observable<Action> = this.actions$
     .ofType(conversationActions.ADD_MANY)
     .pipe(
-      withLatestFrom(this.store.select(fromConversation.selectOne), this.store.select(fromConversation.selectAll)),
+      withLatestFrom(
+        this.store.select(fromConversation.selectOne),
+        this.store.select(fromConversation.selectAll)
+      ),
       map(([action, conversation, conversations]) => {
         if (conversation) {
           return new conversationActions.SuccessSelect();
         }
         const index = Math.floor(Math.random() * conversations.length);
         return new conversationActions.Select(conversations[index].id);
-      })
-    );
-
-  // query one
-  @Effect()
-  queryOne$: Observable<Action> = this.actions$
-    .ofType(conversationActions.QUERY_CONV)
-    .pipe(
-      withLatestFrom(
-        this.store.select(state => state.apiLogin),
-        this.store.select(fromConversation.selectId)
-      ),
-      debounceTime(500),
-      switchMap(([action, apiLogin, selectId]) => {
-        const msgHistReq = this.generateRequest(true, apiLogin, {
-          conversationId: selectId,
-        });
-        return this.http
-          .post<MsgHistResponse>(
-            msgHistReq.url,
-            msgHistReq.body,
-            msgHistReq.options
-          )
-          .pipe(
-            map(msgHist => this.transformResponse(msgHist, true)),
-            map(data => new conversationActions.AddOne(data[0])),
-            catchError(err => this.handleError(err))
-          );
       })
     );
 
@@ -152,7 +131,7 @@ export class ConversationEffects {
         if (conversation) {
           return new conversationActions.SuccessSelect();
         }
-        return new conversationActions.QueryConv(selectId);
+        return new conversationActions.Query('conversation');
       })
     );
 
@@ -174,6 +153,25 @@ export class ConversationEffects {
   ) {}
 
   /**
+   * Generate request and return http obs
+   * @param {boolean} messagingMode
+   * @param {ApiLogin} apiLogin
+   * @param {string?} payload
+   */
+  getHttpObs<T>(
+    messagingMode: boolean,
+    apiLogin: ApiLoginModel,
+    payload?: string
+  ) {
+    const { url, body, options } = this.generateRequest(
+      messagingMode,
+      apiLogin,
+      payload
+    );
+    return this.http.post<T>(url, body, options);
+  }
+
+  /**
    * transforms response items before adding to store
    * @param {any} response
    * @param {boolean} msgHist
@@ -183,11 +181,11 @@ export class ConversationEffects {
       ? 'conversationHistoryRecords'
       : 'interactionHistoryRecords';
     const idProp = msgHist ? 'conversationId' : 'engagementId';
-    const type = msgHist ? 'message' : 'chat';
+    const isChat = !msgHist;
     return response[recordProp].map(record => {
       return {
         ...record,
-        type,
+        isChat,
         id: record.info[idProp],
       };
     });
@@ -216,6 +214,23 @@ export class ConversationEffects {
   }
 
   /**
+   * prepares URL for request
+   * @param {boolean} messagingMode
+   * @param {ApiLoginModel}apiLogin
+   * @param {string} selectId
+   */
+  generateUrl(messagingMode: boolean, apiLogin: ApiLoginModel, selectId) {
+    const { domains, account } = apiLogin;
+    const { msgHist, engHistDomain } = domains;
+    const domain = messagingMode ? msgHist : engHistDomain;
+    const history = messagingMode ? 'messaging_history' : 'interaction_history';
+    const interaction = messagingMode ? 'conversation' : 'interaction';
+    const queryType = selectId ? `${interaction}/` : '';
+    const method = `${interaction}s/${messagingMode ? queryType : ''}`;
+    return `https://${domain}/${history}/api/account/${account}/${method}search`;
+  }
+
+  /**
    * Get data from either Eng Hist API or Msg Hist API
    * @param {boolean} messagingMode
    * @param {ApiLoginModel} apiLogin
@@ -224,20 +239,16 @@ export class ConversationEffects {
   generateRequest(
     messagingMode: boolean,
     apiLogin: ApiLoginModel,
-    options?: any
+    selectId?: string
   ) {
-    const { domains, account, bearer } = apiLogin;
-    const { msgHist, engHistDomain } = domains;
-    const domain = messagingMode ? msgHist : engHistDomain;
-    const history = messagingMode ? 'messaging_history' : 'interaction_history';
-    const interaction = messagingMode ? 'conversation' : 'interaction';
+    const { bearer } = apiLogin;
+    const url = this.generateUrl(messagingMode, apiLogin, selectId);
     const idParam = messagingMode ? 'conversationId' : 'engagementId';
-    const queryOne = options && options[idParam];
-    const method = `${interaction}s/${queryOne ? interaction + '/' : ''}search`;
-    const url = `https://${domain}/${history}/api/account/${account}/${method}`;
-    const body = options ? options : { start: this.convertDateToMs() };
+    const body = selectId
+      ? { [idParam]: selectId }
+      : { start: this.convertDateToMs() };
     const headers = this.getHeaders(bearer);
-    const params = queryOne
+    const params = selectId
       ? null
       : new HttpParams()
           .set('limit', '100')

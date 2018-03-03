@@ -1,24 +1,24 @@
-import { ApiConversationMessageRecord } from '../../interfaces/conversation';
+import { ApiConversationHistoryRecord } from '../../interfaces/conversation';
 import { ApiChatHistoryRecord } from '../../interfaces/chat';
 
 export interface ConversationModel {
   id: string;
-  type: string;
+  isChat: boolean;
 }
 
 export interface ConversationChatModel extends ApiChatHistoryRecord {
   id: string;
-  type: string;
+  isChat: boolean;
 }
 
-export interface ConversationMessageModel extends ApiConversationMessageRecord {
+export interface ConversationMessageModel extends ApiConversationHistoryRecord {
   id: string;
-  type: string;
+  isChat: boolean;
 }
 
 export interface MsgHistResponse {
   _metadata: any;
-  conversationHistoryRecords: ApiConversationMessageRecord[];
+  conversationHistoryRecords: ApiConversationHistoryRecord[];
 }
 
 export interface EngHistResponse {

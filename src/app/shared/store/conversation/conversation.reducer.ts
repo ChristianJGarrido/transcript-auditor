@@ -24,12 +24,13 @@ export function ConversationReducer(
 ): State {
   switch (action.type) {
     case actions.QUERY:
-    case actions.QUERY_CONV:
       return { ...state, loading: true };
     case actions.SUCCESS_SELECT:
     case actions.SUCCESS_ADD:
     case actions.ERROR:
       return { ...state, loading: false, updating: false };
+    case actions.ADD_ALL:
+      return adapter.addAll(action.conversations, state);
     case actions.ADD_ONE:
       return adapter.addOne(action.conversation, state);
     case actions.ADD_MANY:

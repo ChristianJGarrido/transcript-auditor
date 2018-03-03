@@ -2,7 +2,6 @@
 import {
   Component,
   OnInit,
-  OnChanges,
   Input,
   HostBinding,
 } from '@angular/core';
@@ -24,7 +23,7 @@ import { UtilityService } from '../../../../shared/services/utility.service';
   styleUrls: ['./conversation-assessment-summary.component.css'],
 })
 export class ConversationAssessmentSummaryComponent
-  implements OnInit, OnChanges {
+  implements OnInit {
   @HostBinding('class') class = 'col-12';
   @Input() assessmentState: fromAssessment.State;
   @Input() assessmentSelect: AssessmentModel;
@@ -67,5 +66,4 @@ export class ConversationAssessmentSummaryComponent
 
   ngOnInit() {}
 
-  ngOnChanges() {}
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ApiConversationInteractions } from '../../../../shared/interfaces/interfaces';
+import { ApiConversationInteractions } from '../../../../shared/interfaces/conversation';
 
 @Component({
   selector: 'app-conversation-message-interaction',

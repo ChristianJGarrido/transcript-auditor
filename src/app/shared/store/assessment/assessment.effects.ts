@@ -38,6 +38,9 @@ export class AssessmentEffects {
     );
 
   // select after add
+  // TODO REFACTOR - SLOW
+  // TODO REFACTOR - SLOW
+  // TODO REFACTOR - SLOW
   @Effect()
   select$: Observable<Action> = this.actions$
     .ofType(assessmentActions.ADD_ALL, conversationActions.SELECT)

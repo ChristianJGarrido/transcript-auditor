@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, HostBinding, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { ApiOptions, ApiIds, ApiSearchSdes } from '../../../shared/interfaces/interfaces';
 import * as conversationActions from '../../../shared/store/conversation/conversation.actions';
 import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
 
@@ -11,6 +10,7 @@ import {
 } from 'angular-2-dropdown-multiselect';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
+import { ApiOptions, ApiSearchSdes, ApiIds } from '../../../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-conversations-list-filter',
@@ -166,7 +166,7 @@ export class ConversationsListFilterComponent implements OnInit {
       }
     };
 
-    this.store.dispatch(new conversationActions.Query(this.options));
+    this.store.dispatch(new conversationActions.Query('all', this.options));
 
   }
 

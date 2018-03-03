@@ -2,7 +2,7 @@
   <!-- playlist controls -->
   <app-cycle-items [type]="'playlist'" [index]="findIndex()" [items]="playlistState.ids"></app-cycle-items>
   <!-- playlist title -->
-  <h5 class="col-auto card-title m-0 ml-2 mr-2" matTooltip="Manage Playlists" matTooltipClass="material-tooltip">
+  <h5 class="col-auto card-title m-0 ml-2 mr-2">
     {{playlistSelect ? 'Playlist ('+(findIndex()+1)+' of '+playlistState.ids.length+')' : 'Select Playlist'}}
   </h5>
   <!-- playlist metadata -->

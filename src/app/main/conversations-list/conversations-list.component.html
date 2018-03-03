@@ -36,6 +36,16 @@
               <span class="font-secondary">{{value | date:'short'}}</span>
             </ng-template>
           </ngx-datatable-column>
+          <ngx-datatable-column name="Type" prop="isChat" [maxWidth]="50">
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <span *ngIf="value" matTooltip="Chat" matTooltipClass="material-tooltip">
+                <i class="far fa-comment"></i>
+              </span>
+              <span *ngIf="!value" matTooltip="Conversation" matTooltipClass="material-tooltip">
+                <i class="far fa-comments"></i>
+              </span>
+            </ng-template>
+          </ngx-datatable-column>
           <ngx-datatable-column name="Message">
           </ngx-datatable-column>
         </ngx-datatable>
