@@ -14,7 +14,7 @@
 
 </div>
 
-<div *ngIf="note" class="modal-footer">
+<div *ngIf="note" class="modal-footer py-2">
   <button *ngIf="!confirm" (click)="confirm = true" type="button" class="btn btn-sm btn-outline-danger py-0">Clear</button>
   <button *ngIf="confirm" (mouseout)="confirm = false" (click)="clearNote()" type="button" class="btn btn-sm btn-danger py-0">Really delete note?</button>
 </div>

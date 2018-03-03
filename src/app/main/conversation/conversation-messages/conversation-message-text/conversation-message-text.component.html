@@ -15,7 +15,7 @@
     <table style="height: 100%;">
       <tbody>
         <tr>
-          <td *ngIf="!hasMessageNote(getMessageId())" class="align-middle" (click)="openDialog($event)">
+          <td *ngIf="!hasMessageNote(getMessageId())" class="align-middle" (click)="openDialog($event)" matTooltip="Add note" matTooltipClass="material-tooltip" matTooltipPosition="right">
             <i class="fal fa-plus-circle fa-2x"></i>
           </td>
           <td *ngIf="hasMessageNote(getMessageId())" class="align-middle" (click)="openDialog($event)" [matTooltip]="getMessageNote(getMessageId())"
