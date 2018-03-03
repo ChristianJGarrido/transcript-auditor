@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Inject } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {
   AssessmentModel,
@@ -14,7 +14,6 @@ import * as assessmentActions from '../../../../../shared/store/assessment/asses
   styleUrls: ['./conversation-message-text-note.component.css'],
 })
 export class ConversationMessageTextNoteComponent implements OnInit {
-  @Input() messageId: string;
 
   note = '';
   confirm = false;

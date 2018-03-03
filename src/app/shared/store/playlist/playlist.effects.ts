@@ -63,7 +63,7 @@ export class PlaylistEffects {
         const uuid = this.afService.createUUID();
         const { name } = action;
         const playlist = {
-          ...new Playlist(uuid, name, afLogin.email, afLogin.email, conversationIds),
+          ...new Playlist(uuid, name, afLogin.displayName, afLogin.displayName, conversationIds),
         };
         const ref = this.afService.getDocument(
           apiLogin.account,
@@ -95,7 +95,7 @@ export class PlaylistEffects {
           playlist.id
         );
         await ref.update({
-            lastUpdateBy: afLogin.email,
+            lastUpdateBy: afLogin.displayName,
             lastUpdateAt: new Date(),
             ...playlist.changes,
           });

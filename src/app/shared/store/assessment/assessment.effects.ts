@@ -101,8 +101,8 @@ export class AssessmentEffects {
           const data = {
             ...new Assessment(
               uuid,
-              afLogin.email,
-              afLogin.email,
+              afLogin.displayName,
+              afLogin.displayName,
               conversationId
             ),
           };
@@ -137,7 +137,7 @@ export class AssessmentEffects {
           action.id
         );
         await ref.update({
-          lastUpdateBy: afLogin.email,
+          lastUpdateBy: afLogin.displayName,
           lastUpdateAt: new Date(),
           ...action.changes,
         });
