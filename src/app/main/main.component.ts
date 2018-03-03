@@ -5,9 +5,11 @@ import { StoreModel } from '../app.store';
 import * as ApiLoginActions from '../shared/store/api-login/api-login.actions';
 import * as fromConversation from '../shared/store/conversation/conversation.reducer';
 import * as fromPlaylist from '../shared/store/playlist/playlist.reducer';
+import * as fromAssessment from '../shared/store/assessment/assessment.reducer';
 import { ConversationModel } from '../shared/store/conversation/conversation.model';
 import { ApiLoginModel } from '../shared/store/api-login/api-login.model';
 import { PlaylistModel } from '../shared/store/playlist/playlist.model';
+import { AssessmentModel } from '../shared/store/assessment/assessment.model';
 
 @Component({
   selector: 'app-main',
@@ -21,6 +23,7 @@ export class MainComponent implements OnInit, AfterViewInit {
   playlists$: Observable<PlaylistModel[]>;
   playlistState$: Observable<fromPlaylist.State>;
   playlistSelect$: Observable<PlaylistModel>;
+  assessments$: Observable<AssessmentModel[]>;
 
   constructor(private store: Store<StoreModel>) {}
 
@@ -34,6 +37,8 @@ export class MainComponent implements OnInit, AfterViewInit {
     this.playlists$ = this.store.select(fromPlaylist.selectAll);
     this.playlistState$ = this.store.select(fromPlaylist.getState);
     this.playlistSelect$ = this.store.select(fromPlaylist.selectOne);
+
+    this.assessments$ = this.store.select(fromAssessment.selectAll);
   }
 
   ngAfterViewInit(): void {}

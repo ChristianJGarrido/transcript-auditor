@@ -20,6 +20,7 @@ import { MatDrawer } from '@angular/material/sidenav';
 import { PlaylistModel } from '../../shared/store/playlist/playlist.model';
 import { ApiChatHistoryRecord } from '../../shared/interfaces/chat';
 import { ApiConversationHistoryRecord } from '../../shared/interfaces/conversation';
+import { AssessmentModel } from '../../shared/store/assessment/assessment.model';
 
 @Component({
   selector: 'app-conversations-list',
@@ -31,6 +32,7 @@ export class ConversationsListComponent implements OnInit, OnChanges {
   @Input() playlistState: fromPlaylist.State;
   @Input() playlists: PlaylistModel[];
   @Input() playlistSelect: PlaylistModel;
+  @Input() assessments: AssessmentModel[];
   @Input() conversations: any[] = [];
   @Input() sideNavList: MatDrawer;
   @Input() conversationState: fromConversation.State;
@@ -101,6 +103,15 @@ export class ConversationsListComponent implements OnInit, OnChanges {
   }
 
   /**
+   * counts times conv id appears in assessments
+   * @param {string} id
+   * @return {number}
+   */
+  countAssessments(id: string): number {
+    return this.assessments.filter(item => item.conversationId === id).length;
+  }
+
+  /**
    * refresh data grid rows
    * @return {any[]}
    */
@@ -115,6 +126,7 @@ export class ConversationsListComponent implements OnInit, OnChanges {
         isChat,
         id,
         message,
+        assessmentCount: this.countAssessments(id)
       };
     });
   }

@@ -6,7 +6,7 @@
   <router-outlet></router-outlet>
 
   <mat-sidenav mode="push" position="start" #sideNavList>
-    <app-conversations-list [playlistState]="(playlistState$ | async)" [playlists]="(playlists$ | async)" [playlistSelect]="(playlistSelect$ | async)"
+    <app-conversations-list [assessments]="(assessments$ | async)" [playlistState]="(playlistState$ | async)" [playlists]="(playlists$ | async)" [playlistSelect]="(playlistSelect$ | async)"
       [sideNavList]="sideNavList" [conversations]="(conversations$ | async)" [conversationState]="(conversationState$ | async)"></app-conversations-list>
   </mat-sidenav>
 
