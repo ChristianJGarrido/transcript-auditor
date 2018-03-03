@@ -9,7 +9,7 @@
 
     <!-- LE account number -->
     <mat-form-field class="col" [hidden]="(apiLogin$ | async).bearer">
-      <input matInput placeholder="LiveEngage Account" name="lpSite" [(ngModel)]="leUser.account">
+      <input matInput placeholder="LiveEngage Account" name="lpSite" [(ngModel)]="leUser.account" (keyup.enter)="lelogin()">
     </mat-form-field>
 
     <!-- LE user name -->

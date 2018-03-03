@@ -10,12 +10,15 @@ import { StoreModel } from '../../app.store';
 import * as ApiLoginActions from '../../shared/store/api-login/api-login.actions';
 import * as AfLoginActions from '../../shared/store/af-login/af-login.actions';
 import { AfLoginModel } from '../../shared/store/af-login/af-login.model';
-import { ApiLoginModel, ApiLoginUser } from '../../shared/store/api-login/api-login.model';
+import {
+  ApiLoginModel,
+  ApiLoginUser,
+} from '../../shared/store/api-login/api-login.model';
 
 @Component({
   selector: 'app-modal',
   templateUrl: './modal.component.html',
-  styleUrls: ['./modal.component.css']
+  styleUrls: ['./modal.component.css'],
 })
 export class ModalComponent implements OnInit {
   afLogin$: Observable<AfLoginModel>;
@@ -39,8 +42,16 @@ export class ModalComponent implements OnInit {
    * @param {NgForm} form
    */
   lelogin(): void {
-    this.store.dispatch(new ApiLoginActions.GetDomains());
-    this.apiLoginService.getDomains(this.leUser);
+    const { username, account, password } = this.leUser;
+    if (username && account && password) {
+      const user = {
+        username: username.trim(),
+        account: account.trim(),
+        password: password.trim(),
+      };
+      this.store.dispatch(new ApiLoginActions.GetDomains());
+      this.apiLoginService.getDomains(user);
+    }
   }
 
   /**
@@ -62,5 +73,4 @@ export class ModalComponent implements OnInit {
     this.afLogin$ = this.store.select(state => state.afLogin);
     this.apiLogin$ = this.store.select(state => state.apiLogin);
   }
-
 }
