@@ -6,9 +6,7 @@
           <app-message-by [by]="getSource()" [time]="message.time"></app-message-by>
         </div>
       </div>
-      <div class="card-body p-2" [ngClass]="getClass(false)">
-        {{getMessageText()}}
-      </div>
+      <div class="card-body p-2" [ngClass]="getClass(false)" [innerHTML]="getMessageText()"></div>
     </div>
   </div>
 
