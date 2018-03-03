@@ -17,7 +17,7 @@ body {
 .fa-minus-circle,
 .fa-times,
 .fa-font {
-  color: #46474a;
+  color: #6c6d6e;
   cursor: pointer;
 }
 .fa-check-circle {
@@ -36,7 +36,7 @@ body {
 .fa-times:hover,
 .fa-check-circle:hover,
 .fa-font:hover {
-  color: #818181;
+  color: #11b14e;
 }
 
 /* sprites */
