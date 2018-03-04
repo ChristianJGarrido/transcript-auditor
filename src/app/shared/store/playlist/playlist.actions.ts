@@ -12,6 +12,8 @@ export const ADD_ALL = '[Playlist] Add all';
 export const SUCCESS = '[Playlist] Success';
 export const ERROR = '[Playlist] Error';
 
+export const RESET = '[Playlist] Reset';
+
 export class Query implements Action {
   readonly type = QUERY;
 }
@@ -48,6 +50,10 @@ export class Update implements Action {
   ) {}
 }
 
+export class Reset implements Action {
+  readonly type = RESET;
+}
+
 export type AssessmentActions =
   | Query
   | Select
@@ -56,4 +62,5 @@ export type AssessmentActions =
   | Delete
   | AddAll
   | Success
-  | Error;
+  | Error
+  | Reset;

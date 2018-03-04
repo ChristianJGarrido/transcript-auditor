@@ -46,6 +46,8 @@ export function AssessmentReducer(
       return { ...state, selectedId: action.id, loading: false };
     case actions.ERROR:
       return { ...state, loading: false, updating: false, error: true };
+    case actions.RESET:
+      return initialState;
     default:
       return state;
   }

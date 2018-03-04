@@ -13,6 +13,8 @@ export const ADD_ALL = '[Assessment] Add all';
 export const SUCCESS = '[Assessment] Success';
 export const ERROR = '[Assessment] Error';
 
+export const RESET = '[Assessment] Reset';
+
 export class Query implements Action {
   readonly type = QUERY;
 }
@@ -52,6 +54,10 @@ export class Update implements Action {
   constructor(public id: string, public changes: Partial<AssessmentModel>) {}
 }
 
+export class Reset implements Action {
+  readonly type = RESET;
+}
+
 export type AssessmentActions =
   | Query
   | Select
@@ -61,4 +67,5 @@ export type AssessmentActions =
   | Delete
   | AddAll
   | Success
-  | Error;
+  | Error
+  | Reset;

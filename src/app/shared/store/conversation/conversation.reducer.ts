@@ -39,6 +39,8 @@ export function ConversationReducer(
       return { ...state, selectedId: action.id, loading: false };
     case actions.FILTER_PLAYLIST:
       return { ...state, playlistIds: action.ids, loading: false };
+    case actions.RESET:
+      return initialState;
     default:
       return state;
   }

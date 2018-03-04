@@ -13,6 +13,8 @@ export const SUCCESS_SELECT = '[Conversation] Select success';
 export const SUCCESS_ADD = '[Conversation] Add success';
 export const ERROR = '[Conversation] Error';
 
+export const RESET = '[Conversation] Reset';
+
 export class Query implements Action {
   readonly type = QUERY;
   constructor(public queryType: string, public options?: any) {}
@@ -50,6 +52,10 @@ export class Error implements Action {
   constructor(public error: any) {}
 }
 
+export class Reset implements Action {
+  readonly type = RESET;
+}
+
 export type ConversationActions =
   | Query
   | Select
@@ -59,4 +65,5 @@ export type ConversationActions =
   | AddOne
   | SuccessSelect
   | SuccessAdd
-  | Error;
+  | Error
+  | Reset;
