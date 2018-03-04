@@ -5,26 +5,12 @@
         <div class="row no-gutters">
           <h5 class="card-title col-auto pr-2">Summary</h5>
           <app-conversation-assessment-summary-stars [id]="assessmentSelect.id" [rating]="assessmentSelect.rating"></app-conversation-assessment-summary-stars>
-          <button type="button" class="btn btn-outline-secondary btn-sm col-12 mt-2" (click)="openDialog()">Personality {{calculatePersonality() | percent}}</button>
+          <button matTooltip="Measure personality" matTooltipClass="material-tooltip" mat-button (click)="openDialog()" class="font-secondary col-12 mt-2">Personality {{calculatePersonality() | percent}}</button>
         </div>
       </div>
       <div class="col">
         <app-conversation-assessment-summary-notes [id]="assessmentSelect.id" [note]="assessmentSelect.note"></app-conversation-assessment-summary-notes>
       </div>
     </div>
-
-    <!-- <app-conversation-assessment-summary-select  [id]="'123'"></app-conversation-assessment-summary-select> -->
-
-    <!-- conversation agent summary -->
-    <!-- <div class="row mt-2">
-      <div class="col">
-        <label class="font-primary">Agent Summary</label>
-        <br/>
-        <span class="font-secondary">
-          <small>Conversation summary text here</small>
-        </span>
-      </div>
-    </div> -->
-
   </div>
 </div>
