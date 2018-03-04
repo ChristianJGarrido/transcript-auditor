@@ -237,9 +237,9 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
 
   /**
    * Filters rows
-   * @param {boolean} clear
+   * @param {boolean?} clear
    */
-  updateSearch(clear: boolean): void {
+  updateSearch(clear?: boolean): void {
     if (clear) {
       this.search = '';
       this.rows = this.temp;
@@ -249,10 +249,10 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
       const temp = this.temp.filter(row => {
         return row[prop].toLowerCase().indexOf(search) !== -1 || !search;
       });
-      this.rows = temp;
       if (this.table) {
         this.table.offset = 0;
       }
+      this.rows = temp;
     }
   }
 
@@ -262,8 +262,6 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
     return `Search by ${prop}`;
   }
 
-
-
   ngOnInit(): void {
     this.columns = this.setColums();
     this.selected = this.setSelected();
@@ -271,6 +269,6 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.temp = this.updateRows();
-    this.rows = this.temp;
+    this.updateSearch();
   }
 }
