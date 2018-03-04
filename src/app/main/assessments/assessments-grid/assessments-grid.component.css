@@ -2,3 +2,8 @@
   overflow: auto;
   height: calc(100vh - 215px);
 }
+
+.mat-form-field {
+  font-family: MyriadPro, 'sans-serif';
+  font-size: 14px;
+}

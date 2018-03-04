@@ -47,9 +47,12 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
   @Input() dataState: fromAssessment.State | fromPlaylist.State;
   @Input() stats: StatsModel;
 
+  search = '';
+
   selected = [];
   columns: TableColumn[] = [];
   rows = [];
+  temp = [];
 
   PLAYLIST = 'playlists';
   ASSESSMENT = 'assessments';
@@ -195,6 +198,11 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
     });
   }
 
+  // capitalises first letter of title
+  setTitle(): string {
+    return this.type.charAt(0).toUpperCase() + this.type.slice(1);
+  }
+
   /**
    * refresh rows
    * @return {any[]}
@@ -227,12 +235,42 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
     }
   }
 
+  /**
+   * Filters rows
+   * @param {boolean} clear
+   */
+  updateSearch(clear: boolean): void {
+    if (clear) {
+      this.search = '';
+      this.rows = this.temp;
+    } else {
+      const prop = this.type === 'playlists' ? 'name' : 'conversationId';
+      const search = this.search.toLowerCase();
+      const temp = this.temp.filter(row => {
+        return row[prop].toLowerCase().indexOf(search) !== -1 || !search;
+      });
+      this.rows = temp;
+      if (this.table) {
+        this.table.offset = 0;
+      }
+    }
+  }
+
+  // gets placeholder text
+  getSearchPlaceholder(): string {
+    const prop = this.type === 'playlists' ? 'name' : 'conversation ID';
+    return `Search by ${prop}`;
+  }
+
+
+
   ngOnInit(): void {
     this.columns = this.setColums();
     this.selected = this.setSelected();
   }
 
   ngOnChanges(): void {
-    this.rows = this.updateRows();
+    this.temp = this.updateRows();
+    this.rows = this.temp;
   }
 }
