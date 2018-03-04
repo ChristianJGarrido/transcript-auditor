@@ -54,10 +54,12 @@ export class ConversationEffects {
         if (!queryOne) {
           this.notifcationService.openSnackBar('Downloading conversations...');
         }
-        const payload = queryOne ? selectId : null;
+        const payload = queryOne ? { selectId } : { start: this.convertDateToMs() };
+        const payloadMsg = options ? options.msg : payload;
+        const payloadChat = options ? options.chat : payload;
         return forkJoin(
-          this.getHttpObs<MsgHistResponse>(true, apiLogin, payload),
-          this.getHttpObs<EngHistResponse>(false, apiLogin, payload)
+          this.getHttpObs<MsgHistResponse>(true, apiLogin, payloadMsg),
+          this.getHttpObs<EngHistResponse>(false, apiLogin, payloadChat)
         ).pipe(
           map(([msgHist, engHist]) => {
             const msgHistRecords = this.transformResponse(msgHist, true);
@@ -79,7 +81,7 @@ export class ConversationEffects {
   // select after add
   @Effect()
   selectAfterAdd$: Observable<Action> = this.actions$
-    .ofType(conversationActions.ADD_MANY)
+    .ofType(conversationActions.ADD_ALL, conversationActions.ADD_MANY)
     .pipe(
       withLatestFrom(
         this.store.select(fromConversation.selectOne),
@@ -219,7 +221,11 @@ export class ConversationEffects {
    * @param {ApiLoginModel}apiLogin
    * @param {string} selectId
    */
-  generateUrl(messagingMode: boolean, apiLogin: ApiLoginModel, selectId) {
+  generateUrl(
+    messagingMode: boolean,
+    apiLogin: ApiLoginModel,
+    selectId: string
+  ) {
     const { domains, account } = apiLogin;
     const { msgHist, engHistDomain } = domains;
     const domain = messagingMode ? msgHist : engHistDomain;
@@ -239,14 +245,13 @@ export class ConversationEffects {
   generateRequest(
     messagingMode: boolean,
     apiLogin: ApiLoginModel,
-    selectId?: string
+    options?: any
   ) {
     const { bearer } = apiLogin;
-    const url = this.generateUrl(messagingMode, apiLogin, selectId);
     const idParam = messagingMode ? 'conversationId' : 'engagementId';
-    const body = selectId
-      ? { [idParam]: selectId }
-      : { start: this.convertDateToMs() };
+    const selectId = options.selectId || options[idParam];
+    const url = this.generateUrl(messagingMode, apiLogin, selectId);
+    const body = selectId ? { [idParam]: selectId } : options;
     const headers = this.getHeaders(bearer);
     const params = selectId
       ? null

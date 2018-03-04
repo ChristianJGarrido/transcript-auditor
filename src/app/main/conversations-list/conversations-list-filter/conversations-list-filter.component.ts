@@ -1,4 +1,10 @@
-import { Component, OnInit, OnDestroy, HostBinding, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  HostBinding,
+  Input,
+} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import * as conversationActions from '../../../shared/store/conversation/conversation.actions';
 import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
@@ -6,16 +12,20 @@ import * as fromConversation from '../../../shared/store/conversation/conversati
 import {
   IMultiSelectOption,
   IMultiSelectSettings,
-  IMultiSelectTexts
+  IMultiSelectTexts,
 } from 'angular-2-dropdown-multiselect';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
-import { ApiOptions, ApiSearchSdes, ApiIds } from '../../../shared/interfaces/interfaces';
+import {
+  ApiOptions,
+  ApiSearchSdes,
+  ApiIds,
+} from '../../../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-conversations-list-filter',
   templateUrl: './conversations-list-filter.component.html',
-  styleUrls: ['./conversations-list-filter.component.css']
+  styleUrls: ['./conversations-list-filter.component.css'],
 })
 export class ConversationsListFilterComponent implements OnInit {
   @HostBinding('class') class = 'col';
@@ -39,41 +49,71 @@ export class ConversationsListFilterComponent implements OnInit {
     { id: 'DESKTOP', name: 'Desktop' },
     { id: 'TABLET', name: 'Tablet' },
     { id: 'MOBILE', name: 'Mobile' },
-    { id: 'NA', name: 'NA' }
+    { id: 'NA', name: 'NA' },
   ];
   searchOptions: IMultiSelectOption[] = [
     { id: 'keywordSearch', name: 'Keyword Search', isLabel: true },
     { id: 'keyword', name: 'Keyword' },
     { id: 'summary', name: 'Summary' },
+    { id: 'surveyAnswer', name: 'Survey Answer (Chat)' },
+    { id: 'surveyQuestion', name: 'Survey Question (Chat)' },
+    { id: 'idSearch', name: 'ID Search', isLabel: true },
+    { id: 'conversationId', name: 'Conversation/Engagement ID' },
     { id: 'sdeSearch', name: 'SDE Search', isLabel: true },
     { id: 'personalInfo', name: 'Personal Info' },
     { id: 'customerInfo', name: 'Customer Info' },
-    { id: 'userUpdate', name: 'User Update' },
-    { id: 'idSearch', name: 'ID Search', isLabel: true },
-    { id: 'conversationId', name: 'Conversation ID' }
+    { id: 'userUpdate', name: 'User Update (Msg)' },
+    { id: 'ea.purchase', name: 'Purchase (Chat)' },
+    { id: 'ea.viewedProduct', name: 'Viewed Product (Chat)' },
+    { id: 'ea.lead', name: 'Lead (Chat)' },
+    { id: 'ea.cartStatus', name: 'Cart Status (Chat)' },
+    { id: 'ea.serviceActivity', name: 'Service Activity (Chat)' },
+    { id: 'ea.visitorError', name: 'Visitor Error (Chat)' },
+    { id: 'ea.marketingCampaignInfo', name: 'Marketing Info (Chat)' },
   ];
+
+  searchSchema = {
+    'ea.marketingCampaignInfo': 'sdeChat',
+    'ea.visitorError': 'sdeChat',
+    'ea.serviceActivity': 'sdeChat',
+    'ea.cartStatus': 'sdeChat',
+    'ea.lead': 'sdeChat',
+    'ea.viewedProduct': 'sdeChat',
+    'ea.purchase': 'sdeChat',
+    userUpdate: 'sdeMsg',
+    customerInfo: 'sdeAll',
+    personalInfo: 'sdeAll',
+    surveyAnswer: 'sdeChat',
+    surveyQuestion: 'sdeChat',
+    summary: 'bodyMsg',
+    keyword: 'bodyKeyword',
+    conversationId: 'bodyId',
+    engagementId: 'bodyId',
+  };
+
   searchSelect: any[] = [this.searchOptions[1].id];
   filterSelect: any[] = [];
   searchSettings: IMultiSelectSettings = {
     buttonClasses: 'btn btn-outline-secondary btn-sm',
     dynamicTitleMaxItems: 1,
-    displayAllSelectedText: true
+    displayAllSelectedText: true,
   };
   filterTexts: IMultiSelectTexts = {
     checkedPlural: 'filters',
     defaultTitle: 'Filter',
-    allSelected: 'All'
+    allSelected: 'All',
   };
   searchTexts: IMultiSelectTexts = {
     checkedPlural: 'selected',
     defaultTitle: 'None',
-    allSelected: 'All'
+    allSelected: 'All',
   };
   searchKeyword = '';
 
-  options: ApiOptions = null;
-  sdeSearch: ApiSearchSdes;
-  ids: ApiIds;
+  optionsChat: any = null;
+  optionsMsg: any = null;
+  sdesChat: any = [];
+  sdesMsg: any = null;
 
   constructor(private store: Store<StoreModel>) {}
 
@@ -81,34 +121,65 @@ export class ConversationsListFilterComponent implements OnInit {
    * request new data from API with optional search params
    */
   getData() {
-    this.options = null;
-    this.sdeSearch = null;
-    this.ids = null;
+    this.optionsMsg = null;
+    this.optionsChat = null;
+    this.sdesMsg = null;
+    this.sdesChat = [];
 
     // assign search params to options
     if (this.searchKeyword) {
       this.searchSelect.forEach(key => {
-        switch (key) {
-          case 'personalInfo':
-          case 'customerInfo':
-          case 'userUpdate':
-            this.sdeSearch = {
-              ...this.sdeSearch,
-              [key]: this.searchKeyword
+        switch (this.searchSchema[key]) {
+          case 'sdeChat':
+            this.sdesChat = [...this.sdesChat, key];
+            break;
+          case 'sdeAll':
+            this.sdesChat = [...this.sdesChat, `ea.${key}`];
+            this.sdesMsg = {
+              ...this.sdesMsg,
+              [key]: this.searchKeyword,
             };
             break;
-          case 'conversationId':
-          case 'consumerId':
-            this.ids = {
-              ...this.ids,
-              [key]: this.searchKeyword
+          case 'bodyMsg':
+            this.optionsMsg = {
+              ...this.optionsMsg,
+              [key]: this.searchKeyword,
             };
             break;
-          default:
-            this.options = {
-              ...this.options,
-              [key]: this.searchKeyword
+          case 'bodyChat':
+            this.optionsChat = {
+              ...this.optionsChat,
+              [key]: this.searchKeyword,
             };
+            break;
+          case 'sdeMsg':
+            this.sdesMsg = {
+              ...this.sdesMsg,
+              [key]: this.searchKeyword,
+            };
+            break;
+          case 'bodyId':
+            {
+              this.optionsChat = {
+                ...this.optionsChat,
+                engagementId: this.searchKeyword,
+              };
+              this.optionsMsg = {
+                ...this.optionsMsg,
+                conversationId: this.searchKeyword,
+              };
+            }
+            break;
+          case 'bodyKeyword':
+            this.optionsChat = {
+              ...this.optionsChat,
+              [key]: this.searchKeyword,
+            };
+            this.optionsMsg = {
+              ...this.optionsMsg,
+              [key]: this.searchKeyword,
+            };
+            this.sdesChat = [...this.sdesChat, 'chatLine'];
             break;
         }
       });
@@ -119,9 +190,12 @@ export class ConversationsListFilterComponent implements OnInit {
       switch (key) {
         case 'OPEN':
         case 'CLOSE':
-          this.options = {
-            ...this.options,
-            status: this.options && this.options.status ? [...this.options.status, key] : [key]
+          this.optionsMsg = {
+            ...this.optionsMsg,
+            status:
+              this.optionsMsg && this.optionsMsg.status
+                ? [...this.optionsMsg.status, key]
+                : [key],
           };
           break;
         case 'APP':
@@ -129,9 +203,12 @@ export class ConversationsListFilterComponent implements OnInit {
         case 'FACEBOOK':
         case 'AGENT':
         case 'SMS':
-        this.options = {
-            ...this.options,
-            source: this.options && this.options.source ? [...this.options.source, key] : [key]
+          this.optionsMsg = {
+            ...this.optionsMsg,
+            source:
+              this.optionsMsg && this.optionsMsg.source
+                ? [...this.optionsMsg.source, key]
+                : [key],
           };
           break;
 
@@ -139,9 +216,12 @@ export class ConversationsListFilterComponent implements OnInit {
         case 'TABLET':
         case 'MOBILE':
         case 'NA':
-        this.options = {
-            ...this.options,
-            device: this.options && this.options.device ? [...this.options.device, key] : [key]
+          this.optionsMsg = {
+            ...this.optionsMsg,
+            device:
+              this.optionsMsg && this.optionsMsg.device
+                ? [...this.optionsMsg.device, key]
+                : [key],
           };
           break;
         default:
@@ -150,27 +230,42 @@ export class ConversationsListFilterComponent implements OnInit {
     });
 
     // attach sdeSearch param
-    if (this.sdeSearch) {
-      this.options = {
-        ...this.options,
-        sdeSearch: this.sdeSearch
+    if (this.sdesMsg) {
+      this.optionsMsg = {
+        ...this.optionsMsg,
+        sdeSearch: this.sdesMsg,
+      };
+    }
+    if (this.sdesChat.length) {
+      this.optionsChat = {
+        ...this.optionsChat,
+        keyword_search_area: {
+          types: this.sdesChat,
+        },
       };
     }
 
     // attach time
-    this.options = {
-      ...this.options,
-      start: {
-        from: new Date(this.dateFrom.value).getTime(),
-        to: new Date(this.dateTo.value).getTime(),
-      }
+    const start = {
+      from: new Date(this.dateFrom.value).getTime(),
+      to: new Date(this.dateTo.value).getTime(),
+    };
+    this.optionsMsg = {
+      ...this.optionsMsg,
+      start,
+    };
+    this.optionsChat = {
+      ...this.optionsChat,
+      start,
     };
 
-    this.store.dispatch(new conversationActions.Query('all', this.options));
-
+    this.store.dispatch(
+      new conversationActions.Query('all', {
+        msg: this.optionsMsg,
+        chat: this.optionsChat,
+      })
+    );
   }
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }
