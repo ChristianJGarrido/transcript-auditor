@@ -17,6 +17,7 @@ export interface ApiDomains {
   engHistDomain: string;
   msgHist: string;
   agentVep: string;
+  accountConfigReadWrite: string;
 }
 
 export class ApiLoginState implements ApiLoginModel {

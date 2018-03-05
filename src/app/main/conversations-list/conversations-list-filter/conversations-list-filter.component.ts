@@ -36,6 +36,7 @@ export class ConversationsListFilterComponent implements OnInit {
   dateFrom = new FormControl(new Date(this.to.setDate(this.to.getDate() - 7)));
 
   filterOptions: IMultiSelectOption[] = [
+    { id: 'filterLabel', name: 'MESSAGING ONLY', isLabel: true },
     { id: 'status', name: 'Status', isLabel: true },
     { id: 'OPEN', name: 'Open' },
     { id: 'CLOSE', name: 'Closed' },

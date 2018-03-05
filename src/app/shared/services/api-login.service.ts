@@ -9,10 +9,11 @@ declare var lpTag: any;
 
 @Injectable()
 export class ApiLoginService {
-  private services = ['agentVep', 'msgHist', 'engHistDomain'];
+  private services = ['agentVep', 'msgHist', 'engHistDomain', 'accountConfigReadWrite'];
   private domainTimeout;
   private loginInterval;
   private domains = {
+    accountConfigReadWrite: '',
     msgHist: '',
     agentVep: '',
     engHistDomain: '',

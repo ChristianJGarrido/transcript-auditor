@@ -7,6 +7,7 @@ const initialApiLoginState = new ApiLoginState(null, '', '', false, {
   agentVep: '',
   engHistDomain: '',
   msgHist: '',
+  accountConfigReadWrite: ''
 });
 
 export function ApiLoginReducer(
