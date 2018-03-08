@@ -21,6 +21,8 @@ import { PlaylistModel } from '../../shared/store/playlist/playlist.model';
 import { ApiChatHistoryRecord } from '../../shared/interfaces/chat';
 import { ApiConversationHistoryRecord } from '../../shared/interfaces/conversation';
 import { AssessmentModel } from '../../shared/store/assessment/assessment.model';
+import { ListModel } from '../../shared/store/list/list.model';
+import { FilterModel } from '../../shared/store/filter/filter.model';
 
 @Component({
   selector: 'app-conversations-list',
@@ -29,6 +31,8 @@ import { AssessmentModel } from '../../shared/store/assessment/assessment.model'
 })
 export class ConversationsListComponent implements OnInit, OnChanges {
   @ViewChild('table') table: DatatableComponent;
+  @Input() list: ListModel;
+  @Input() filter: FilterModel;
   @Input() playlistState: fromPlaylist.State;
   @Input() playlists: PlaylistModel[];
   @Input() playlistSelect: PlaylistModel;

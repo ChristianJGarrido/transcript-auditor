@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import * as conversationActions from '../../../shared/store/conversation/conversation.actions';
+import * as filterActions from '../../../shared/store/filter/filter.actions';
 import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
 
 import {
@@ -21,6 +22,8 @@ import {
   ApiSearchSdes,
   ApiIds,
 } from '../../../shared/interfaces/interfaces';
+import { ListModel } from '../../../shared/store/list/list.model';
+import { FilterModel } from '../../../shared/store/filter/filter.model';
 
 @Component({
   selector: 'app-conversations-list-filter',
@@ -30,10 +33,25 @@ import {
 export class ConversationsListFilterComponent implements OnInit {
   @HostBinding('class') class = 'col';
   @Input() loading: boolean;
+  @Input() list: ListModel;
+  @Input() filter: FilterModel;
 
   to = new Date();
   dateTo = new FormControl(new Date(this.to.setDate(this.to.getDate() - 1)));
   dateFrom = new FormControl(new Date(this.to.setDate(this.to.getDate() - 7)));
+
+  agentsList: any[] = [];
+  skillsList: any[] = [];
+  groupsList: any[] = [];
+
+  agentsSelect: any[] = [];
+  skillsSelect: any[] = [];
+  groupsSelect: any[] = [];
+
+  typeOptions: IMultiSelectOption[] = [
+    { id: 'conversations', name: 'Conversations' },
+    { id: 'chats', name: 'Chats' },
+  ];
 
   filterOptions: IMultiSelectOption[] = [
     { id: 'filterLabel', name: 'MESSAGING ONLY', isLabel: true },
@@ -94,10 +112,15 @@ export class ConversationsListFilterComponent implements OnInit {
 
   searchSelect: any[] = [this.searchOptions[1].id];
   filterSelect: any[] = [];
+  typeSelect: any[] = [];
+
   searchSettings: IMultiSelectSettings = {
     buttonClasses: 'btn btn-outline-secondary btn-sm',
     dynamicTitleMaxItems: 1,
     displayAllSelectedText: true,
+  };
+  typeSettings: IMultiSelectSettings = {
+    ...this.searchSettings,
   };
   filterTexts: IMultiSelectTexts = {
     checkedPlural: 'filters',
@@ -111,6 +134,30 @@ export class ConversationsListFilterComponent implements OnInit {
   };
   searchKeyword = '';
 
+  listSettings: IMultiSelectSettings = {
+    ...this.searchSettings,
+    showUncheckAll: true,
+    enableSearch: true,
+  };
+
+  typeTexts: IMultiSelectTexts = {
+    defaultTitle: 'Select Types',
+    allSelected: 'All Types',
+  };
+
+  listAgentsTexts: IMultiSelectTexts = {
+    defaultTitle: 'Select Agents',
+    uncheckAll: 'Reset',
+  };
+  listSkillsTexts: IMultiSelectTexts = {
+    defaultTitle: 'Select Skills',
+    uncheckAll: 'Reset',
+  };
+  listGroupsTexts: IMultiSelectTexts = {
+    defaultTitle: 'Select Agent Groups',
+    uncheckAll: 'Reset',
+  };
+
   optionsChat: any = null;
   optionsMsg: any = null;
   sdesChat: any = [];
@@ -119,9 +166,16 @@ export class ConversationsListFilterComponent implements OnInit {
   constructor(private store: Store<StoreModel>) {}
 
   /**
+   * select only chat or conversation types
+   */
+  updateTypes(): void {
+     this.store.dispatch(new filterActions.ToggleTypes(this.typeSelect));
+  }
+
+  /**
    * request new data from API with optional search params
    */
-  getData() {
+  getData(): void {
     this.optionsMsg = null;
     this.optionsChat = null;
     this.sdesMsg = null;
@@ -268,5 +322,7 @@ export class ConversationsListFilterComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.typeSelect = this.filter.types;
+  }
 }

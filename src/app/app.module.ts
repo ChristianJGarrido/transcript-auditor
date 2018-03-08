@@ -101,6 +101,7 @@ import { ConversationEffects } from './shared/store/conversation/conversation.ef
 import { StatsEffects } from './shared/store/stats/stats.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ListEffects } from './shared/store/list/list.effects';
+import { FilterEffects } from './shared/store/filter/filter.effects';
 
 // 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -186,6 +187,7 @@ import { TranscriptControlComponent } from './shared/components/transcript-contr
       ConversationEffects,
       StatsEffects,
       ListEffects,
+      FilterEffects,
     ]),
     // StoreDevtoolsModule.instrument({
     //   maxAge: 25,

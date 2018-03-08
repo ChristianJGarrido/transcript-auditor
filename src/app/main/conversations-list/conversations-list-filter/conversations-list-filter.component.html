@@ -16,20 +16,33 @@
   </div>
 </div>
 
-<div class="row no-gutters">
+<!-- list filters -->
+<!-- <ss-multiselect-dropdown [settings]="listSettings" [texts]="listSkillsTexts" [options]="list.skills" [(ngModel)]="skillsSelect"></ss-multiselect-dropdown> -->
+<!-- <ss-multiselect-dropdown [settings]="listSettings" [texts]="listGroupsTexts" [options]="list.groups" [(ngModel)]="groupsSelect"></ss-multiselect-dropdown> -->
+<!-- <ss-multiselect-dropdown [settings]="listSettings" [texts]="listAgentsTexts" [options]="list.agents" [(ngModel)]="agentsSelect"></ss-multiselect-dropdown> -->
+
+<div class="row no-gutters mt-2">
+
+  <!-- type options -->
+  <div class="col-auto pr-2">
+    <ss-multiselect-dropdown [settings]="typeSettings" [texts]="typeTexts" [options]="typeOptions" [(ngModel)]="typeSelect"
+      (ngModelChange)="updateTypes()"></ss-multiselect-dropdown>
+  </div>
 
   <!-- filter options -->
   <div class="col-auto pr-2">
-    <ss-multiselect-dropdown [settings]="searchSettings" [texts]="filterTexts" [options]="filterOptions" [(ngModel)]="filterSelect" (ngModelChange)="getData()"></ss-multiselect-dropdown>
+    <ss-multiselect-dropdown [settings]="searchSettings" [texts]="filterTexts" [options]="filterOptions" [(ngModel)]="filterSelect"
+      (ngModelChange)="getData()"></ss-multiselect-dropdown>
   </div>
 
   <div class="col">
     <div class="input-group">
       <!-- keyword options -->
-      <ss-multiselect-dropdown [settings]="searchSettings" [texts]="searchTexts" [options]="searchOptions" [(ngModel)]="searchSelect" (ngModelChange)="getData()"></ss-multiselect-dropdown>
+      <ss-multiselect-dropdown [settings]="searchSettings" [texts]="searchTexts" [options]="searchOptions" [(ngModel)]="searchSelect"
+        (ngModelChange)="getData()"></ss-multiselect-dropdown>
       <!-- keyword search -->
-      <input [disabled]="!searchSelect.length" type="text" class="form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword" (keyup.enter)="getData()"
-        placeholder="Keywords...">
+      <input [disabled]="!searchSelect.length" type="text" class="form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword"
+        (keyup.enter)="getData()" placeholder="Keywords...">
       <!-- search button -->
       <span class="input-group-btn">
         <button type="button" class="btn btn-outline-success btn-sm" (click)="getData()" [disabled]="loading">{{loading ? 'Loading...' : 'Search'}}</button>

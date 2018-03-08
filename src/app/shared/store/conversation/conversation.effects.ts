@@ -45,10 +45,14 @@ export class ConversationEffects {
     .pipe(
       withLatestFrom(
         this.store.select(state => state.apiLogin),
-        this.store.select(fromConversation.selectId)
+        this.store.select(fromConversation.selectId),
+        this.store.select(state => state.filter)
       ),
       debounceTime(1000),
-      switchMap(([action, apiLogin, selectId]) => {
+      switchMap(([action, apiLogin, selectId, filter]) => {
+        const { types } = filter;
+        const getChat = types.indexOf('chats') !== -1;
+        const getConversations = types.indexOf('conversations') !== -1;
         const { queryType, options } = action;
         const queryOne = queryType === 'conversation';
         if (!queryOne) {
@@ -58,15 +62,18 @@ export class ConversationEffects {
         const payloadMsg = options ? options.msg : payload;
         const payloadChat = options ? options.chat : payload;
         return forkJoin(
-          this.getHttpObs<MsgHistResponse>(true, apiLogin, payloadMsg),
-          this.getHttpObs<EngHistResponse>(false, apiLogin, payloadChat)
+          getConversations ? this.getHttpObs<MsgHistResponse>(true, apiLogin, payloadMsg) : of(null),
+          getChat ? this.getHttpObs<EngHistResponse>(false, apiLogin, payloadChat) : of(null)
         ).pipe(
           map(([msgHist, engHist]) => {
-            const msgHistRecords = this.transformResponse(msgHist, true);
-            const engHistRecords = this.transformResponse(engHist, false);
+            const msgHistRecords = msgHist ? this.transformResponse(msgHist, true) : [];
+            const engHistRecords = engHist ? this.transformResponse(engHist, false) : [];
             return [...msgHistRecords, ...engHistRecords];
           }),
           map(data => {
+            if (!data.length) {
+              return new conversationActions.Reset();
+            }
             if (queryType === 'many' || queryType === 'conversation') {
               return new conversationActions.AddMany(data);
             } else if (action.queryType === 'all') {

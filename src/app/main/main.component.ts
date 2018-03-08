@@ -10,6 +10,8 @@ import { ConversationModel } from '../shared/store/conversation/conversation.mod
 import { ApiLoginModel } from '../shared/store/api-login/api-login.model';
 import { PlaylistModel } from '../shared/store/playlist/playlist.model';
 import { AssessmentModel } from '../shared/store/assessment/assessment.model';
+import { ListModel } from '../shared/store/list/list.model';
+import { FilterModel } from '../shared/store/filter/filter.model';
 
 @Component({
   selector: 'app-main',
@@ -17,6 +19,8 @@ import { AssessmentModel } from '../shared/store/assessment/assessment.model';
   styleUrls: ['./main.component.css'],
 })
 export class MainComponent implements OnInit, AfterViewInit {
+  list$: Observable<ListModel>;
+  filter$: Observable<FilterModel>;
   apiLogin$: Observable<ApiLoginModel>;
   conversations$: Observable<ConversationModel[]>;
   conversationState$: Observable<fromConversation.State>;
@@ -29,6 +33,10 @@ export class MainComponent implements OnInit, AfterViewInit {
 
   ngOnInit(): void {
     this.store.dispatch(new ApiLoginActions.GetSession());
+
+    this.list$ = this.store.select(state => state.list);
+    this.filter$ = this.store.select(state => state.filter);
+
     this.apiLogin$ = this.store.select(state => state.apiLogin);
 
     this.conversations$ = this.store.select(fromConversation.selectAll);

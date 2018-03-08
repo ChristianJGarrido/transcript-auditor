@@ -11,7 +11,7 @@
 
     <!-- conversation filters -->
     <div class="row">
-      <app-conversations-list-filter [loading]="conversationState.loading"></app-conversations-list-filter>
+      <app-conversations-list-filter [filter]="filter" [list]="list" [loading]="conversationState.loading"></app-conversations-list-filter>
     </div>
 
     <!-- playlist control -->
