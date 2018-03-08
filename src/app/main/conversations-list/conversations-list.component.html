@@ -26,16 +26,29 @@
         <ngx-datatable #table style="cursor: pointer;" [limit]="15" class="material" [columnMode]="'force'" [rowHeight]="30" [headerHeight]="30"
           [selected]="selected" [selectionType]="'checkbox'" [footerHeight]="50" [rows]="rows" [columns]="columns" (select)="onCheck($event)"
           (activate)="selectConversation($event)">
+
+          <!-- checkbox -->
           <ngx-datatable-column [width]="30" [sortable]="false" [canAutoResize]="false" [draggable]="false" [resizeable]="false">
             <ng-template ngx-datatable-cell-template let-value="value" let-isSelected="isSelected" let-onCheckboxChangeFn="onCheckboxChangeFn">
               <input type="checkbox" [checked]="isSelected" (change)="onCheckboxChangeFn($event)" />
             </ng-template>
           </ngx-datatable-column>
-          <ngx-datatable-column [maxWidth]="140" name="Start" prop="startTime">
+
+          <!-- date -->
+          <ngx-datatable-column [maxWidth]="110" name="Start" prop="startTime">
             <ng-template let-value="value" ngx-datatable-cell-template>
-              <span class="font-secondary">{{value | date:'short'}}</span>
+              <span class="font-tertiary">{{value | date:'short'}}</span>
             </ng-template>
           </ngx-datatable-column>
+
+          <!-- consumer id -->
+          <ngx-datatable-column name="CID" prop="conId" [maxWidth]="50">
+            <ng-template let-value="value" ngx-datatable-cell-template>
+              <span class="font-tertiary text-truncate text-nowrap">{{value}}</span>
+            </ng-template>
+          </ngx-datatable-column>
+
+          <!-- is chat? -->
           <ngx-datatable-column name="Type" prop="isChat" [maxWidth]="50">
             <ng-template let-value="value" ngx-datatable-cell-template>
               <span *ngIf="value" matTooltip="Chat" matTooltipClass="material-tooltip">
@@ -46,11 +59,15 @@
               </span>
             </ng-template>
           </ngx-datatable-column>
+
+          <!-- assessment count -->
           <ngx-datatable-column [maxWidth]="30" name="QA" prop="assessmentCount">
               <ng-template let-value="value" ngx-datatable-cell-template>
                 <span>{{value}}</span>
               </ng-template>
             </ngx-datatable-column>
+
+          <!-- text message -->
           <ngx-datatable-column name="Message">
           </ngx-datatable-column>
         </ngx-datatable>

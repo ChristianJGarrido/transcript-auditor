@@ -91,19 +91,33 @@ export class ConversationsListComponent implements OnInit, OnChanges {
    * returns chat text
    * @param {ApiChatHistoryRecord} record
    */
-  getChatText(record: ApiChatHistoryRecord): string {
-    const line = record.transcript.lines[0];
-    return line.text || '';
+  getChatData(record: ApiChatHistoryRecord, data: string): string {
+    switch (data) {
+      case 'text':
+        const line = record.transcript.lines[0];
+        return line.text || '';
+      case 'conId':
+        return record.info.visitorId;
+    }
   }
 
   /**
-   * returns conversation text
+   * returns conversation data
    * @param {ApiConversationHistoryRecord} record
    */
-  getConversationText(record: ApiConversationHistoryRecord): string {
-    const lines = record.messageRecords && record.messageRecords[0];
-    const data = lines && lines.messageData;
-    return (data.msg && data.msg.text) || '';
+  getConversationData(
+    record: ApiConversationHistoryRecord,
+    data: string
+  ): string {
+    switch (data) {
+      case 'text':
+        const lines = record.messageRecords && record.messageRecords[0];
+        const msgData = lines && lines.messageData;
+        return (msgData.msg && msgData.msg.text) || '';
+      case 'conId':
+        const participant = record.consumerParticipants[0];
+        return participant && participant.participantId;
+    }
   }
 
   /**
@@ -123,14 +137,18 @@ export class ConversationsListComponent implements OnInit, OnChanges {
     return this.conversations.map(conv => {
       const { isChat, id } = conv;
       const message = isChat
-        ? this.getChatText(conv)
-        : this.getConversationText(conv);
+        ? this.getChatData(conv, 'text')
+        : this.getConversationData(conv, 'text');
+      const conId = isChat
+        ? this.getChatData(conv, 'conId')
+        : this.getConversationData(conv, 'conId');
       return {
         ...conv.info,
         isChat,
         id,
+        conId,
         message,
-        assessmentCount: this.countAssessments(id)
+        assessmentCount: this.countAssessments(id),
       };
     });
   }
