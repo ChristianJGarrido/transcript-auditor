@@ -44,10 +44,6 @@ export class ConversationsListFilterComponent implements OnInit {
   skillsList: any[] = [];
   groupsList: any[] = [];
 
-  agentsSelect: any[] = [];
-  skillsSelect: any[] = [];
-  groupsSelect: any[] = [];
-
   typeOptions: IMultiSelectOption[] = [
     { id: 'conversations', name: 'Conversations' },
     { id: 'chats', name: 'Chats' },
@@ -76,8 +72,6 @@ export class ConversationsListFilterComponent implements OnInit {
     { id: 'summary', name: 'Summary' },
     { id: 'surveyAnswer', name: 'Survey Answer (Chat)' },
     { id: 'surveyQuestion', name: 'Survey Question (Chat)' },
-    { id: 'idSearch', name: 'ID Search', isLabel: true },
-    { id: 'conversationId', name: 'Conversation/Engagement ID' },
     { id: 'sdeSearch', name: 'SDE Search', isLabel: true },
     { id: 'personalInfo', name: 'Personal Info' },
     { id: 'customerInfo', name: 'Customer Info' },
@@ -90,6 +84,12 @@ export class ConversationsListFilterComponent implements OnInit {
     { id: 'ea.visitorError', name: 'Visitor Error (Chat)' },
     { id: 'ea.marketingCampaignInfo', name: 'Marketing Info (Chat)' },
   ];
+  idOptions: IMultiSelectOption[] = [
+    { id: 'conversation', name: 'Conversation ID' },
+    { id: 'consumer', name: 'Consumer ID' },
+  ];
+
+  searchById = false;
 
   searchSchema = {
     'ea.marketingCampaignInfo': 'sdeChat',
@@ -106,14 +106,20 @@ export class ConversationsListFilterComponent implements OnInit {
     surveyQuestion: 'sdeChat',
     summary: 'bodyMsg',
     keyword: 'bodyKeyword',
-    conversationId: 'bodyId',
-    engagementId: 'bodyId',
   };
+  // conversationId: 'bodyId',
+  // consumer: 'bodyConId',
 
+  // select arrays
   searchSelect: any[] = [this.searchOptions[1].id];
   filterSelect: any[] = [];
   typeSelect: any[] = [];
+  idSelect: any[] = [this.idOptions[0].id];
+  agentsSelect: any[] = [];
+  skillsSelect: any[] = [];
+  groupsSelect: any[] = [];
 
+  // filter settings
   searchSettings: IMultiSelectSettings = {
     buttonClasses: 'btn btn-outline-secondary btn-sm',
     dynamicTitleMaxItems: 1,
@@ -122,6 +128,18 @@ export class ConversationsListFilterComponent implements OnInit {
   typeSettings: IMultiSelectSettings = {
     ...this.searchSettings,
   };
+  idSettings: IMultiSelectSettings = {
+    ...this.searchSettings,
+    selectionLimit: 1,
+    autoUnselect: true,
+  };
+  listSettings: IMultiSelectSettings = {
+    ...this.searchSettings,
+    showUncheckAll: true,
+    enableSearch: true,
+  };
+
+  // filter texts
   filterTexts: IMultiSelectTexts = {
     checkedPlural: 'filters',
     defaultTitle: 'Filter',
@@ -132,19 +150,10 @@ export class ConversationsListFilterComponent implements OnInit {
     defaultTitle: 'None',
     allSelected: 'All',
   };
-  searchKeyword = '';
-
-  listSettings: IMultiSelectSettings = {
-    ...this.searchSettings,
-    showUncheckAll: true,
-    enableSearch: true,
-  };
-
   typeTexts: IMultiSelectTexts = {
     defaultTitle: 'Select Types',
     allSelected: 'All Types',
   };
-
   listAgentsTexts: IMultiSelectTexts = {
     defaultTitle: 'Select Agents',
     uncheckAll: 'Reset',
@@ -158,6 +167,7 @@ export class ConversationsListFilterComponent implements OnInit {
     uncheckAll: 'Reset',
   };
 
+  searchKeyword = '';
   optionsChat: any = null;
   optionsMsg: any = null;
   sdesChat: any = [];
@@ -169,7 +179,21 @@ export class ConversationsListFilterComponent implements OnInit {
    * select only chat or conversation types
    */
   updateTypes(): void {
-     this.store.dispatch(new filterActions.ToggleTypes(this.typeSelect));
+    this.store.dispatch(new filterActions.ToggleConversationTypes(this.typeSelect));
+  }
+
+  /**
+   * select id type to search for
+   */
+  updateIds(): void {
+    this.store.dispatch(new filterActions.ToggleIdType(this.idSelect));
+  }
+
+  /**
+   * select id type to search for
+   */
+  updateSearchById(): void {
+    this.store.dispatch(new filterActions.ToggleSearchById(this.searchById));
   }
 
   /**
@@ -212,18 +236,6 @@ export class ConversationsListFilterComponent implements OnInit {
               ...this.sdesMsg,
               [key]: this.searchKeyword,
             };
-            break;
-          case 'bodyId':
-            {
-              this.optionsChat = {
-                ...this.optionsChat,
-                engagementId: this.searchKeyword,
-              };
-              this.optionsMsg = {
-                ...this.optionsMsg,
-                conversationId: this.searchKeyword,
-              };
-            }
             break;
           case 'bodyKeyword':
             this.optionsChat = {
@@ -314,6 +326,21 @@ export class ConversationsListFilterComponent implements OnInit {
       start,
     };
 
+    // attach ids
+    if (this.searchById) {
+      const [idType] = this.idSelect;
+      const chatIdKey = idType === 'conversation' ? 'engagementId' : 'visitor';
+      const convIdKey = idType === 'conversation' ? 'conversationId' : 'consumer';
+      this.optionsChat = {
+        ...this.optionsChat,
+        [chatIdKey]: this.searchKeyword,
+      };
+      this.optionsMsg = {
+        ...this.optionsMsg,
+        [convIdKey]: this.searchKeyword,
+      };
+    }
+
     this.store.dispatch(
       new conversationActions.Query('all', {
         msg: this.optionsMsg,
@@ -323,6 +350,9 @@ export class ConversationsListFilterComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.typeSelect = this.filter.types;
+    // populate from store
+    this.typeSelect = [...this.filter.types];
+    this.searchById = this.filter.searchById;
+    this.idSelect = [...this.filter.idTypes];
   }
 }

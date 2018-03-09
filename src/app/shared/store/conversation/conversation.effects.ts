@@ -50,20 +50,30 @@ export class ConversationEffects {
       ),
       debounceTime(1000),
       switchMap(([action, apiLogin, selectId, filter]) => {
-        const { types } = filter;
+        const { queryType, options } = action;
+        const queryConv = queryType === 'conversation';
+        // prepare query from filter
+        const { types, searchById, idTypes } = filter;
+        const [ idType ] = idTypes;
         const getChat = types.indexOf('chats') !== -1;
         const getConversations = types.indexOf('conversations') !== -1;
-        const { queryType, options } = action;
-        const queryOne = queryType === 'conversation';
-        if (!queryOne) {
+        const filterParams = {
+          searchById,
+          idType: queryConv ? queryType : idType,
+          chatIdKey: (queryConv || idType === 'conversation') ? 'engagementId' : 'visitor',
+          convIdKey: (queryConv || idType === 'conversation') ? 'conversationId' : 'consumer',
+        };
+
+        if (!searchById || !queryConv) {
           this.notifcationService.openSnackBar('Downloading conversations...');
         }
-        const payload = queryOne ? { selectId } : { start: this.convertDateToMs() };
+        const payload = queryConv ? { selectId } : { start: this.convertDateToMs() };
         const payloadMsg = options ? options.msg : payload;
         const payloadChat = options ? options.chat : payload;
+
         return forkJoin(
-          getConversations ? this.getHttpObs<MsgHistResponse>(true, apiLogin, payloadMsg) : of(null),
-          getChat ? this.getHttpObs<EngHistResponse>(false, apiLogin, payloadChat) : of(null)
+          getConversations ? this.getHttpObs<MsgHistResponse>(true, apiLogin, payloadMsg, filterParams) : of(null),
+          getChat ? this.getHttpObs<EngHistResponse>(false, apiLogin, payloadChat, filterParams) : of(null)
         ).pipe(
           map(([msgHist, engHist]) => {
             const msgHistRecords = msgHist ? this.transformResponse(msgHist, true) : [];
@@ -165,17 +175,20 @@ export class ConversationEffects {
    * Generate request and return http obs
    * @param {boolean} messagingMode
    * @param {ApiLogin} apiLogin
-   * @param {string?} payload
+   * @param {string} payload
+   * @param {any} filterParams
    */
   getHttpObs<T>(
     messagingMode: boolean,
     apiLogin: ApiLoginModel,
-    payload?: string
+    payload: string,
+    filterParams: any
   ) {
     const { url, body, options } = this.generateRequest(
       messagingMode,
       apiLogin,
-      payload
+      payload,
+      filterParams,
     );
     return this.http.post<T>(url, body, options);
   }
@@ -227,18 +240,22 @@ export class ConversationEffects {
    * @param {boolean} messagingMode
    * @param {ApiLoginModel}apiLogin
    * @param {string} selectId
+   * @param {boolean} isConId
    */
   generateUrl(
     messagingMode: boolean,
     apiLogin: ApiLoginModel,
-    selectId: string
+    selectId: string,
+    filterParams: any
   ) {
     const { domains, account } = apiLogin;
     const { msgHist, engHistDomain } = domains;
+    const { idType } = filterParams;
     const domain = messagingMode ? msgHist : engHistDomain;
     const history = messagingMode ? 'messaging_history' : 'interaction_history';
     const interaction = messagingMode ? 'conversation' : 'interaction';
-    const queryType = selectId ? `${interaction}/` : '';
+    const queryString = idType === 'consumer' ? 'consumer' : interaction;
+    const queryType = selectId ? `${queryString}/` : '';
     const method = `${interaction}s/${messagingMode ? queryType : ''}`;
     return `https://${domain}/${history}/api/account/${account}/${method}search`;
   }
@@ -252,12 +269,14 @@ export class ConversationEffects {
   generateRequest(
     messagingMode: boolean,
     apiLogin: ApiLoginModel,
-    options?: any
+    options: any,
+    filterParams: any
   ) {
     const { bearer } = apiLogin;
-    const idParam = messagingMode ? 'conversationId' : 'engagementId';
+    const { searchById, chatIdKey, convIdKey } = filterParams;
+    const idParam = messagingMode ? convIdKey : chatIdKey;
     const selectId = options.selectId || options[idParam];
-    const url = this.generateUrl(messagingMode, apiLogin, selectId);
+    const url = this.generateUrl(messagingMode, apiLogin, selectId, filterParams);
     const body = selectId ? { [idParam]: selectId } : options;
     const headers = this.getHeaders(bearer);
     const params = selectId

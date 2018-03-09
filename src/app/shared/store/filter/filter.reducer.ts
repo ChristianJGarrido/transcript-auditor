@@ -10,10 +10,20 @@ export function FilterReducer(
   action: Action
 ): FilterModel {
   switch (action.type) {
-    case filterActions.TOGGLE_TYPES:
+    case filterActions.TOGGLE_CONVERSATION_TYPES:
       return {
         ...state,
-        types: [...action.types]
+        types: [...action.types],
+      };
+    case filterActions.TOGGLE_ID_TYPE:
+      return {
+        ...state,
+        idTypes: [...action.idTypes],
+      };
+    case filterActions.TOGGLE_SEARCH_BY:
+      return {
+        ...state,
+        searchById: action.searchById,
       };
     case filterActions.RESET:
       return initialFilterState;

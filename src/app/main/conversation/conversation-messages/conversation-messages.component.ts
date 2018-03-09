@@ -66,6 +66,14 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
     return this.conversationSelect.info[param];
   }
 
+  // get consumer id
+  getConId(): string {
+    const { isChat } = this.conversationSelect;
+    return isChat
+      ? this.conversationSelect.info.visitorId
+      : this.conversationSelect.consumerParticipants[0].participantId;
+  }
+
   // sort chat events
   prepareChatEvents(conversationChat: ConversationChatModel): any[] {
     // proceed only if we have data

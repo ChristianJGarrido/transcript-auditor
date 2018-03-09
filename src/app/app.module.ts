@@ -82,6 +82,7 @@ import { MatNativeDateModule } from '@angular/material';
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
 
 // angular fire
 import { AngularFireModule } from 'angularfire2';
@@ -171,6 +172,7 @@ import { TranscriptControlComponent } from './shared/components/transcript-contr
     MatSliderModule,
     MatSidenavModule,
     MatSnackBarModule,
+    MatRadioModule,
     MatProgressSpinnerModule,
     FormsModule,
     ReactiveFormsModule,

@@ -22,30 +22,40 @@
 <!-- <ss-multiselect-dropdown [settings]="listSettings" [texts]="listAgentsTexts" [options]="list.agents" [(ngModel)]="agentsSelect"></ss-multiselect-dropdown> -->
 
 <div class="row no-gutters mt-2">
+  <div class="col-auto mr-2 font-primary">
+    <span>Search by: </span>
+  </div>
+  <div class="col font-primary">
+    <mat-radio-group [(ngModel)]="searchById" (change)="updateSearchById()">
+      <mat-radio-button [value]="false">Filter </mat-radio-button>
+      <mat-radio-button [value]="true">ID</mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+
+<div class="row no-gutters mt-2">
 
   <!-- type options -->
   <div class="col-auto pr-2">
-    <ss-multiselect-dropdown [settings]="typeSettings" [texts]="typeTexts" [options]="typeOptions" [(ngModel)]="typeSelect"
-      (ngModelChange)="updateTypes()"></ss-multiselect-dropdown>
-  </div>
-
-  <!-- filter options -->
-  <div class="col-auto pr-2">
-    <ss-multiselect-dropdown [settings]="searchSettings" [texts]="filterTexts" [options]="filterOptions" [(ngModel)]="filterSelect"
-      (ngModelChange)="getData()"></ss-multiselect-dropdown>
+    <ss-multiselect-dropdown [settings]="typeSettings" [texts]="typeTexts" [options]="typeOptions" [(ngModel)]="typeSelect" (ngModelChange)="updateTypes()"></ss-multiselect-dropdown>
   </div>
 
   <div class="col">
     <div class="input-group">
+      <!-- id options -->
+      <ss-multiselect-dropdown *ngIf="searchById" [settings]="idSettings" [texts]="filterTexts" [options]="idOptions" [(ngModel)]="idSelect" (ngModelChange)="updateIds()"></ss-multiselect-dropdown>
+      <!-- filter options -->
+      <ss-multiselect-dropdown *ngIf="!searchById && typeSelect.indexOf('conversations') !== -1" [settings]="searchSettings" [texts]="filterTexts" [options]="filterOptions" [(ngModel)]="filterSelect"
+      (ngModelChange)="getData()"></ss-multiselect-dropdown>
       <!-- keyword options -->
-      <ss-multiselect-dropdown [settings]="searchSettings" [texts]="searchTexts" [options]="searchOptions" [(ngModel)]="searchSelect"
-        (ngModelChange)="getData()"></ss-multiselect-dropdown>
+      <ss-multiselect-dropdown *ngIf="!searchById" [settings]="searchSettings" [texts]="searchTexts" [options]="searchOptions"
+        [(ngModel)]="searchSelect" (ngModelChange)="getData()"></ss-multiselect-dropdown>
       <!-- keyword search -->
       <input [disabled]="!searchSelect.length" type="text" class="form-control form-control-sm" name="searchInput" [(ngModel)]="searchKeyword"
-        (keyup.enter)="getData()" placeholder="Keywords...">
+        (keyup.enter)="getData()" [placeholder]="searchById ? 'Enter ID' : 'Enter keywords...'">
       <!-- search button -->
       <span class="input-group-btn">
-        <button type="button" class="btn btn-outline-success btn-sm" (click)="getData()" [disabled]="loading">{{loading ? 'Loading...' : 'Search'}}</button>
+        <button [disabled]="!searchKeyword && searchById" type="button" class="btn btn-outline-success btn-sm" (click)="getData()" [disabled]="loading">{{loading ? 'Loading...' : 'Search'}}</button>
       </span>
     </div>
   </div>

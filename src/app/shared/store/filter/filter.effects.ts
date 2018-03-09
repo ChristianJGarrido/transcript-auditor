@@ -19,7 +19,7 @@ export class FilterEffects {
   // filter types
   @Effect()
   filterTypes$: Observable<Action> = this.actions$
-    .ofType(filterActions.TOGGLE_TYPES)
+    .ofType(filterActions.TOGGLE_CONVERSATION_TYPES)
     .pipe(
       map(() => new conversationActions.Query('all'))
     );
