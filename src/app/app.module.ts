@@ -83,6 +83,7 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatDividerModule } from '@angular/material/divider';
 
 // angular fire
 import { AngularFireModule } from 'angularfire2';
@@ -174,6 +175,7 @@ import { TranscriptControlComponent } from './shared/components/transcript-contr
     MatSnackBarModule,
     MatRadioModule,
     MatProgressSpinnerModule,
+    MatDividerModule,
     FormsModule,
     ReactiveFormsModule,
     HttpClientModule,

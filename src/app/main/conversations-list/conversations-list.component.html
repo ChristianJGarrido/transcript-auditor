@@ -10,9 +10,11 @@
     </div>
 
     <!-- conversation filters -->
-    <div class="row">
+    <div class="row mb-2">
       <app-conversations-list-filter [filter]="filter" [list]="list" [loading]="conversationState.loading"></app-conversations-list-filter>
     </div>
+
+    <mat-divider></mat-divider>
 
     <!-- playlist control -->
     <div class="row mt-2">

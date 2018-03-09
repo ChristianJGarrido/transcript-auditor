@@ -22,7 +22,7 @@ import {
   ApiSearchSdes,
   ApiIds,
 } from '../../../shared/interfaces/interfaces';
-import { ListModel } from '../../../shared/store/list/list.model';
+import { ListModel, ListAgent } from '../../../shared/store/list/list.model';
 import { FilterModel } from '../../../shared/store/filter/filter.model';
 
 @Component({
@@ -40,9 +40,9 @@ export class ConversationsListFilterComponent implements OnInit {
   dateTo = new FormControl(new Date(this.to.setDate(this.to.getDate() - 1)));
   dateFrom = new FormControl(new Date(this.to.setDate(this.to.getDate() - 7)));
 
-  agentsList: any[] = [];
-  skillsList: any[] = [];
-  groupsList: any[] = [];
+  listGroups: any[] = [];
+  listSkills: any[] = [];
+  listAgents: any[] = [];
 
   typeOptions: IMultiSelectOption[] = [
     { id: 'conversations', name: 'Conversations' },
@@ -138,6 +138,10 @@ export class ConversationsListFilterComponent implements OnInit {
     showUncheckAll: true,
     enableSearch: true,
   };
+  listSettingsAgent: IMultiSelectSettings = {
+    ...this.listSettings,
+    isLazyLoad: true,
+  };
 
   // filter texts
   filterTexts: IMultiSelectTexts = {
@@ -179,7 +183,9 @@ export class ConversationsListFilterComponent implements OnInit {
    * select only chat or conversation types
    */
   updateTypes(): void {
-    this.store.dispatch(new filterActions.ToggleConversationTypes(this.typeSelect));
+    this.store.dispatch(
+      new filterActions.ToggleConversationTypes(this.typeSelect)
+    );
   }
 
   /**
@@ -194,6 +200,33 @@ export class ConversationsListFilterComponent implements OnInit {
    */
   updateSearchById(): void {
     this.store.dispatch(new filterActions.ToggleSearchById(this.searchById));
+  }
+
+  /**
+   * adds name prop to agent list
+   * @param agents
+   */
+  updateListAgents(agents: ListAgent[]): ListAgent[] {
+    return agents.map(agent => ({ ...agent, name: agent.fullName }));
+  }
+
+  /**
+   * Lazy loading agent list
+   * @param filter
+   */
+  loadListAgents(filter?: string): void {
+    const filtered = filter
+      ? this.list.agents.filter(agent => agent.fullName.includes(filter))
+      : this.list.agents;
+    if (filtered.length > 50) {
+      const newList = this.updateListAgents(filtered.slice(0, 50));
+      this.listAgents = [
+        { name: 'Too many results... showing 50', isLabel: true },
+        ...newList,
+      ];
+    } else {
+      this.listAgents = this.updateListAgents(filtered);
+    }
   }
 
   /**
@@ -326,11 +359,44 @@ export class ConversationsListFilterComponent implements OnInit {
       start,
     };
 
+    // attach skills, agents, groups
+    if (this.skillsSelect.length) {
+      this.optionsChat = {
+        ...this.optionsChat,
+        skillIds: this.skillsSelect,
+      };
+      this.optionsMsg = {
+        ...this.optionsMsg,
+        skillIds: this.skillsSelect,
+      };
+    }
+    if (this.groupsSelect.length) {
+      this.optionsChat = {
+        ...this.optionsChat,
+        agentGroupIds: this.groupsSelect,
+      };
+      this.optionsMsg = {
+        ...this.optionsMsg,
+        agentGroupIds: this.groupsSelect,
+      };
+    }
+    if (this.agentsSelect.length) {
+      this.optionsChat = {
+        ...this.optionsChat,
+        agentIds: this.agentsSelect,
+      };
+      this.optionsMsg = {
+        ...this.optionsMsg,
+        agentIds: this.agentsSelect,
+      };
+    }
+
     // attach ids
     if (this.searchById) {
       const [idType] = this.idSelect;
       const chatIdKey = idType === 'conversation' ? 'engagementId' : 'visitor';
-      const convIdKey = idType === 'conversation' ? 'conversationId' : 'consumer';
+      const convIdKey =
+        idType === 'conversation' ? 'conversationId' : 'consumer';
       this.optionsChat = {
         ...this.optionsChat,
         [chatIdKey]: this.searchKeyword,
@@ -354,5 +420,8 @@ export class ConversationsListFilterComponent implements OnInit {
     this.typeSelect = [...this.filter.types];
     this.searchById = this.filter.searchById;
     this.idSelect = [...this.filter.idTypes];
+    // init lists
+    this.listSkills = this.list.skills;
+    this.listGroups = this.list.groups;
   }
 }
