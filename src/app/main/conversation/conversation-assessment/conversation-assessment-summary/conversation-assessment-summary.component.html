@@ -5,7 +5,7 @@
         <div class="row no-gutters">
           <h5 class="card-title col-auto pr-2">Summary</h5>
           <app-conversation-assessment-summary-stars [id]="assessmentSelect.id" [rating]="assessmentSelect.rating"></app-conversation-assessment-summary-stars>
-          <button matTooltip="Measure personality" matTooltipClass="material-tooltip" mat-button (click)="openDialog()" class="font-secondary col-12 mt-2">Personality {{calculatePersonality() | percent}}</button>
+          <button matTooltip="Measure personality" matTooltipClass="material-tooltip" mat-button (click)="openDialog()" class="font-secondary col-12 mt-2">Personality</button>
         </div>
       </div>
       <div class="col">

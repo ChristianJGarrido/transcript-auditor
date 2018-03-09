@@ -162,12 +162,12 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
             maxWidth: 70,
           },
           { prop: 'rating', name: 'Rating', maxWidth: 80 },
-          {
-            prop: 'personalityScore',
-            name: 'Personality',
-            maxWidth: 90,
-            cellTemplate: this.percentCell,
-          },
+          // {
+          //   prop: 'personalityScore',
+          //   name: 'Personality',
+          //   maxWidth: 90,
+          //   cellTemplate: this.percentCell,
+          // },
           {
             prop: 'qaScore',
             name: 'Score',
@@ -188,9 +188,9 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
           break;
         case this.ASSESSMENT:
           row.qaScore = this.utilityService.calculateTotalScore(row.qa);
-          row.personalityScore = this.utilityService.calculatePersonality(
-            row.personality
-          );
+          // row.personalityScore = this.utilityService.calculatePersonality(
+          //   row.personality
+          // );
           row.messagesCount =
             (row.messages && Object.keys(row.messages).length) || 0;
           break;

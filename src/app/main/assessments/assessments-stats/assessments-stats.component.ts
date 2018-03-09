@@ -23,7 +23,7 @@ export class AssessmentsStatsComponent implements OnInit, OnChanges {
     { key: 'playlists', value: 0, name: 'Playlists', format: 'number' },
     { key: 'assessments', value: 0, name: 'Assessments', format: 'number' },
     { key: 'rating', value: 0, name: 'Rating', format: 'number' },
-    { key: 'personality', value: 0, name: 'Personality', format: 'percent' },
+    // { key: 'personality', value: 0, name: 'Personality', format: 'percent' },
     { key: 'qaScore', value: 0, name: 'Score', format: 'percent' },
   ];
 
