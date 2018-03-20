@@ -47,6 +47,8 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
   @Input() dataState: fromAssessment.State | fromPlaylist.State;
   @Input() stats: StatsModel;
 
+  checking = false;
+
   search = '';
 
   selected = [];
@@ -93,6 +95,7 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
    * @param {{string[]}} selected
    */
   onCheck({ selected }): void {
+    this.checking = true;
     this.selected.splice(0, this.selected.length);
     this.selected = [...selected];
     switch (this.type) {
@@ -101,6 +104,7 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
       case this.ASSESSMENT:
         return this.store.dispatch(new statsActions.SelectAssessment(selected));
     }
+    this.checking = false;
   }
 
   // returns qa score
@@ -270,6 +274,8 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     this.temp = this.updateRows();
-    this.updateSearch();
+    if (!this.checking) {
+      this.updateSearch();
+    }
   }
 }
