@@ -24,11 +24,12 @@ export class ConversationAssessmentQaComponent implements OnInit {
 
   /**
    * calculates the percent score for each qa section
-   * @param {AssessmentQaGroupModel[]} section
+   * @param {AssessmentQaModel} group
    * @return {number}
    */
-  calculateGroupScore(section: AssessmentQaGroupModel[]): number {
-    return this.utilityService.calculateGroupScore(section);
+  calculateGroupScore(group: AssessmentQaModel): number {
+    const { score } = this.utilityService.calculateQaGroupScore(group);
+    return score;
   }
 
   /**
@@ -37,7 +38,8 @@ export class ConversationAssessmentQaComponent implements OnInit {
    * @return {number}
    */
   calculateTotalScore(qa: AssessmentQaModel[]): number {
-    return this.utilityService.calculateTotalScore(qa);
+    const { score } = this.utilityService.calculateQaTotalScore(qa);
+    return score;
   }
 
   /**

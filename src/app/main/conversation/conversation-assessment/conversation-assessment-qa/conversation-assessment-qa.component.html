@@ -17,7 +17,7 @@
             {{group.title}}
           </div>
           <div class="col-auto font-secondary">
-            {{calculateGroupScore(group.section) | percent}}
+            {{calculateGroupScore(group) | percent}}
           </div>
         </div>
         <ng-container *ngFor="let item of group.section; trackBy: trackByFn">

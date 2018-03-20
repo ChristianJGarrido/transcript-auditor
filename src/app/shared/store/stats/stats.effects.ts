@@ -104,39 +104,43 @@ export class StatsEffects {
       (prev, id) => {
         const assessment = entities[id];
         const { qa, rating, personality, createdBy } = assessment;
-        const score = this.utilityService.calculateTotalScore(qa) || 0;
+        const qaScore = this.utilityService.aggregateQaTotal(prev.qaScore, qa);
         const person = this.utilityService.calculatePersonality(personality);
         return {
           ...prev,
+          qaScore,
           createdBy: [...prev.createdBy, createdBy],
-          qa: {
-            score: prev.qa.score + score,
-            count: prev.qa.count + (score > 0 ? 1 : 0),
-          },
           rating: {
-            score: prev.rating.score + rating,
+            sum: prev.rating.sum + rating,
             count: prev.rating.count + (rating > 0 ? 1 : 0),
           },
           person: {
-            score: prev.person.score + Number(person),
+            sum: prev.person.sum + Number(person),
             count: prev.person.count + 1,
           },
         };
       },
       {
         createdBy: [],
-        qa: { score: 0, count: 0 },
-        rating: { score: 0, count: 0 },
-        person: { score: 0, count: 0 },
+        qaScore: {
+          group: {},
+          score: 0,
+          count: 0,
+          sum: 0,
+        },
+        rating: { sum: 0, count: 0 },
+        person: { sum: 0, count: 0 },
       }
     );
+
     return {
       playlists: stats.playlistSelect.length || playlistIds.length,
       assessments: arrayToUse.length,
       conversations: stats.conversationFilter.length,
-      qaScore: results.qa.score / results.qa.count || 0,
-      personality: results.person.score / results.person.count || 0,
-      rating: results.rating.score / results.rating.count || 0,
+      qaScore: results.qaScore.score || 0,
+      qaGroup: results.qaScore.group,
+      personality: results.person.sum / results.person.count || 0,
+      rating: results.rating.sum / results.rating.count || 0,
       reviewers: _.uniq(results.createdBy).length,
     };
   }

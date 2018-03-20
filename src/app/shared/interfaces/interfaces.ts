@@ -32,3 +32,7 @@ export interface StatsWidget {
   name: any;
   format: string;
 }
+
+export interface AssessmentStats extends StatsWidget {
+  key: string;
+}

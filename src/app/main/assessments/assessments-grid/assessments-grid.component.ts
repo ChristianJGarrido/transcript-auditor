@@ -105,7 +105,8 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
 
   // returns qa score
   getQaScore(qa: AssessmentQaModel[]): number {
-    return this.utilityService.calculateTotalScore(qa);
+    const { score } = this.utilityService.calculateQaTotalScore(qa);
+    return score;
   }
 
   // returns qa score
@@ -187,7 +188,7 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
           row.convCount = row.conversationIds.length;
           break;
         case this.ASSESSMENT:
-          row.qaScore = this.utilityService.calculateTotalScore(row.qa);
+          row.qaScore = this.utilityService.calculateQaTotalScore(row.qa).score || null;
           // row.personalityScore = this.utilityService.calculatePersonality(
           //   row.personality
           // );

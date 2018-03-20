@@ -32,7 +32,30 @@ export interface AssessmentMessagesModel {
 export interface AssessmentQaModel {
   expanded: boolean;
   title: string;
+  key: string;
   section: AssessmentQaGroupModel[];
+}
+
+export interface AssessmentQaGroupScore {
+  title: string;
+  key: string;
+  score: number;
+}
+
+export interface AssessmentQaGroupKey {
+  [key: string]: {
+    title: string;
+    sum: number;
+    count: number;
+    score: number;
+  };
+}
+
+export interface AssessmentQaTotalScore {
+  group: AssessmentQaGroupKey;
+  sum: number;
+  count: number;
+  score: number;
 }
 
 export interface AssessmentQaGroupModel {
@@ -75,7 +98,8 @@ export class Assessment implements AssessmentModel {
 
   qa: AssessmentQaModel[] = [
     {
-      title: 'S - Set the Tone',
+      title: 'Set the Tone',
+      key: 'botSet',
       expanded: true,
       section: [
         {
@@ -93,8 +117,9 @@ export class Assessment implements AssessmentModel {
     },
 
     {
-      title: 'U - Understand Your Customer',
+      title: 'Understand Your Customer',
       expanded: true,
+      key: 'botUnderstand',
       section: [
         {
           label: 'Used simple responses to validate BOT understands Intent',
@@ -118,7 +143,8 @@ export class Assessment implements AssessmentModel {
     },
 
     {
-      title: 'R - Relay the Solution',
+      title: 'Relay the Solution',
+      key: 'botRelay',
       expanded: true,
       section: [
         {
@@ -148,7 +174,8 @@ export class Assessment implements AssessmentModel {
     },
 
     {
-      title: 'A - Achieve the Intended Close',
+      title: 'Achieve the Intended Close',
+      key: 'botAchieve',
       expanded: true,
       section: [
         {

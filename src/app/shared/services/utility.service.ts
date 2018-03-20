@@ -1,5 +1,12 @@
 import { Injectable } from '@angular/core';
-import { AssessmentPersonalityModel, AssessmentQaModel, AssessmentQaGroupModel } from '../store/assessment/assessment.model';
+import {
+  AssessmentPersonalityModel,
+  AssessmentQaModel,
+  AssessmentQaGroupModel,
+  AssessmentQaGroupScore,
+  AssessmentQaTotalScore,
+  AssessmentQaGroupKey,
+} from '../store/assessment/assessment.model';
 
 @Injectable()
 export class UtilityService {
@@ -31,43 +38,114 @@ export class UtilityService {
   }
 
   /**
-   * calculates the percent score for each qa section
-   * @param {any[]} section
-   * @return {number}
+   * calculates the percent score for each qa group/section
+   * @param {AssessmentQaModel} group
+   * @return {AssessmentQaGroupScore}
    */
-  calculateGroupScore(section: AssessmentQaGroupModel[]): number {
-    const { score, count } = section.reduce(
+  calculateQaGroupScore(group: AssessmentQaModel): AssessmentQaGroupScore {
+    const { title, section, key } = group;
+    const { sum, count } = section.reduce(
       (prev, curr) => {
         return {
-          score: prev.score + curr.score,
+          sum: prev.sum + curr.score,
           count: prev.count + (curr.score > 0 ? 1 : 0),
         };
       },
       {
-        score: 0,
+        sum: 0,
         count: 0,
       }
     );
-    return score / (count * 5);
+    return {
+      title,
+      key,
+      score: sum / (count * 5),
+    };
   }
 
   /**
    * calculates the total qa score
    * @param {AssessmentQaModel[]} qa
-   * @return {number}
+   * @return {AssessmentQaTotalScore}
    */
-  calculateTotalScore(qa: AssessmentQaModel[]): number {
-    const { score, count } = qa.reduce(
+  calculateQaTotalScore(qa: AssessmentQaModel[]): AssessmentQaTotalScore {
+    const { sum, count, group } = qa.reduce(
       (prev, curr) => {
-        const result = this.calculateGroupScore(curr.section) || 0;
-        return {
-          score: prev.score + result,
-          count: prev.count + (result > 0 ? 1 : 0),
-        };
+        // get result for current group/section
+        const { score, title, key } = this.calculateQaGroupScore(curr);
+        // ignore 0 scores
+        if (score) {
+          return {
+            // collect scores by group key
+            group: {
+              ...prev.group,
+              [key]: { title, score }
+            },
+            sum: prev.sum + score,
+            count: prev.count + 1,
+          };
+        }
+        return prev;
       },
-      { score: 0, count: 0 }
+      { group: {}, sum: 0, count: 0 }
     );
-    return score / count;
+    return {
+      group,
+      sum,
+      count,
+      score: sum / count || 0
+    };
   }
 
+  /**
+   * aggregates the group scores to previous assessment group scores
+   * @param {AssessmentQaGroupKey} prev
+   * @param {AssessmentQaGroupKey} group
+   * @return {AssessmentQaTotalScore}
+   */
+  aggregateQaGroupScore(prev: AssessmentQaGroupKey, group: AssessmentQaGroupKey): AssessmentQaGroupKey {
+    // get keys of each assessment group/section
+    const groupKeys = Object.keys(group);
+    return groupKeys.reduce((p, key) => {
+      const { score, title } = group[key];
+      // ignore 0 scores
+      if (score) {
+        const sum = p[key] ? p[key].sum + score : score;
+        const count = p[key] ? p[key].count + 1 : 1;
+        return {
+          ...p,
+          [key]: {
+            title,
+            sum,
+            count,
+            score: sum / count || 0,
+          },
+        };
+      }
+      return p;
+    }, prev);
+  }
+
+  /**
+   * aggregate a series of qa asessments
+   * @param {AssessmentQaTotalScore} prev
+   * @param {AssessmentQaModel[]} qa
+   * @return {AssessmentQaTotalScore}
+   */
+  aggregateQaTotal(prev: AssessmentQaTotalScore, qa: AssessmentQaModel[]): AssessmentQaTotalScore {
+    const qaTotal = this.calculateQaTotalScore(qa);
+    const { score, group } = qaTotal;
+    // ignore 0 scores
+    if (score) {
+      const sum = prev.sum + score;
+      const count = prev.count + 1;
+      return {
+        group: this.aggregateQaGroupScore(prev.group, group),
+        sum,
+        count,
+        score: sum / count || 0,
+      };
+    }
+    return prev;
+  }
 }

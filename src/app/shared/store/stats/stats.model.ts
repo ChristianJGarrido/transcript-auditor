@@ -1,5 +1,5 @@
 import { PlaylistModel } from '../playlist/playlist.model';
-import { AssessmentModel } from '../assessment/assessment.model';
+import { AssessmentModel, AssessmentQaGroupKey} from '../assessment/assessment.model';
 
 export interface StatsModel {
   playlistSelect: PlaylistModel[];
@@ -15,8 +15,9 @@ export interface StatsMetrics {
   conversations: number;
   rating: number;
   personality: number;
-  qaScore: number;
+  qaScore?: number;
   reviewers: number;
+  qaGroup: AssessmentQaGroupKey;
 }
 
 export class StatsState implements StatsModel {
@@ -32,6 +33,7 @@ export class StatsState implements StatsModel {
     rating: 0,
     personality: 0,
     qaScore: 0,
+    qaGroup: {}
   };
   constructor() {}
 }
