@@ -192,7 +192,8 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
           row.convCount = row.conversationIds.length;
           break;
         case this.ASSESSMENT:
-          row.qaScore = this.utilityService.calculateQaTotalScore(row.qa).score || null;
+          row.qaScore =
+            this.utilityService.calculateQaTotalScore(row.qa).score || null;
           // row.personalityScore = this.utilityService.calculatePersonality(
           //   row.personality
           // );
@@ -249,22 +250,23 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
       this.search = '';
       this.rows = this.temp;
     } else {
-      const prop = this.type === 'playlists' ? 'name' : 'conversationId';
+      // const prop = this.type === 'playlists' ? 'name' : 'conversationId';
       const search = this.search.toLowerCase();
       const temp = this.temp.filter(row => {
-        return row[prop].toLowerCase().indexOf(search) !== -1 || !search;
+        const props = this.columns.map(column => column.prop);
+        const values = props
+          .map(prop => {
+            const val = row[prop];
+            return val ? val.toString().toLowerCase() : '';
+          })
+          .join('');
+        return values.indexOf(search) !== -1 || !search;
       });
       if (this.table) {
         this.table.offset = 0;
       }
       this.rows = temp;
     }
-  }
-
-  // gets placeholder text
-  getSearchPlaceholder(): string {
-    const prop = this.type === 'playlists' ? 'name' : 'conversation ID';
-    return `Search by ${prop}`;
   }
 
   ngOnInit(): void {

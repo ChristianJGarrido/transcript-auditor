@@ -7,7 +7,7 @@
       </h5>
       <div class="col-auto">
         <mat-form-field class="example-form-field">
-          <input matInput type="text" [placeholder]="getSearchPlaceholder()" [(ngModel)]="search" (ngModelChange)="updateSearch()">
+          <input matInput type="text" placeholder="Filter" [(ngModel)]="search" (ngModelChange)="updateSearch()">
           <button mat-button *ngIf="search" matSuffix mat-icon-button aria-label="Clear" (click)="updateSearch(true)">
             x
           </button>
