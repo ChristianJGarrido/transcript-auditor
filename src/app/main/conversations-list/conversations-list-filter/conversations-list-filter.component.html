@@ -1,13 +1,29 @@
+<div class="row no-gutters mt-2">
+  <div class="col-12 font-tertiary">Configure Search</div>
+</div>
+<div class="row no-gutters">
+  <!-- type options -->
+  <div class="col-auto mr-2">
+    <ss-multiselect-dropdown [settings]="typeSettings" [texts]="typeTexts" [options]="typeOptions" [(ngModel)]="typeSelect" (ngModelChange)="updateTypes()"></ss-multiselect-dropdown>
+  </div>
+  <div class="col mt-1 font-primary">
+    <mat-radio-group [(ngModel)]="searchById" (change)="updateSearchById()">
+      <mat-radio-button class="font-primary mr-2" [value]="false">Search by Filter </mat-radio-button>
+      <mat-radio-button class="font-primary" [value]="true">Search by ID</mat-radio-button>
+    </mat-radio-group>
+  </div>
+</div>
+
 <!-- date picker -->
-<div class="row">
-  <div class="col">
+<div *ngIf="!searchById" class="row no-gutters mt-1">
+  <div class="col-auto mr-2">
     <mat-form-field>
       <input matInput [matDatepicker]="pickerFrom" placeholder="From" [formControl]="dateFrom">
       <mat-datepicker-toggle matSuffix [for]="pickerFrom"></mat-datepicker-toggle>
       <mat-datepicker #pickerFrom></mat-datepicker>
     </mat-form-field>
   </div>
-  <div class="col">
+  <div class="col-auto">
     <mat-form-field>
       <input matInput [matDatepicker]="pickerTo" placeholder="To" [formControl]="dateTo">
       <mat-datepicker-toggle matSuffix [for]="pickerTo"></mat-datepicker-toggle>
@@ -16,27 +32,14 @@
   </div>
 </div>
 
-<div class="row no-gutters my-2">
-  <!-- type options -->
-  <div class="col-auto mr-2">
-    <ss-multiselect-dropdown [settings]="typeSettings" [texts]="typeTexts" [options]="typeOptions" [(ngModel)]="typeSelect" (ngModelChange)="updateTypes()"></ss-multiselect-dropdown>
-  </div>
-  <div class="col-auto mr-2 font-primary">
-    <span>Search by: </span>
-  </div>
-  <div class="col font-primary">
-    <mat-radio-group [(ngModel)]="searchById" (change)="updateSearchById()">
-      <mat-radio-button [value]="false">Filter </mat-radio-button>
-      <mat-radio-button [value]="true">ID</mat-radio-button>
-    </mat-radio-group>
-  </div>
+<!-- filter vs id label -->
+<div *ngIf="!searchById" class="row no-gutters">
+  <div class="col font-tertiary">Apply Filters</div>
 </div>
 
-<mat-divider></mat-divider>
-
 <!-- list filters -->
-<div *ngIf="!searchById" class="row no-gutters my-2">
-  <div class="col">
+<div *ngIf="!searchById" class="row no-gutters mb-1">
+  <div class="col-12">
     <ss-multiselect-dropdown [settings]="listSettings" [texts]="listSkillsTexts" [options]="list.skills" [(ngModel)]="skillsSelect"></ss-multiselect-dropdown>
     <ss-multiselect-dropdown [settings]="listSettings" [texts]="listGroupsTexts" [options]="list.groups" [(ngModel)]="groupsSelect"></ss-multiselect-dropdown>
     <ss-multiselect-dropdown (dropdownOpened)="loadListAgents()" (onFilter)="loadListAgents($event)" [settings]="listSettingsAgent"
@@ -44,8 +47,7 @@
   </div>
 </div>
 
-<div class="row no-gutters mt-2">
-
+<div class="row no-gutters">
   <div class="col">
     <div class="input-group">
       <!-- id options -->

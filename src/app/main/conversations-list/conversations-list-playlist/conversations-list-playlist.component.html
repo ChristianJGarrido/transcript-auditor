@@ -3,7 +3,6 @@
     <div class="input-group">
 
       <!-- select playlist -->
-      <span *ngIf="playlistSelect" class="text-secondary pt-1 mr-2">Selected Playlist:</span>
       <ss-multiselect-dropdown (dropdownClosed)="selectPlaylist()" [settings]="playlistSettings" [texts]="playlistTexts" [options]="playlistOptions"
         [ngModel]="playlistSelectIds"></ss-multiselect-dropdown>
 

@@ -162,6 +162,9 @@ body {
   white-space: nowrap;
   vertical-align: middle;
 }
+.btn-outline-secondary {
+  border-color: #ced4db;
+}
 
 /***********************/
 /* FILTERS & DROPDOWNS */
@@ -206,6 +209,17 @@ body {
   color: white;
   font-size: 12px;
 }
+
+/***************/
+/* FORM FIELDS */
+/***************/
+.mat-form-field-underline {
+  bottom: 0.8em;
+}
+.mat-form-field-wrapper {
+  padding-bottom: 0.8em;
+}
+
 
 /*
 * Custom styles

@@ -156,7 +156,7 @@ export class ConversationsListFilterComponent implements OnInit {
   };
   typeTexts: IMultiSelectTexts = {
     defaultTitle: 'Select Types',
-    allSelected: 'All Types',
+    allSelected: 'Conversations and Chats',
   };
   listAgentsTexts: IMultiSelectTexts = {
     defaultTitle: 'Select Agents',

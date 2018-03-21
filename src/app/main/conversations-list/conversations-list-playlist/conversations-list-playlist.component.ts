@@ -146,7 +146,7 @@ export class ConversationsListPlaylistComponent implements OnInit, OnChanges {
           ...this.playlists,
         ]
       : [];
-    return [{ id: null, name: 'Create new Playlist' }, ...options];
+    return [{ id: null, name: 'Create new' }, ...options];
   }
 
   ngOnInit(): void {}
