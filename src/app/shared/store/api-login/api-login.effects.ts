@@ -61,20 +61,16 @@ export class ApiLoginEffects {
     .pipe(
       switchMap(action => {
         const { user } = action;
-        const headers = new HttpHeaders().set(
-          'Content-Type',
-          'application/json'
-        );
         const services = [
           'accountConfigReadWrite',
           'msgHist',
           'agentVep',
           'engHistDomain',
         ];
-        const url = `http://api.liveperson.net/api/account/${
+        const url = `https://api.liveperson.net/api/account/${
           user.account
         }/service/baseURI?version=1.0&services=${services}`;
-        return this.http.get<ApiDomainsResponse>(url, { headers }).pipe(
+        return this.http.get<ApiDomainsResponse>(url).pipe(
           map(response => {
             if (response.baseURIs) {
               const domains = this.saveDomains(response);
