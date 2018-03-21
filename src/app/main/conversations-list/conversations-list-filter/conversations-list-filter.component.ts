@@ -55,6 +55,7 @@ export class ConversationsListFilterComponent implements OnInit {
     { id: 'OPEN', name: 'Open' },
     { id: 'CLOSE', name: 'Closed' },
     { id: 'source', name: 'Source', isLabel: true },
+    { id: 'Apple Business Chat', name: 'Apple Business Chat' },
     { id: 'APP', name: 'App' },
     { id: 'WEB', name: 'Web' },
     { id: 'FACEBOOK', name: 'Facebook' },
@@ -303,6 +304,7 @@ export class ConversationsListFilterComponent implements OnInit {
         case 'FACEBOOK':
         case 'AGENT':
         case 'SMS':
+        case 'Apple Business Chat':
           this.optionsMsg = {
             ...this.optionsMsg,
             source:
