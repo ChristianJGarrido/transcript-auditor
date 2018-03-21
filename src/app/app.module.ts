@@ -60,7 +60,6 @@ import { ConversationsListPlaylistComponent } from './main/conversations-list/co
 
 // services
 import { AfAuthGuardService } from './shared/services/af-auth-guard.service';
-import { ApiLoginService } from './shared/services/api-login.service';
 import { ExportService } from './shared/services/export.service';
 import { WatsonService } from './shared/services/watson.service';
 import { FirestoreService } from './shared/services/firestore.service';
@@ -200,7 +199,6 @@ import { TranscriptControlComponent } from './shared/components/transcript-contr
   ],
   providers: [
     AfAuthGuardService,
-    ApiLoginService,
     ExportService,
     WatsonService,
     FirestoreService,

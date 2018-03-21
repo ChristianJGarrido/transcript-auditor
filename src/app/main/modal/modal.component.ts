@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { MatDialogRef } from '@angular/material';
-import { ApiLoginService } from '../../shared/services/api-login.service';
 import { ExportService } from '../../shared/services/export.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
@@ -33,7 +32,6 @@ export class ModalComponent implements OnInit {
   constructor(
     private store: Store<StoreModel>,
     private exportService: ExportService,
-    private apiLoginService: ApiLoginService,
     public dialogRef: MatDialogRef<ModalComponent>
   ) {}
 
@@ -49,8 +47,7 @@ export class ModalComponent implements OnInit {
         account: account.trim(),
         password: password.trim(),
       };
-      this.store.dispatch(new ApiLoginActions.GetDomains());
-      this.apiLoginService.getDomains(user);
+      this.store.dispatch(new ApiLoginActions.GetDomains(user));
     }
   }
 

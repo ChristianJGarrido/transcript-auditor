@@ -11,7 +11,13 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 
-import { ApiLoginModel } from '../api-login/api-login.model';
+import {
+  ApiLoginModel,
+  ApiDomainsResponse,
+  ApiDomains,
+  ApiDomainsState,
+  ApiLoginResponse,
+} from '../api-login/api-login.model';
 import * as apiLoginActions from '../api-login/api-login.actions';
 import * as assessmentActions from '../assessment/assessment.actions';
 import * as playlistActions from '../playlist/playlist.actions';
@@ -50,6 +56,42 @@ export class ApiLoginEffects {
     );
 
   @Effect()
+  apiDomains$: Observable<any> = this.actions$
+    .ofType<apiLoginActions.GetDomains>(apiLoginActions.GET_DOMAINS)
+    .pipe(
+      switchMap(action => {
+        const { user } = action;
+        const headers = new HttpHeaders().set(
+          'Content-Type',
+          'application/json'
+        );
+        const services = [
+          'accountConfigReadWrite',
+          'msgHist',
+          'agentVep',
+          'engHistDomain',
+        ];
+        const url = `http://api.liveperson.net/api/account/${
+          user.account
+        }/service/baseURI?version=1.0&services=${services}`;
+        return this.http.get<ApiDomainsResponse>(url, { headers }).pipe(
+          map(response => {
+            if (response.baseURIs) {
+              const domains = this.saveDomains(response);
+              return new apiLoginActions.Login(user, domains);
+            }
+            return new apiLoginActions.NotAuthenticated(false);
+          }),
+          catchError((error: HttpErrorResponse) => {
+            const message = error.message;
+            this.notificationService.openSnackBar(`Error: account incorrect`);
+            return [new apiLoginActions.LoginError(error)];
+          })
+        );
+      })
+    );
+
+  @Effect()
   apiLogin$: Observable<any> = this.actions$
     .ofType<apiLoginActions.Login>(apiLoginActions.LOGIN)
     .pipe(
@@ -66,7 +108,7 @@ export class ApiLoginEffects {
           username: user.username,
           password: user.password,
         };
-        return this.http.post<any>(url, body, { headers }).pipe(
+        return this.http.post<ApiLoginResponse>(url, body, { headers }).pipe(
           map(response => {
             if (response.bearer) {
               const session = {
@@ -155,5 +197,17 @@ export class ApiLoginEffects {
       maxWidth: 400,
       position: { top: '5%', right: '5%' },
     });
+  }
+
+  /**
+   * Save extract domains from response
+   */
+  saveDomains(response: ApiDomainsResponse): ApiDomains {
+    return response.baseURIs.reduce((services, current) => {
+      return {
+        ...services,
+        [current.service]: current.baseURI,
+      };
+    }, new ApiDomainsState());
   }
 }

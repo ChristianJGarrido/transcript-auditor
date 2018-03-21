@@ -11,6 +11,7 @@ export const LOGIN_ERROR = '[API Login] Login error';
 
 export class GetDomains implements Action {
   readonly type = GET_DOMAINS;
+  constructor(public user: ApiLoginUser) {}
 }
 export class Login implements Action {
   readonly type = LOGIN;
