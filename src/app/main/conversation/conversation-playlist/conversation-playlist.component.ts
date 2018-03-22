@@ -1,15 +1,18 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
 import * as fromPlaylist from '../../../shared/store/playlist/playlist.reducer';
+import * as playlistActions from '../../../shared/store/playlist/playlist.actions';
 import * as fromAssessment from '../../../shared/store/assessment/assessment.reducer';
 import { UtilityService } from '../../../shared/services/utility.service';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { PlaylistManagerComponent } from '../../../shared/components/playlist-manager/playlist-manager.component';
+import { Store } from '@ngrx/store';
+import { StoreModel } from '../../../app.store';
 
 @Component({
   selector: 'app-conversation-playlist',
   templateUrl: './conversation-playlist.component.html',
-  styleUrls: ['./conversation-playlist.component.css']
+  styleUrls: ['./conversation-playlist.component.css'],
 })
 export class ConversationPlaylistComponent implements OnInit {
   @Input() assessmentState: fromAssessment.State;
@@ -17,7 +20,11 @@ export class ConversationPlaylistComponent implements OnInit {
   @Input() playlistState: fromPlaylist.State;
   dialogRef: MatDialogRef<PlaylistManagerComponent>;
 
-  constructor(private utilityService: UtilityService, public dialog: MatDialog) { }
+  constructor(
+    private utilityService: UtilityService,
+    public dialog: MatDialog,
+    private store: Store<StoreModel>
+  ) {}
 
   /**
    * Opens the material dialog modal
@@ -33,10 +40,16 @@ export class ConversationPlaylistComponent implements OnInit {
 
   // get conversation index
   findIndex(): number {
-    return this.utilityService.findIndex(this.playlistSelect.id, this.playlistState.ids);
+    return this.utilityService.findIndex(
+      this.playlistSelect.id,
+      this.playlistState.ids
+    );
   }
 
-  ngOnInit() {
+  // clears current selected playlist
+  clearPlaylist(): void {
+    this.store.dispatch(new playlistActions.Select(null));
   }
 
+  ngOnInit() {}
 }

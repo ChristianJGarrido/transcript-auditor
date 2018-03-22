@@ -17,7 +17,8 @@ body {
 .fa-minus-circle,
 .fa-times,
 .fa-font,
-.fa-tachometer {
+.fa-tachometer,
+.fa-times-circle {
   color: #6c6d6e;
   cursor: pointer;
 }
@@ -37,7 +38,8 @@ body {
 .fa-times:hover,
 .fa-check-circle:hover,
 .fa-font:hover,
-.fa-tachometer:hover {
+.fa-tachometer:hover,
+.fa-times-circle:hover {
   color: #11b14e;
 }
 
