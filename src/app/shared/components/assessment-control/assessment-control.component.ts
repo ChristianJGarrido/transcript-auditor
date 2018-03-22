@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostBinding } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
 import * as AssessmentActions from '../../store/assessment/assessment.actions';
@@ -10,7 +10,6 @@ import { AssessmentModel } from '../../store/assessment/assessment.model';
   styleUrls: ['./assessment-control.component.css']
 })
 export class AssessmentControlComponent implements OnInit {
-  @HostBinding('class') class = 'col-auto';
   @Input() assessmentSelect: AssessmentModel;
 
   confirm = false;

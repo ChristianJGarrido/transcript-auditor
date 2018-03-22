@@ -11,8 +11,8 @@
       <app-save-notification [updating]="assessmentState.updating"></app-save-notification>
       <div class="col-auto">
         <div class="row no-gutters">
+          <app-assessment-control class="col-auto mr-2" [assessmentSelect]="assessmentSelect"></app-assessment-control>
           <app-cycle-items class="col-auto" [type]="'assessment'" [index]="findIndex()" [items]="assessmentState.idsByConversation"></app-cycle-items>
-          <app-assessment-control [assessmentSelect]="assessmentSelect"></app-assessment-control>
         </div>
       </div>
     </div>
