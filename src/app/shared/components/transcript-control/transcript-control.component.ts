@@ -1,7 +1,6 @@
 import {
   Component,
   OnInit,
-  HostBinding,
   Input,
   OnChanges,
 } from '@angular/core';
@@ -25,7 +24,6 @@ import {
   styleUrls: ['./transcript-control.component.css'],
 })
 export class TranscriptControlComponent implements OnInit, OnChanges {
-  @HostBinding('class') class = 'col-auto';
   @Input() conversationSelect: ConversationModel;
   @Input() playlistSelect: PlaylistModel;
   @Input() playlistState: fromPlaylist.State;

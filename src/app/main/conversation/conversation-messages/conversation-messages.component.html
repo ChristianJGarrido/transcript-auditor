@@ -6,11 +6,12 @@
       </h5>
       <div class="col-auto">
         <div class="row no-gutters">
-          <app-cycle-items *ngIf="conversationSelect" [type]="'conversation'" [index]="findIndex()" [items]="getIds()"></app-cycle-items>
-          <app-transcript-control [playlists]="playlists" [playlistState]="playlistState" [messageEvents]="messageEvents" [playlistSelect]="playlistSelect" [conversationSelect]="conversationSelect"></app-transcript-control>
+          <app-transcript-control class="col-auto mr-2" [playlists]="playlists" [playlistState]="playlistState" [messageEvents]="messageEvents" [playlistSelect]="playlistSelect" [conversationSelect]="conversationSelect"></app-transcript-control>
+          <app-cycle-items *ngIf="conversationSelect" class="col-auto" [type]="'conversation'" [index]="findIndex()" [items]="getIds()"></app-cycle-items>
         </div>
       </div>
     </div>
+
 
     <!-- Conversation subtitle & download button -->
     <div class="row">

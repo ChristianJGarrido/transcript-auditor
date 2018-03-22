@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostBinding } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
 import * as assessmentActions from '../../store/assessment/assessment.actions';
@@ -11,7 +11,6 @@ import * as conversationActions from '../../store/conversation/conversation.acti
   styleUrls: ['./cycle-items.component.css']
 })
 export class CycleItemsComponent implements OnInit {
-  @HostBinding('class') class = 'col-auto';
   @Input() type: string;
   @Input() items: any[];
   @Input() index: number;
