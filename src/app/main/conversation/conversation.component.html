@@ -11,7 +11,7 @@
         <app-conversation-stats [conversationSelect]="(conversationSelect$ | async)"></app-conversation-stats>
       </div>
       <div class="row no-gutters pt-2">
-        <app-conversation-messages [playlistSelect]="(playlistSelect$ | async)" [assessmentSelect]="(assessmentSelect$ | async)" [conversationState]="(conversationState$ | async)" [conversationSelect]="(conversationSelect$ | async)"></app-conversation-messages>
+        <app-conversation-messages [playlists]="(playlists$ | async)" [playlistState]="(playlistState$ | async)" [playlistSelect]="(playlistSelect$ | async)" [assessmentSelect]="(assessmentSelect$ | async)" [conversationState]="(conversationState$ | async)" [conversationSelect]="(conversationSelect$ | async)"></app-conversation-messages>
       </div>
     </div>
 

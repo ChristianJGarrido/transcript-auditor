@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { UtilityService } from '../../../shared/services/utility.service';
 import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
+import * as fromPlaylist from '../../../shared/store/playlist/playlist.reducer';
 import { AssessmentModel } from '../../../shared/store/assessment/assessment.model';
 
 import * as _ from 'lodash';
@@ -30,6 +31,8 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
   @Input() conversationSelect: any;
   @Input() assessmentSelect: AssessmentModel;
   @Input() playlistSelect: PlaylistModel;
+  @Input() playlistState: fromPlaylist.State;
+  @Input() playlists: PlaylistModel[];
 
   messageEvents = [];
 
