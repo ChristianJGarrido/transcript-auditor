@@ -7,6 +7,7 @@ export interface AssessmentModel {
   isPrivate: boolean;
   conversationId: string;
   note: string;
+  recommend: string;
   messages: AssessmentMessagesModel;
   rating: number;
   personality: AssessmentPersonalityModel[];
@@ -76,6 +77,7 @@ export class Assessment implements AssessmentModel {
   createdAt = this.date;
   lastUpdateAt = this.date;
   note = '';
+  recommend = '';
   rating = 0;
   messages = {};
 

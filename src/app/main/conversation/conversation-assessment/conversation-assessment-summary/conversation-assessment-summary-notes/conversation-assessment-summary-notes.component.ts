@@ -11,6 +11,8 @@ import { StoreModel } from '../../../../../app.store';
 export class ConversationAssessmentSummaryNotesComponent implements OnInit {
   @Input() id: string;
   @Input() note: string;
+  @Input() type: string;
+  @Input() label: string;
 
   constructor(private store: Store<StoreModel>) {}
 
@@ -19,7 +21,7 @@ export class ConversationAssessmentSummaryNotesComponent implements OnInit {
    * @param {string} note
    */
   updateNote(note: string): void {
-    this.store.dispatch(new AssessmentActions.Update(this.id, { note }));
+    this.store.dispatch(new AssessmentActions.Update(this.id, { [this.type]: note }));
   }
 
   ngOnInit() {}

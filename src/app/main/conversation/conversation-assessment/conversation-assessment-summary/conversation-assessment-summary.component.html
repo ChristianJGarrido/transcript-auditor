@@ -1,6 +1,6 @@
 <div class="card" [class.loading-opacity]="assessmentState.loading">
   <div class="card-body">
-    <div class="row no-gutters">
+    <div class="row">
       <div class="col-4 col-md-3 col-lg-2 pr-md-2">
         <div class="row no-gutters">
           <h5 class="card-title col-auto pr-2">Summary</h5>
@@ -9,7 +9,8 @@
         </div>
       </div>
       <div class="col">
-        <app-conversation-assessment-summary-notes [id]="assessmentSelect.id" [note]="assessmentSelect.note"></app-conversation-assessment-summary-notes>
+        <app-conversation-assessment-summary-notes [id]="assessmentSelect.id" label="Notes" type="note" [note]="assessmentSelect.note"></app-conversation-assessment-summary-notes>
+        <app-conversation-assessment-summary-notes [id]="assessmentSelect.id" label="Recommendations" type="recommend" [note]="assessmentSelect.recommend"></app-conversation-assessment-summary-notes>
       </div>
     </div>
   </div>
