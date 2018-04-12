@@ -185,7 +185,7 @@ export class Assessment implements AssessmentModel {
         },
         {
           label:
-            'Attempted to retain the customer in the BOT converasation when appropriate',
+            'Attempted to retain the customer in the BOT conversation when appropriate',
           score: 0,
         },
         {
