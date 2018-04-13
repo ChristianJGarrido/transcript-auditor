@@ -11,6 +11,7 @@ import { StoreModel } from '../../../../app.store';
 import { UtilityService } from '../../../../shared/services/utility.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { NoteModalComponent } from '../../../../shared/components/note-modal/note-modal.component';
+import { NoteModalData } from '../../../../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-conversation-assessment-qa',
@@ -35,10 +36,11 @@ export class ConversationAssessmentQaComponent implements OnInit {
     const index = { groupIdx, lineIdx };
     const left = (event && `${event.clientX - 300}px`) || '80%';
     const top = (event && `${event.clientY - 150}px`) || '40%';
+    const data: NoteModalData = { type: 'qa', index, assessmentSelect: this.assessmentSelect };
     this.dialogRef = this.dialog.open(NoteModalComponent, {
       position: { left, top },
       width: '300px',
-      data: { type: 'qa', index, assessmentSelect: this.assessmentSelect },
+      data,
     });
   }
 

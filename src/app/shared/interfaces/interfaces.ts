@@ -1,3 +1,4 @@
+import { AssessmentModel } from '../store/assessment/assessment.model';
 
 export interface ApiSearchSdes {
   personalInfo: string;
@@ -35,4 +36,11 @@ export interface StatsWidget {
 
 export interface AssessmentStats extends StatsWidget {
   key: string;
+}
+
+export interface NoteModalData {
+  type: string;
+  msgId?: string;
+  index?: { groupIdx: number; lineIdx: number };
+  assessmentSelect: AssessmentModel;
 }

@@ -7,6 +7,7 @@ import {
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
 import * as assessmentActions from '../../../shared/store/assessment/assessment.actions';
+import { NoteModalData } from '../../interfaces/interfaces';
 
 @Component({
   selector: 'app-note-modal',
@@ -21,12 +22,7 @@ export class NoteModalComponent implements OnInit {
     private store: Store<StoreModel>,
     public dialogRef: MatDialogRef<NoteModalComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: {
-      type: string;
-      msgId: string;
-      index: { groupIdx: number; lineIdx: number };
-      assessmentSelect: AssessmentModel;
-    }
+    public data: NoteModalData
   ) {}
 
   // updates note

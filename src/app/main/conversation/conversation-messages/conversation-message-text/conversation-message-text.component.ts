@@ -4,6 +4,7 @@ import { AssessmentModel } from '../../../../shared/store/assessment/assessment.
 import { ApiConversationMessageRecord } from '../../../../shared/interfaces/conversation';
 import { ApiChatTranscript } from '../../../../shared/interfaces/chat';
 import { NoteModalComponent } from '../../../../shared/components/note-modal/note-modal.component';
+import { NoteModalData } from '../../../../shared/interfaces/interfaces';
 
 @Component({
   selector: 'app-conversation-message-text',
@@ -24,15 +25,16 @@ export class ConversationMessageTextComponent implements OnInit {
     const msgId = this.getMessageId();
     const left = (event && `${event.clientX}px`) || '40%';
     const top = (event && `${event.clientY - 150}px`) || '40%';
+    const data: NoteModalData = { type: 'msg', msgId, assessmentSelect: this.assessmentSelect };
     this.dialogRef = this.dialog.open(NoteModalComponent, {
       position: { left, top },
       width: '300px',
-      data: { msgId, assessmentSelect: this.assessmentSelect },
+      data,
     });
   }
 
   // the message id
-  getMessageId(): string|number {
+  getMessageId(): string {
     return this.isChat ? this.message.lineSeq : this.message.messageId;
   }
 
