@@ -5,7 +5,7 @@
       <h5 class="card-title text-muted col-auto">Score {{calculateTotalScore(assessmentSelect.qa) | percent}}</h5>
     </div>
     <div id="qa-container">
-      <ng-container *ngFor="let group of assessmentSelect.qa; let first = first; let last = last; trackBy: trackByFn">
+      <ng-container *ngFor="let group of assessmentSelect.qa; let groupIdx = index; let first = first; let last = last; trackBy: trackByFn">
         <div class="row no-gutters row-header p-2 pt-3" (click)="group.expanded = !group.expanded">
           <div [hidden]="group.expanded" class="col-auto font-primary mr-2">
             <i class="far fa-chevron-up"></i>
@@ -20,14 +20,28 @@
             {{calculateGroupScore(group) | percent}}
           </div>
         </div>
-        <ng-container *ngFor="let item of group.section; trackBy: trackByFn">
+        <ng-container *ngFor="let line of group.section; let lineIdx = index; trackBy: trackByFn">
           <div *ngIf="group.expanded" class="row no-gutters row-content">
             <div class="col pl-2 mt-2 pt-1 font-secondary">
-              {{item.label}}
+              {{line.label}}
             </div>
             <div class="col-auto font-primary">
-              <span class="font-secondary">{{item.score === 0 ? 'N/A' : ''}}</span> <mat-slider min="0" max="5" step="1" thumbLabel [(ngModel)]="item.score" (change)="saveReview()"></mat-slider>
+              <span class="font-secondary">{{line.score === 0 ? 'N/A' : ''}}</span> <mat-slider min="0" max="5" step="1" thumbLabel [(ngModel)]="line.score" (change)="saveReview()"></mat-slider>
             </div>
+            <div class="col-auto ml-2">
+                <table style="height: 100%;">
+                  <tbody>
+                    <tr>
+                      <td *ngIf="!line.note" class="align-middle" (click)="openDialog($event, groupIdx, lineIdx)" matTooltip="Add note" matTooltipClass="material-tooltip" matTooltipPosition="left">
+                        <i class="fal fa-plus-circle fa-2x"></i>
+                      </td>
+                      <td *ngIf="line.note" class="align-middle" (click)="openDialog($event, groupIdx, lineIdx)" [matTooltip]="line.note" matTooltipClass="material-tooltip" matTooltipPosition="left">
+                        <i class="fas fa-check-circle fa-2x"></i>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
           </div>
         </ng-container>
       </ng-container>

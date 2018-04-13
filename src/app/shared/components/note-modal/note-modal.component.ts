@@ -21,30 +21,42 @@ export class NoteModalComponent implements OnInit {
     private store: Store<StoreModel>,
     public dialogRef: MatDialogRef<NoteModalComponent>,
     @Inject(MAT_DIALOG_DATA)
-    public data: { msgId: string; assessmentSelect: AssessmentModel }
+    public data: {
+      type: string;
+      msgId: string;
+      index: { groupIdx: number; lineIdx: number };
+      assessmentSelect: AssessmentModel;
+    }
   ) {}
 
   // updates note
   updateNote(add: boolean): void {
-    const { msgId } = this.data;
-    const { id, messages } = this.data.assessmentSelect;
-    if (add) {
-      const createdAt = new Date();
-      this.store.dispatch(
-        new assessmentActions.Update(id, {
-          messages: {
-            ...messages,
-            [msgId]: {
-              note: this.note,
-              createdAt,
-              createdBy: 'User',
-            },
-          },
-        })
-      );
+    const { msgId, type, index } = this.data;
+    const { id, messages, qa } = this.data.assessmentSelect;
+
+    if (type === 'qa') {
+      const { groupIdx, lineIdx } = index;
+      qa[groupIdx].section[lineIdx].note = add ? this.note : '';
+      this.store.dispatch(new assessmentActions.Update(id, { qa }));
     } else {
-      delete messages[msgId];
-      this.store.dispatch(new assessmentActions.Update(id, { messages }));
+      if (add) {
+        const createdAt = new Date();
+        this.store.dispatch(
+          new assessmentActions.Update(id, {
+            messages: {
+              ...messages,
+              [msgId]: {
+                note: this.note,
+                createdAt,
+                createdBy: 'User',
+              },
+            },
+          })
+        );
+      } else {
+        delete messages[msgId];
+        this.store.dispatch(new assessmentActions.Update(id, { messages }));
+      }
     }
   }
 
@@ -56,10 +68,16 @@ export class NoteModalComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const msgs = this.data.assessmentSelect.messages;
-    const messageNote = msgs && msgs[this.data.msgId];
-    if (messageNote) {
-      this.note = messageNote.note || '';
+    const { type, index, assessmentSelect } = this.data;
+    if (type === 'qa') {
+      const { groupIdx, lineIdx } = index;
+      this.note = this.data.assessmentSelect.qa[groupIdx].section[lineIdx].note;
+    } else {
+      const msgs = assessmentSelect.messages;
+      const messageNote = msgs && msgs[this.data.msgId];
+      if (messageNote) {
+        this.note = messageNote.note || '';
+      }
     }
   }
 }
