@@ -1,9 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
-import { ConversationMessageTextNoteComponent } from './conversation-message-text-note/conversation-message-text-note.component';
 import { AssessmentModel } from '../../../../shared/store/assessment/assessment.model';
 import { ApiConversationMessageRecord } from '../../../../shared/interfaces/conversation';
 import { ApiChatTranscript } from '../../../../shared/interfaces/chat';
+import { NoteModalComponent } from '../../../../shared/components/note-modal/note-modal.component';
 
 @Component({
   selector: 'app-conversation-message-text',
@@ -15,7 +15,7 @@ export class ConversationMessageTextComponent implements OnInit {
   @Input() assessmentSelect: AssessmentModel;
   @Input() isChat: boolean;
 
-  dialogRef: MatDialogRef<ConversationMessageTextNoteComponent>;
+  dialogRef: MatDialogRef<NoteModalComponent>;
 
   constructor(public dialog: MatDialog) {}
 
@@ -24,7 +24,7 @@ export class ConversationMessageTextComponent implements OnInit {
     const msgId = this.getMessageId();
     const left = (event && `${event.clientX}px`) || '40%';
     const top = (event && `${event.clientY - 150}px`) || '40%';
-    this.dialogRef = this.dialog.open(ConversationMessageTextNoteComponent, {
+    this.dialogRef = this.dialog.open(NoteModalComponent, {
       position: { left, top },
       width: '300px',
       data: { msgId, assessmentSelect: this.assessmentSelect },

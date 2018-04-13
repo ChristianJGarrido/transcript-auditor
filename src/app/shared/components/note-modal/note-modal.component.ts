@@ -3,24 +3,23 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import {
   AssessmentModel,
   AssessmentMessagesModel,
-} from '../../../../../shared/store/assessment/assessment.model';
+} from '../../../shared/store/assessment/assessment.model';
 import { Store } from '@ngrx/store';
-import { StoreModel } from '../../../../../app.store';
-import * as assessmentActions from '../../../../../shared/store/assessment/assessment.actions';
+import { StoreModel } from '../../../app.store';
+import * as assessmentActions from '../../../shared/store/assessment/assessment.actions';
 
 @Component({
-  selector: 'app-conversation-message-text-note',
-  templateUrl: './conversation-message-text-note.component.html',
-  styleUrls: ['./conversation-message-text-note.component.css'],
+  selector: 'app-note-modal',
+  templateUrl: './note-modal.component.html',
+  styleUrls: ['./note-modal.component.css'],
 })
-export class ConversationMessageTextNoteComponent implements OnInit {
-
+export class NoteModalComponent implements OnInit {
   note = '';
   confirm = false;
 
   constructor(
     private store: Store<StoreModel>,
-    public dialogRef: MatDialogRef<ConversationMessageTextNoteComponent>,
+    public dialogRef: MatDialogRef<NoteModalComponent>,
     @Inject(MAT_DIALOG_DATA)
     public data: { msgId: string; assessmentSelect: AssessmentModel }
   ) {}

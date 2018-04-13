@@ -24,6 +24,8 @@ import { AssessmentControlComponent } from './shared/components/assessment-contr
 import { SaveNotificationComponent } from './shared/components/save-notification/save-notification.component';
 import { PlaylistManagerComponent } from './shared/components/playlist-manager/playlist-manager.component';
 import { LoadingResultsComponent } from './shared/components/loading-results/loading-results.component';
+import { TranscriptControlComponent } from './shared/components/transcript-control/transcript-control.component';
+import { NoteModalComponent } from './shared/components/note-modal/note-modal.component';
 
 // assessments
 import { AssessmentsComponent } from './main/assessments/assessments.component';
@@ -49,7 +51,6 @@ import { ConversationAssessmentControlComponent } from './main/conversation/conv
 // conversation messages
 import { ConversationMessagesComponent } from './main/conversation/conversation-messages/conversation-messages.component';
 import { ConversationMessageTextComponent } from './main/conversation/conversation-messages/conversation-message-text/conversation-message-text.component';
-import { ConversationMessageTextNoteComponent } from './main/conversation/conversation-messages/conversation-message-text/conversation-message-text-note/conversation-message-text-note.component';
 import { ConversationMessageLinkComponent } from './main/conversation/conversation-messages/conversation-message-link/conversation-message-link.component';
 import { ConversationMessageParticipantComponent } from './main/conversation/conversation-messages/conversation-message-participant/conversation-message-participant.component';
 import { ConversationMessageTransferComponent } from './main/conversation/conversation-messages/conversation-message-transfer/conversation-message-transfer.component';
@@ -114,7 +115,6 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ChartsModule } from 'ng2-charts/ng2-charts';
 import { StarRatingModule } from 'angular-star-rating';
 import 'hammerjs';
-import { TranscriptControlComponent } from './shared/components/transcript-control/transcript-control.component';
 
 @NgModule({
   declarations: [
@@ -153,9 +153,9 @@ import { TranscriptControlComponent } from './shared/components/transcript-contr
     ConversationsListPlaylistComponent,
     PlaylistManagerComponent,
     LoadingResultsComponent,
-    ConversationMessageTextNoteComponent,
     AssessmentsStatsComponent,
     TranscriptControlComponent,
+    NoteModalComponent,
   ],
   imports: [
     StarRatingModule.forRoot(),
@@ -217,7 +217,7 @@ import { TranscriptControlComponent } from './shared/components/transcript-contr
     ModalComponent,
     ConversationAssessmentSummarySliderComponent,
     PlaylistManagerComponent,
-    ConversationMessageTextNoteComponent,
+    NoteModalComponent,
   ],
   bootstrap: [AppComponent],
 })
