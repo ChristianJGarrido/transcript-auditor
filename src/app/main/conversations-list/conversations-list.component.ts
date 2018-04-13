@@ -113,7 +113,7 @@ export class ConversationsListComponent implements OnInit, OnChanges {
       case 'text':
         const lines = record.messageRecords && record.messageRecords[0];
         const msgData = lines && lines.messageData;
-        return (msgData.msg && msgData.msg.text) || '';
+        return (msgData && msgData.msg && msgData.msg.text) || '';
       case 'conId':
         const participant = record.consumerParticipants[0];
         return participant && participant.participantId;
