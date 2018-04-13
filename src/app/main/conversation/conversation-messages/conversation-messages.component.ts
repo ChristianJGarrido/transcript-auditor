@@ -34,6 +34,7 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
   @Input() playlistState: fromPlaylist.State;
   @Input() playlists: PlaylistModel[];
 
+  currentId: string = null;
   messageEvents = [];
 
   constructor(
@@ -126,6 +127,9 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
   ngOnInit(): void {}
 
   ngOnChanges(): void {
-    this.messageEvents = this.updateMessageEvents();
+    if (this.currentId !== this.conversationState.selectedId) {
+      this.messageEvents = this.updateMessageEvents();
+      this.currentId = this.conversationState.selectedId;
+    }
   }
 }
