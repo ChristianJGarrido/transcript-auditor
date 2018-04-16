@@ -1,8 +1,3 @@
-.fa-chevron-left,
-.fa-chevron-right,
-.fa-download {
-  cursor: pointer;
-}
 
 #message-container {
   overflow: auto;

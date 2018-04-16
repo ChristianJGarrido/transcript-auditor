@@ -27,6 +27,7 @@ import {
 } from '../../../shared/store/assessment/assessment.model';
 import { Router } from '@angular/router';
 import { UtilityService } from '../../../shared/services/utility.service';
+import { ExportService } from '../../../shared/services/export.service';
 
 @Component({
   selector: 'app-assessments-grid',
@@ -53,7 +54,7 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
 
   selected = [];
   columns: TableColumn[] = [];
-  rows = [];
+  rows: AssessmentModel[] | PlaylistModel[] = [];
   temp = [];
 
   PLAYLIST = 'playlists';
@@ -62,8 +63,16 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
   constructor(
     private store: Store<StoreModel>,
     private router: Router,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private exportService: ExportService,
   ) {}
+
+  /**
+   * converts collection to excel file (XLSX)
+   */
+  downloadToExcel(): void {
+    this.exportService.downloadXlsxFile(this.type, this.rows);
+  }
 
   /**
    * selects a given row based on type of grid

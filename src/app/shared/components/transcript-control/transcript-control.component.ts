@@ -55,26 +55,6 @@ export class TranscriptControlComponent implements OnInit, OnChanges {
   ) {}
 
   /**
-   * Download message data to CSV
-   */
-  downloadCsv(): void {
-    // prepare message records
-    const messages = this.messageEvents.map(event => {
-      return {
-        event: event.eventKey,
-        sentBy: event.sentBy,
-        agentFullName: event.agentFullName,
-        time: event.time,
-        text:
-          event.messageData &&
-          event.messageData.msg &&
-          event.messageData.msg.text,
-      };
-    });
-    this.exportService.downloadCsvFile(messages, 'Conversation');
-  }
-
-  /**
    * Updates an exsiting playlist with selected conversation ids
    * @param {string} playlistId
    */

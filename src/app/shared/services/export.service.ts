@@ -1,53 +1,41 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { switchMap } from 'rxjs/operators/switchMap';
+import { AssessmentModel } from '../store/assessment/assessment.model';
+import { PlaylistModel } from '../store/playlist/playlist.model';
 
-import { take } from 'rxjs/operators';
-
-// 3rd party
 import * as papaparse from 'papaparse';
 import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
-import { Observable } from 'rxjs/Observable';
-import { switchMap } from 'rxjs/operators/switchMap';
+import * as XLSX from 'xlsx';
 
 @Injectable()
 export class ExportService {
   constructor() {}
 
   /**
-   * takes 1 users data and exports to csv
-   * @param {AfUser} data
+   * take collection of assessments or playlists
+   * convert to xlsx and save
+   * @param {string} type
+   * @param {AssessmentModel[]|PlaylistModel[]}
    */
-  downloadNotes(afConversations: any[]) {
-    if (!afConversations.length) {
+  downloadXlsxFile(type: string, rows: AssessmentModel[] | PlaylistModel[]): void {
+    if (!rows.length) {
       return;
     }
-    const notes: any[] = afConversations.map(conversation => ({
-      conversationId: conversation.conversationId,
-      lastUpdateBy: conversation.lastUpdateBy,
-      lastUpdateTime: conversation.lastUpdateTime,
-      ...conversation.data
-    }));
-    this.downloadCsvFile(notes, 'Notes');
+    // constants
+    const name = type === 'assessments' ? 'Assessments' : 'Playlists';
+    // create worksheet
+    const ws: XLSX.WorkSheet = XLSX.utils.json_to_sheet(rows);
+    // create workbook
+    const wb: XLSX.WorkBook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, name);
+    // current timestamp
+    const date = new Date().toISOString().slice(0, 19);
+    // save to file
+    XLSX.writeFile(wb, `${name}-${date}.xlsx`);
   }
 
-  /**
-   * takes all users data and exports to csv
-   * @param {AfAccount[]} data
-   */
-  downloadAllNotes(data: any[]) {
-    if (!data.length) {
-      return;
-    }
-    const allData: any[] = [];
-    const accountData = data.forEach(account => {
-      // if (user.conversations) {
-      //   Object.keys(user.conversations).forEach(key => {
-      //     allData.push(user.conversations[key]);
-      //   });
-      // }
-    });
-    this.downloadCsvFile(allData, 'AllNotes');
-  }
 
   /**
    * export data to csv
