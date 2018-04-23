@@ -3,9 +3,9 @@ import { environment } from '../environments/environment';
 // reducers
 import { AfLoginReducer } from './shared/store/af-login/af-login.reducer';
 import { ApiLoginReducer } from './shared/store/api-login/api-login.reducer';
-import { AssessmentReducer } from './shared/store/assessment/assessment.reducer';
-import { PlaylistReducer } from './shared/store/playlist/playlist.reducer';
-import { ConversationReducer } from './shared/store/conversation/conversation.reducer';
+import * as fromAssessment from './shared/store/assessment/assessment.reducer';
+import * as fromPlaylist from './shared/store/playlist/playlist.reducer';
+import * as fromConversation from './shared/store/conversation/conversation.reducer';
 import { StatsReducer } from './shared/store/stats/stats.reducer';
 import { ListReducer } from './shared/store/list/list.reducer';
 import { FilterReducer } from './shared/store/filter/filter.reducer';
@@ -46,21 +46,21 @@ import { storeLogger } from 'ngrx-store-logger';
 export interface StoreModel {
   afLogin: AfLoginModel;
   apiLogin: ApiLoginModel;
-  assessment: AssessmentModel;
-  playlist: PlaylistModel;
-  conversation: ConversationModel;
+  assessment: fromAssessment.State;
+  playlist: fromPlaylist.State;
+  conversation: fromConversation.State;
   stats: StatsModel;
   list: ListModel;
   filter: FilterModel;
 }
 
 // store reducers
-export const reducers: ActionReducerMap<any> = {
+export const reducers: ActionReducerMap<StoreModel> = {
   afLogin: AfLoginReducer,
   apiLogin: ApiLoginReducer,
-  assessment: AssessmentReducer,
-  playlist: PlaylistReducer,
-  conversation: ConversationReducer,
+  assessment: fromAssessment.AssessmentReducer,
+  playlist: fromPlaylist.PlaylistReducer,
+  conversation: fromConversation.ConversationReducer,
   stats: StatsReducer,
   list: ListReducer,
   filter: FilterReducer,
