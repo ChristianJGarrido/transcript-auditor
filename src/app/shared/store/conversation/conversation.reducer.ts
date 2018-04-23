@@ -5,12 +5,14 @@ import { ConversationModel } from './conversation.model';
 
 export const adapter = createEntityAdapter<ConversationModel>();
 export interface State extends EntityState<ConversationModel> {
+  ids: string[];
   loading: boolean;
   updating: boolean;
   selectedId: string;
   playlistIds: string[];
 }
 export const initialState: State = adapter.getInitialState({
+  ids: [],
   loading: false,
   updating: null,
   selectedId: null,
@@ -49,7 +51,6 @@ export function ConversationReducer(
 // Create the default selectors
 export const getState = createFeatureSelector<State>('conversation');
 export const {
-  selectIds,
   selectEntities,
   selectAll,
   selectTotal,
@@ -58,8 +59,10 @@ export const {
 // Create custom selectors
 const getSelectedId = (state: State) => state.selectedId;
 const getPlaylistIds = (state: State) => state.playlistIds;
+const getIds = (state: State) => state.ids;
 export const selectId = createSelector(getState, getSelectedId);
 export const selectPlaylistIds = createSelector(getState, getPlaylistIds);
+export const selectIds = createSelector(getState, getIds);
 export const selectOne = createSelector(
   selectEntities,
   selectId,

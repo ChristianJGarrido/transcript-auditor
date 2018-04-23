@@ -5,12 +5,14 @@ import { PlaylistModel } from './playlist.model';
 
 export const adapter = createEntityAdapter<PlaylistModel>();
 export interface State extends EntityState<PlaylistModel> {
+  ids: string[];
   loading: boolean;
   error: boolean;
   updating: boolean;
   selectedId: string;
 }
 export const initialState: State = adapter.getInitialState({
+  ids: [],
   loading: false,
   error: false,
   updating: null,
@@ -46,7 +48,6 @@ export function PlaylistReducer(
 // Create the default selectors
 export const getState = createFeatureSelector<State>('playlist');
 export const {
-  selectIds,
   selectEntities,
   selectAll,
   selectTotal,
@@ -54,7 +55,9 @@ export const {
 
 // Create custom selectors
 const getSelectedId = (state: State) => state.selectedId;
+const getIds = (state: State) => state.ids;
 export const selectId = createSelector(getState, getSelectedId);
+export const selectIds = createSelector(getState, getIds);
 export const selectOne = createSelector(
   selectEntities,
   selectId,

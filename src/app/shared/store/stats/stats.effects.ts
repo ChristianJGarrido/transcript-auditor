@@ -33,10 +33,11 @@ export class StatsEffects {
       withLatestFrom(this.store.select(fromAssessment.selectAll)),
       map(([action, assessments]) => {
         const { playlists } = action;
-        const conversationFilter = playlists.reduce(
+        const conversationIds = playlists.reduce(
           (prev, curr) => [...prev, ...curr.conversationIds],
           []
         );
+        const conversationFilter = _.uniq(conversationIds);
         const assessmentFilter = assessments.reduce((prev, curr) => {
           return conversationFilter.includes(curr.conversationId)
             ? [...prev, curr.id]
@@ -92,9 +93,9 @@ export class StatsEffects {
    */
   buildStats(
     stats: StatsModel,
-    ids: string[] | number[],
+    ids: string[],
     entities: Dictionary<AssessmentModel>,
-    playlistIds: string[] | number[]
+    playlistIds: string[]
   ): StatsMetrics {
     const statsArray = stats.assessmentSelect.length
       ? stats.assessmentSelect.map(item => item.id)

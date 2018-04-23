@@ -5,6 +5,7 @@ import { AssessmentModel } from './assessment.model';
 
 export const adapter = createEntityAdapter<AssessmentModel>();
 export interface State extends EntityState<AssessmentModel> {
+  ids: string[];
   loading: boolean;
   updating: boolean;
   error: boolean;
@@ -13,6 +14,7 @@ export interface State extends EntityState<AssessmentModel> {
   idsByPlaylist: string[];
 }
 export const initialState: State = adapter.getInitialState({
+  ids: [],
   loading: false,
   updating: null,
   error: false,
@@ -56,7 +58,6 @@ export function AssessmentReducer(
 // Create the default selectors
 export const getState = createFeatureSelector<State>('assessment');
 export const {
-  selectIds,
   selectEntities,
   selectAll,
   selectTotal,
@@ -64,7 +65,9 @@ export const {
 
 // Create custom selectors
 const getSelectedId = (state: State) => state.selectedId;
+const getIds = (state: State) => state.ids;
 export const selectId = createSelector(getState, getSelectedId);
+export const selectIds = createSelector(getState, getIds);
 export const selectOne = createSelector(
   selectEntities,
   selectId,

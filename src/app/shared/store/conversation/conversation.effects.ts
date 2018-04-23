@@ -129,9 +129,9 @@ export class ConversationEffects {
         if (!existsInPlaylist && playlistIds.length) {
           // doesn't exist and playlist ids are available
           const id = playlistIds[0];
-          return new conversationActions.Select(id.toString());
+          return new conversationActions.Select(id);
         }
-        const fallbackId = selectIds[0] && selectIds[0].toString();
+        const fallbackId = selectIds[0];
         const newId = selectId || fallbackId || null;
         return new conversationActions.Select(newId);
       })

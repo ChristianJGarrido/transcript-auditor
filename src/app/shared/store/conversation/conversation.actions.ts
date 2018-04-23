@@ -25,7 +25,7 @@ export class Select implements Action {
 }
 export class FilterPlaylist implements Action {
   readonly type = FILTER_PLAYLIST;
-  constructor(public ids: any[]) {}
+  constructor(public ids: string[]) {}
 }
 
 export class AddAll implements Action {
