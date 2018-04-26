@@ -16,13 +16,13 @@
 
     <!-- Conversation + Consumer ID -->
     <div class="row">
-      <span class="col font-tertiary">ID:
-        <strong>{{getId()}}</strong>
+      <span class="col-auto font-tertiary">
+        <span matTooltip="Conversation ID" matTooltipClass="material-tooltip">ID:</span>
+        <span> {{getId()}}</span>
       </span>
-    </div>
-    <div class="row">
-      <span class="col font-tertiary">CID:
-        <strong>{{getConId()}}</strong>
+      <span class="col-auto font-tertiary">
+        <span matTooltip="Consumer ID" matTooltipClass="material-tooltip">CID:</span>
+        <span> {{getConId()}}</span>
       </span>
     </div>
 
@@ -37,9 +37,6 @@
           <app-conversation-message-transfer *ngSwitchCase="'TRANSFER'" [transfer]="event"></app-conversation-message-transfer>
         </div>
       </div>
-    </div>
-    <div hidden class="container-fluid p-0" id="messages-clone">
-
     </div>
   </div>
 </div>
