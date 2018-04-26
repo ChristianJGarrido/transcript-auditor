@@ -5,20 +5,14 @@ export type Action = listActions.All;
 
 const initialListState = new ListState();
 
-const entityCreator = <T>(list: any[]): T => {
-  return list.reduce(
-    (prev, item) => {
-      return {
-        entities: {
-          ...prev.entities,
-          [item.id]: item,
-        },
-        ids: [...prev.ids, item.id],
-        collection: [...prev.collection, item]
-      };
-    },
-    { entities: {}, ids: [], collection: [] }
-  );
+const entityCreator = (list: any[]) => {
+  const entity = { entities: {}, ids: [], collection: [] };
+  list.forEach(item => {
+    entity.entities[item.id] = item;
+    entity.ids.push(item.id);
+    entity.collection.push(item);
+  });
+  return entity;
 };
 
 export function ListReducer(
