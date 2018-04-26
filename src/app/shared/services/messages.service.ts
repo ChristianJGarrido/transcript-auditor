@@ -85,6 +85,11 @@ export class MessagesService {
     return isChat ? 'lineSeq' : 'messageId';
   }
 
+  // the agent id prop
+  getAgentIdProp(isChat: boolean): string {
+    return isChat ? 'agentId' : 'participantId';
+  }
+
   // retrieve message text
   getMessageText(isChat: boolean, message: any): string {
     return isChat

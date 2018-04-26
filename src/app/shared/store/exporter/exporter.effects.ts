@@ -116,7 +116,7 @@ export class ExporterEffects {
           'eventKey',
           'text',
           'mcsRawScore',
-          'agentId',
+          'agentName',
           'time',
           'note',
         ];
@@ -162,7 +162,7 @@ export class ExporterEffects {
    * @param {string[]} idsToExport
    */
   buildConversationGrid(store: StoreModel) {
-    const { assessment, conversation, exporter } = store;
+    const { assessment, conversation, exporter, list } = store;
     const assessmentGrid = exporter.exportIds.reduce((prev, id) => {
       const currAssessment = assessment.entities[id];
       const { conversationId } = currAssessment;
@@ -171,14 +171,15 @@ export class ExporterEffects {
       const currMessages = this.messagesService.updateMessageEvents(
         currConversation
       );
-      const msgIdProp = this.messagesService.getMessageIdProp(
-        currConversation.isChat
-      );
-
+      const msgIdProp = this.messagesService.getMessageIdProp(isChat);
+      const agentIdProp = this.messagesService.getAgentIdProp(isChat);
       return [
         ...prev,
         ...currMessages.map(message => {
           const { time, mcsRawScore, eventKey } = message;
+          const agentId = message[agentIdProp];
+          const agent = list.agents.entities[agentId];
+          const agentName = agent ? agent.fullName : agentId;
           return {
             assessmentId: id,
             createdBy: currAssessment.createdBy,
@@ -186,6 +187,7 @@ export class ExporterEffects {
             eventKey,
             time,
             mcsRawScore,
+            agentName,
             text: this.messagesService.getMessageText(isChat, message),
             note: this.messagesService.getMessageNote(
               message[msgIdProp],
