@@ -44,6 +44,7 @@ import * as papaparse from 'papaparse';
 import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
+import * as jsPDF from 'jspdf';
 
 @Injectable()
 export class ExporterEffects {
