@@ -217,8 +217,8 @@ export class ConversationsListFilterComponent implements OnInit {
    */
   loadListAgents(filter?: string): void {
     const filtered = filter
-      ? this.list.agents.filter(agent => agent.fullName.includes(filter))
-      : this.list.agents;
+      ? this.list.agents.collection.filter(agent => agent.fullName.includes(filter))
+      : this.list.agents.collection;
     if (filtered.length > 50) {
       const newList = this.updateListAgents(filtered.slice(0, 50));
       this.listAgents = [
@@ -423,7 +423,7 @@ export class ConversationsListFilterComponent implements OnInit {
     this.searchById = this.filter.searchById;
     this.idSelect = [...this.filter.idTypes];
     // init lists
-    this.listSkills = this.list.skills;
-    this.listGroups = this.list.groups;
+    this.listSkills = this.list.skills.collection;
+    this.listGroups = this.list.groups.collection;
   }
 }

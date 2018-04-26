@@ -18,7 +18,7 @@ import { Action, Store } from '@ngrx/store';
 import { Actions, Effect } from '@ngrx/effects';
 import { StoreModel } from '../../../app.store';
 import * as listActions from './list.actions';
-import { ListModel } from './list.model';
+import { ListModel, ListAgent, ListSkill, ListGroup } from './list.model';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 
 @Injectable()
@@ -41,9 +41,9 @@ export class ListEffects {
         const urlAgents = `${url}/users?v=4.0&select=$all`;
         const urlSkills = `${url}/skills?v=2.0&select=$all`;
         const urlGroups = `${url}/agentGroups?v=2.0&select=$all`;
-        const httpAgent = this.http.get<any[]>(urlAgents, { headers });
-        const httpSkills = this.http.get<any[]>(urlSkills, { headers });
-        const httpGroups = this.http.get<any[]>(urlGroups, { headers });
+        const httpAgent = this.http.get<ListAgent[]>(urlAgents, { headers });
+        const httpSkills = this.http.get<ListSkill[]>(urlSkills, { headers });
+        const httpGroups = this.http.get<ListGroup[]>(urlGroups, { headers });
         return forkJoin(httpAgent, httpSkills, httpGroups).pipe(
           switchMap(([agent, skills, groups]) => {
             return [

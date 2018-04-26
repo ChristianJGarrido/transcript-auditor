@@ -1,13 +1,31 @@
 export interface ListModel {
-  agents: ListAgent[];
-  skills: ListSkill[];
-  groups: ListGroup[];
+  agents: Entity<ListAgent>;
+  skills: Entity<ListSkill>;
+  groups: Entity<ListGroup>;
+}
+
+export interface Entity<T> {
+  entities: { [id: string]: T };
+  ids: string[];
+  collection: T[];
 }
 
 export class ListState implements ListModel {
-  agents = [];
-  skills = [];
-  groups = [];
+  agents = {
+    entities: null,
+    ids: [],
+    collection: [],
+  };
+  skills = {
+    entities: null,
+    ids: [],
+    collection: [],
+  };
+  groups = {
+    entities: null,
+    ids: [],
+    collection: [],
+  };
   constructor() {}
 }
 

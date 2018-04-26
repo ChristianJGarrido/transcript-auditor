@@ -40,8 +40,8 @@
 <!-- list filters -->
 <div *ngIf="!searchById" class="row no-gutters mb-1">
   <div class="col-12">
-    <ss-multiselect-dropdown [settings]="listSettings" [texts]="listSkillsTexts" [options]="list.skills" [(ngModel)]="skillsSelect"></ss-multiselect-dropdown>
-    <ss-multiselect-dropdown [settings]="listSettings" [texts]="listGroupsTexts" [options]="list.groups" [(ngModel)]="groupsSelect"></ss-multiselect-dropdown>
+    <ss-multiselect-dropdown [settings]="listSettings" [texts]="listSkillsTexts" [options]="list.skills.collection" [(ngModel)]="skillsSelect"></ss-multiselect-dropdown>
+    <ss-multiselect-dropdown [settings]="listSettings" [texts]="listGroupsTexts" [options]="list.groups.collection" [(ngModel)]="groupsSelect"></ss-multiselect-dropdown>
     <ss-multiselect-dropdown (dropdownOpened)="loadListAgents()" (onFilter)="loadListAgents($event)" [settings]="listSettingsAgent"
       [texts]="listAgentsTexts" [options]="listAgents" [(ngModel)]="agentsSelect"></ss-multiselect-dropdown>
   </div>
