@@ -6,7 +6,8 @@
       </h5>
       <div class="col-auto">
         <div class="row no-gutters">
-          <app-transcript-control class="col-auto mr-2" [playlists]="playlists" [playlistState]="playlistState" [messageEvents]="messageEvents" [playlistSelect]="playlistSelect" [conversationSelect]="conversationSelect"></app-transcript-control>
+          <app-transcript-control class="col-auto mr-2" [playlists]="playlists" [playlistState]="playlistState" [messageEvents]="messageEvents"
+            [playlistSelect]="playlistSelect" [conversationSelect]="conversationSelect"></app-transcript-control>
           <app-cycle-items *ngIf="conversationSelect" class="col-auto" [type]="'conversation'" [index]="findIndex()" [items]="getIds()"></app-cycle-items>
         </div>
       </div>
@@ -36,6 +37,9 @@
           <app-conversation-message-transfer *ngSwitchCase="'TRANSFER'" [transfer]="event"></app-conversation-message-transfer>
         </div>
       </div>
+    </div>
+    <div hidden class="container-fluid p-0" id="messages-clone">
+
     </div>
   </div>
 </div>

@@ -49,6 +49,45 @@ import * as html2canvas from 'html2canvas';
 
 @Injectable()
 export class ExporterEffects {
+  // create pdf
+  @Effect({ dispatch: false })
+  createPdf$: Observable<Action> = this.actions$
+    .ofType<exporterActions.CreatePdf>(exporterActions.CREATE_PDF)
+    .pipe(
+      map(action => {
+        const { element } = action;
+        // save element height and make 100% for canvas
+        const original = element.style.height;
+        element.style.height = '100%';
+        html2canvas(element).then(canvas => {
+          const img = canvas.toDataURL('image/png');
+
+          const imgWidth = 210;
+          const pageHeight = 295;
+          const imgHeight = canvas.height * imgWidth / canvas.width;
+          let heightLeft = imgHeight;
+
+          const doc = new jsPDF('p', 'mm');
+          let position = 0;
+
+          doc.addImage(img, 'PNG', 5, position, imgWidth - 5, imgHeight);
+          heightLeft -= pageHeight;
+
+          while (heightLeft >= 0) {
+            position = heightLeft - imgHeight;
+            doc.addPage();
+            doc.addImage(img, 'PNG', 5, position, imgWidth - 5, imgHeight);
+            heightLeft -= pageHeight;
+          }
+          const date = new Date().toISOString().slice(0, 19);
+          doc.save(`Conversation-${date}.pdf`);
+          // revert dom element to original size
+          element.style.height = original;
+        });
+        return null;
+      })
+    );
+
   // start export
   @Effect()
   startExport$: Observable<Action> = this.actions$
@@ -191,7 +230,10 @@ export class ExporterEffects {
               ? this.messagesService.getSource(isChat, message)
               : '';
           const sentName = agent ? agent.fullName : agentId;
-          const userType = !isChat && sentBy === 'agent' ? this.messagesService.getUserType(agentId, currConversation) : '';
+          const userType =
+            !isChat && sentBy === 'agent'
+              ? this.messagesService.getUserType(agentId, currConversation)
+              : '';
           return {
             assessmentId: id,
             createdBy: currAssessment.createdBy,

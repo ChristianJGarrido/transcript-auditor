@@ -7,6 +7,7 @@ import {
 import { ConversationModel } from '../../store/conversation/conversation.model';
 import * as playlistActions from '../../store/playlist/playlist.actions';
 import * as conversationActions from '../../store/conversation/conversation.actions';
+import * as exporterActions from '../../store/exporter/exporter.actions';
 import * as fromPlaylist from '../../store/playlist/playlist.reducer';
 import { PlaylistModel } from '../../store/playlist/playlist.model';
 import { Store } from '@ngrx/store';
@@ -51,6 +52,14 @@ export class TranscriptControlComponent implements OnInit, OnChanges {
   constructor(
     private store: Store<StoreModel>,
   ) {}
+
+  /**
+   * Exports conversation to PDF
+   */
+  exportPdf(): void {
+    const element = document.getElementById('message-container');
+    this.store.dispatch(new exporterActions.CreatePdf(element));
+  }
 
   /**
    * Updates an exsiting playlist with selected conversation ids

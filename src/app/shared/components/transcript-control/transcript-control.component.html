@@ -7,7 +7,14 @@
     matTooltip="Remove from playlist" matTooltipClass="material-tooltip">
     <button type="button" class="btn btn-sm btn-danger py-0">Really remove?</button>
   </div>
-  <div *ngIf="!playlistAdd && !playlistSelect && !playlistState.updating" (mouseover)="playlistAdd = true" class="col" matTooltip="Add to playlist" matTooltipClass="material-tooltip"><i class="far fa-plus-circle"></i></div>
-  <ss-multiselect-dropdown *ngIf="playlistAdd && !playlistSelect && !playlistState.updating" (dropdownClosed)="playlistAdd = false" (onAdded)="updatePlaylist($event)" [settings]="playlistSettings" [texts]="playlistTexts" [options]="playlistOptions"></ss-multiselect-dropdown>
+  <div *ngIf="!playlistAdd && !playlistSelect && !playlistState.updating" (mouseover)="playlistAdd = true" class="col" matTooltip="Add to playlist"
+    matTooltipClass="material-tooltip">
+    <i class="far fa-plus-circle"></i>
+  </div>
+  <ss-multiselect-dropdown *ngIf="playlistAdd && !playlistSelect && !playlistState.updating" (dropdownClosed)="playlistAdd = false"
+    (onAdded)="updatePlaylist($event)" [settings]="playlistSettings" [texts]="playlistTexts" [options]="playlistOptions"></ss-multiselect-dropdown>
   <app-save-notification [updating]="playlistState.updating"></app-save-notification>
+  <div class="col-auto ml-2" (click)="exportPdf()" matTooltip="Export to PDF">
+    <i class="far fa-file-pdf"></i>
+  </div>
 </div>

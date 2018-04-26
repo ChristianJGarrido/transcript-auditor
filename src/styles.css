@@ -18,6 +18,7 @@ body {
 .fa-times,
 .fa-font,
 .fa-tachometer,
+.fa-file-pdf,
 .fa-times-circle {
   color: #6c6d6e;
   cursor: pointer;
@@ -39,6 +40,7 @@ body {
 .fa-check-circle:hover,
 .fa-font:hover,
 .fa-tachometer:hover,
+.fa-file-pdf:hover,
 .fa-times-circle:hover {
   color: #11b14e;
 }
