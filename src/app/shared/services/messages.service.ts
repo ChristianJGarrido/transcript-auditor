@@ -111,4 +111,11 @@ export class MessagesService {
         return sentBy;
     }
   }
+
+  // returns the user participant type (human, bot, system)
+  getUserType(id: string, conversation: any): string {
+    const participant = conversation.agentParticipants.find(agent => agent.agentId === id);
+    return participant ? participant.userTypeName : 'NA';
+  }
+
 }

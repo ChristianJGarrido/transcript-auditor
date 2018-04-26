@@ -116,7 +116,9 @@ export class ExporterEffects {
           'eventKey',
           'text',
           'mcsRawScore',
-          'agentName',
+          'sentBy',
+          'userType',
+          'sentName',
           'time',
           'note',
         ];
@@ -173,13 +175,19 @@ export class ExporterEffects {
       );
       const msgIdProp = this.messagesService.getMessageIdProp(isChat);
       const agentIdProp = this.messagesService.getAgentIdProp(isChat);
+
       return [
         ...prev,
         ...currMessages.map(message => {
           const { time, mcsRawScore, eventKey } = message;
           const agentId = message[agentIdProp];
           const agent = list.agents.entities[agentId];
-          const agentName = agent ? agent.fullName : agentId;
+          const sentBy =
+            eventKey === 'MESSAGE'
+              ? this.messagesService.getSource(isChat, message)
+              : '';
+          const sentName = agent ? agent.fullName : agentId;
+          const userType = !isChat && sentBy === 'agent' ? this.messagesService.getUserType(agentId, currConversation) : '';
           return {
             assessmentId: id,
             createdBy: currAssessment.createdBy,
@@ -187,7 +195,9 @@ export class ExporterEffects {
             eventKey,
             time,
             mcsRawScore,
-            agentName,
+            sentBy,
+            userType,
+            sentName,
             text: this.messagesService.getMessageText(isChat, message),
             note: this.messagesService.getMessageNote(
               message[msgIdProp],
