@@ -3,7 +3,7 @@
     <div class="card" [ngClass]="getClass(true)">
       <div class="row no-gutters pt-1 pl-2">
         <div class="col">
-          <app-message-by [by]="getSource()" [time]="message.time"></app-message-by>
+          <app-message-by [by]="getSource()" [userType]="getUserType()" [time]="message.time"></app-message-by>
         </div>
       </div>
       <div class="card-body p-2" [ngClass]="getClass(false)" [innerHTML]="getMessageText()"></div>

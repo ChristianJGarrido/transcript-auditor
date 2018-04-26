@@ -16,6 +16,7 @@ export class ConversationMessageTextComponent implements OnInit {
   @Input() message: any;
   @Input() assessmentSelect: AssessmentModel;
   @Input() isChat: boolean;
+  @Input() conversation: any;
 
   dialogRef: MatDialogRef<NoteModalComponent>;
 
@@ -50,6 +51,19 @@ export class ConversationMessageTextComponent implements OnInit {
   // who sent the message
   getSource(): string {
     return this.messagesService.getSource(this.isChat, this.message);
+  }
+
+  getAgentIdProp(): string {
+    return this.messagesService.getAgentIdProp(this.isChat);
+  }
+
+  // human, system or bot
+  getUserType(): string {
+    if (!this.isChat) {
+      const agentId = this.message[this.getAgentIdProp()];
+      return this.messagesService.getUserType(agentId, this.conversation);
+    }
+    return '';
   }
 
   // is source agent?

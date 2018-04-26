@@ -2,7 +2,10 @@
   <div class="col-auto mr-2">
     {{time | date:'shortTime'}}
   </div>
-  <div class="col-auto">
+  <div class="col-auto mr-1">
     {{by}}
+  </div>
+  <div *ngIf="userType" class="col-auto">
+    ({{userType.toLowerCase()}})
   </div>
 </div>
