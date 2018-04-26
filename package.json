@@ -35,7 +35,6 @@
     "angular-2-dropdown-multiselect": "1.6.3",
     "angular-star-rating": "^3.0.8",
     "angularfire2": "^5.0.0-rc.6",
-    "async": "^2.6.0",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.0.0-beta.2",
     "chart.js": "^2.7.1",
@@ -85,7 +84,7 @@
     "protractor": "~5.1.2",
     "ts-node": "~3.2.0",
     "tslint": "~5.7.0",
-    "typescript": "~2.4.2"
+    "typescript": "~2.6.0"
   },
   "engines": {
     "node": ">=8.9.1"

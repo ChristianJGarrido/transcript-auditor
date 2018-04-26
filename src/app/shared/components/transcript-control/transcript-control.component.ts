@@ -11,7 +11,6 @@ import * as fromPlaylist from '../../store/playlist/playlist.reducer';
 import { PlaylistModel } from '../../store/playlist/playlist.model';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../app.store';
-import { ExportService } from '../../services/export.service';
 import {
   IMultiSelectOption,
   IMultiSelectSettings,
@@ -51,7 +50,6 @@ export class TranscriptControlComponent implements OnInit, OnChanges {
 
   constructor(
     private store: Store<StoreModel>,
-    private exportService: ExportService
   ) {}
 
   /**

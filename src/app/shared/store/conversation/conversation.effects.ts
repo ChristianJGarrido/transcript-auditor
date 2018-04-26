@@ -35,6 +35,7 @@ import * as fromConversation from './conversation.reducer';
 import * as fromPlaylist from '../playlist/playlist.reducer';
 import { ApiLoginModel } from '../api-login/api-login.model';
 import { NotificationService } from '../../services/notification.service';
+import { UtilityService } from '../../services/utility.service';
 
 @Injectable()
 export class ConversationEffects {
@@ -54,30 +55,54 @@ export class ConversationEffects {
         const queryConv = queryType === 'conversation';
         // prepare query from filter
         const { types, searchById, idTypes } = filter;
-        const [ idType ] = idTypes;
+        const [idType] = idTypes;
         const getChat = types.indexOf('chats') !== -1;
         const getConversations = types.indexOf('conversations') !== -1;
         const filterParams = {
           searchById,
           idType: queryConv ? queryType : idType,
-          chatIdKey: (queryConv || idType === 'conversation') ? 'engagementId' : 'visitor',
-          convIdKey: (queryConv || idType === 'conversation') ? 'conversationId' : 'consumer',
+          chatIdKey:
+            queryConv || idType === 'conversation' ? 'engagementId' : 'visitor',
+          convIdKey:
+            queryConv || idType === 'conversation'
+              ? 'conversationId'
+              : 'consumer',
         };
 
         if (!searchById || !queryConv) {
           this.notifcationService.openSnackBar('Downloading conversations...');
         }
-        const payload = queryConv ? { selectId } : { start: this.convertDateToMs() };
+        const payload = queryConv
+          ? { selectId }
+          : { start: this.utilityService.convertDateToMs() };
         const payloadMsg = options ? options.msg : payload;
         const payloadChat = options ? options.chat : payload;
 
         return forkJoin(
-          getConversations ? this.getHttpObs<MsgHistResponse>(true, apiLogin, payloadMsg, filterParams) : of(null),
-          getChat ? this.getHttpObs<EngHistResponse>(false, apiLogin, payloadChat, filterParams) : of(null)
+          getConversations
+            ? this.generateRequest<MsgHistResponse>(
+                true,
+                apiLogin,
+                payloadMsg,
+                filterParams
+              )
+            : of(null),
+          getChat
+            ? this.generateRequest<EngHistResponse>(
+                false,
+                apiLogin,
+                payloadChat,
+                filterParams
+              )
+            : of(null)
         ).pipe(
           map(([msgHist, engHist]) => {
-            const msgHistRecords = msgHist ? this.transformResponse(msgHist, true) : [];
-            const engHistRecords = engHist ? this.transformResponse(engHist, false) : [];
+            const msgHistRecords = msgHist
+              ? this.utilityService.transformResponse(msgHist)
+              : [];
+            const engHistRecords = engHist
+              ? this.utilityService.transformResponse(engHist)
+              : [];
             return [...msgHistRecords, ...engHistRecords];
           }),
           map(data => {
@@ -90,7 +115,7 @@ export class ConversationEffects {
               return new conversationActions.AddAll(data);
             }
           }),
-          catchError(err => this.handleError(err))
+          catchError(err => this.utilityService.handleError(err))
         );
       })
     );
@@ -165,75 +190,12 @@ export class ConversationEffects {
     .pipe(map(() => new conversationActions.SuccessAdd()));
 
   constructor(
+    private utilityService: UtilityService,
     private notifcationService: NotificationService,
     private http: HttpClient,
     private store: Store<StoreModel>,
     private actions$: Actions
   ) {}
-
-  /**
-   * Generate request and return http obs
-   * @param {boolean} messagingMode
-   * @param {ApiLogin} apiLogin
-   * @param {string} payload
-   * @param {any} filterParams
-   */
-  getHttpObs<T>(
-    messagingMode: boolean,
-    apiLogin: ApiLoginModel,
-    payload: string,
-    filterParams: any
-  ) {
-    const { url, body, options } = this.generateRequest(
-      messagingMode,
-      apiLogin,
-      payload,
-      filterParams,
-    );
-    return this.http.post<T>(url, body, options);
-  }
-
-  /**
-   * transforms response items before adding to store
-   * @param {any} response
-   * @param {boolean} msgHist
-   */
-  transformResponse(response: any, msgHist: boolean): ConversationModel[] {
-    const recordProp = msgHist
-      ? 'conversationHistoryRecords'
-      : 'interactionHistoryRecords';
-    const idProp = msgHist ? 'conversationId' : 'engagementId';
-    const isChat = !msgHist;
-    return response[recordProp].map(record => {
-      return {
-        ...record,
-        isChat,
-        id: record.info[idProp],
-      };
-    });
-  }
-
-  /**
-   * helper method to calculate ms from dates
-   * @return {number, number}
-   */
-  convertDateToMs(): { from: number; to: number } {
-    const now = new Date();
-    const dateTo = new Date(now.setDate(now.getDate() - 1));
-    const dateFrom = new Date(now.setDate(now.getDate() - 7));
-    const from: number = Math.round(dateFrom.getTime());
-    const to: number = Math.round(dateTo.getTime());
-    return { from, to };
-  }
-
-  /**
-   * @return {HttpHeaders}
-   */
-  getHeaders(token: string): HttpHeaders {
-    return new HttpHeaders()
-      .set('Content-Type', 'application/json')
-      .set('Authorization', `Bearer ${token}`);
-  }
 
   /**
    * prepares URL for request
@@ -266,7 +228,7 @@ export class ConversationEffects {
    * @param {ApiLoginModel} apiLogin
    * @param {any?} options
    */
-  generateRequest(
+  generateRequest<T>(
     messagingMode: boolean,
     apiLogin: ApiLoginModel,
     options: any,
@@ -276,34 +238,20 @@ export class ConversationEffects {
     const { searchById, chatIdKey, convIdKey } = filterParams;
     const idParam = messagingMode ? convIdKey : chatIdKey;
     const selectId = options.selectId || options[idParam];
-    const url = this.generateUrl(messagingMode, apiLogin, selectId, filterParams);
+    const url = this.generateUrl(
+      messagingMode,
+      apiLogin,
+      selectId,
+      filterParams
+    );
     const body = selectId ? { [idParam]: selectId } : options;
-    const headers = this.getHeaders(bearer);
+    const headers = this.utilityService.getHeaders(bearer);
     const params = selectId
       ? null
       : new HttpParams()
           .set('limit', '100')
           .set('offset', '0')
           .set('sort', 'start:desc');
-    return { url, body, options: { headers, params } };
-  }
-
-  /**
-   * handles error from catchError
-   * @param {any} err
-   * @return {Observable<Action>}
-   */
-  handleError(error: HttpErrorResponse): Observable<Action> {
-    if (error.status === 401) {
-      this.notifcationService.openSnackBar('Session expired');
-      this.store.dispatch(new apiLoginActions.NotAuthenticated(true));
-      return of(new conversationActions.Error(error));
-    } else {
-      const message = error.error && error.error.debugMessage;
-      this.notifcationService.openSnackBar(
-        `Error: ${message || error.message}`
-      );
-      return of(new conversationActions.Error(error));
-    }
+    return this.http.post<T>(url, body, { headers, params });
   }
 }

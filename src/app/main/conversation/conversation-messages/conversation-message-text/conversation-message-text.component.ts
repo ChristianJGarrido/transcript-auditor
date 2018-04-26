@@ -5,6 +5,7 @@ import { ApiConversationMessageRecord } from '../../../../shared/interfaces/conv
 import { ApiChatTranscript } from '../../../../shared/interfaces/chat';
 import { NoteModalComponent } from '../../../../shared/components/note-modal/note-modal.component';
 import { NoteModalData } from '../../../../shared/interfaces/interfaces';
+import { MessagesService } from '../../../../shared/services/messages.service';
 
 @Component({
   selector: 'app-conversation-message-text',
@@ -18,14 +19,21 @@ export class ConversationMessageTextComponent implements OnInit {
 
   dialogRef: MatDialogRef<NoteModalComponent>;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(
+    public dialog: MatDialog,
+    private messagesService: MessagesService
+  ) {}
 
   // opens message note dialog
   openDialog(event: any): void {
     const msgId = this.getMessageId();
     const left = (event && `${event.clientX}px`) || '40%';
     const top = (event && `${event.clientY - 150}px`) || '40%';
-    const data: NoteModalData = { type: 'msg', msgId, assessmentSelect: this.assessmentSelect };
+    const data: NoteModalData = {
+      type: 'msg',
+      msgId,
+      assessmentSelect: this.assessmentSelect,
+    };
     this.dialogRef = this.dialog.open(NoteModalComponent, {
       position: { left, top },
       width: '300px',
@@ -35,20 +43,13 @@ export class ConversationMessageTextComponent implements OnInit {
 
   // the message id
   getMessageId(): string {
-    return this.isChat ? this.message.lineSeq : this.message.messageId;
+    const msgIdProp = this.messagesService.getMessageIdProp(this.isChat);
+    return this.message[msgIdProp];
   }
 
   // who sent the message
   getSource(): string {
-    const param = this.isChat ? 'source' : 'sentBy';
-    const sentBy = this.message[param].toLowerCase();
-    switch (sentBy) {
-      case 'visitor':
-      case 'consumer':
-        return 'consumer';
-      default:
-        return sentBy;
-    }
+    return this.messagesService.getSource(this.isChat, this.message);
   }
 
   // is source agent?
@@ -64,25 +65,19 @@ export class ConversationMessageTextComponent implements OnInit {
 
   // retrieve message text
   getMessageText(): string {
-    return this.isChat
-      ? this.message.text
-      : this.message.messageData &&
-          this.message.messageData.msg &&
-          this.message.messageData.msg.text;
+    return this.messagesService.getMessageText(this.isChat, this.message);
   }
 
   // retrieve message note
-  getMessageNote(id: string|number): string {
-    const msgs = this.assessmentSelect.messages;
-    if (msgs && msgs[id] && msgs[id].note) {
-      return msgs[id].note;
-    }
-    return;
+  getMessageNote(id: string): string {
+    return this.messagesService.getMessageNote(id, this.assessmentSelect);
   }
 
   // check for message note
-  hasMessageNote(id: string|number): boolean {
-    return this.getMessageNote(id) ? true : false;
+  hasMessageNote(id: string): boolean {
+    return this.messagesService.getMessageNote(id, this.assessmentSelect)
+      ? true
+      : false;
   }
 
   ngOnInit() {}

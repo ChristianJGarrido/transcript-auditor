@@ -61,11 +61,11 @@ import { ConversationsListPlaylistComponent } from './main/conversations-list/co
 
 // services
 import { AfAuthGuardService } from './shared/services/af-auth-guard.service';
-import { ExportService } from './shared/services/export.service';
 import { WatsonService } from './shared/services/watson.service';
 import { FirestoreService } from './shared/services/firestore.service';
 import { UtilityService } from './shared/services/utility.service';
 import { NotificationService } from './shared/services/notification.service';
+import { MessagesService } from './shared/services/messages.service';
 
 // routing
 import { AppRoutingModule } from './app-routing.module';
@@ -108,6 +108,7 @@ import { StatsEffects } from './shared/store/stats/stats.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { ListEffects } from './shared/store/list/list.effects';
 import { FilterEffects } from './shared/store/filter/filter.effects';
+import { ExporterEffects } from './shared/store/exporter/exporter.effects';
 
 // 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -199,6 +200,7 @@ import 'hammerjs';
       StatsEffects,
       ListEffects,
       FilterEffects,
+      ExporterEffects,
     ]),
     // StoreDevtoolsModule.instrument({
     //   maxAge: 25,
@@ -207,11 +209,11 @@ import 'hammerjs';
   ],
   providers: [
     AfAuthGuardService,
-    ExportService,
     WatsonService,
     FirestoreService,
     UtilityService,
     NotificationService,
+    MessagesService,
   ],
   entryComponents: [
     ModalComponent,

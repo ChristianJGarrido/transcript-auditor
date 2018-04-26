@@ -17,6 +17,7 @@ import * as fromPlaylist from '../../../shared/store/playlist/playlist.reducer';
 import * as playlistActions from '../../../shared/store/playlist/playlist.actions';
 import * as fromConversation from '../../../shared/store/conversation/conversation.reducer';
 import * as conversationActions from '../../../shared/store/conversation/conversation.actions';
+import * as exporterActions from '../../../shared/store/exporter/exporter.actions';
 
 import { DatatableComponent, TableColumn } from '@swimlane/ngx-datatable';
 import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
@@ -27,7 +28,6 @@ import {
 } from '../../../shared/store/assessment/assessment.model';
 import { Router } from '@angular/router';
 import { UtilityService } from '../../../shared/services/utility.service';
-import { ExportService } from '../../../shared/services/export.service';
 
 @Component({
   selector: 'app-assessments-grid',
@@ -64,14 +64,13 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
     private store: Store<StoreModel>,
     private router: Router,
     private utilityService: UtilityService,
-    private exportService: ExportService,
   ) {}
 
   /**
    * converts collection to excel file (XLSX)
    */
   downloadToExcel(): void {
-    this.exportService.downloadXlsxFile(this.type, this.rows);
+    this.store.dispatch(new exporterActions.Start());
   }
 
   /**

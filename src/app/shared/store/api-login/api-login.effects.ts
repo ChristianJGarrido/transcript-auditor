@@ -23,6 +23,7 @@ import * as assessmentActions from '../assessment/assessment.actions';
 import * as playlistActions from '../playlist/playlist.actions';
 import * as conversationActions from '../conversation/conversation.actions';
 import * as listActions from '../list/list.actions';
+import * as statsActions from '../stats/stats.actions';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { ModalComponent } from '../../../main/modal/modal.component';
 import { NotificationService } from '../../services/notification.service';
@@ -158,6 +159,7 @@ export class ApiLoginEffects {
           new conversationActions.Query('many'),
           new assessmentActions.Query(),
           new playlistActions.Query(),
+          new statsActions.Build(),
         ];
       })
     );

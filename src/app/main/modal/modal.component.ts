@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Observable } from 'rxjs/Observable';
 import { MatDialogRef } from '@angular/material';
-import { ExportService } from '../../shared/services/export.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../app.store';
@@ -31,7 +30,6 @@ export class ModalComponent implements OnInit {
 
   constructor(
     private store: Store<StoreModel>,
-    private exportService: ExportService,
     public dialogRef: MatDialogRef<ModalComponent>
   ) {}
 

@@ -11,14 +11,13 @@ import * as fromConversation from '../../../shared/store/conversation/conversati
 import * as fromPlaylist from '../../../shared/store/playlist/playlist.reducer';
 import { AssessmentModel } from '../../../shared/store/assessment/assessment.model';
 
-import * as _ from 'lodash';
-import { WatsonService } from '../../../shared/services/watson.service';
 import { PlaylistModel } from '../../../shared/store/playlist/playlist.model';
 import {
   ConversationChatModel,
   ConversationMessageModel,
   ConversationModel,
 } from '../../../shared/store/conversation/conversation.model';
+import { MessagesService } from '../../../shared/services/messages.service';
 
 @Component({
   selector: 'app-conversation-messages',
@@ -39,7 +38,7 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
 
   constructor(
     private utilityService: UtilityService,
-    private watsonService: WatsonService
+    private messagesService: MessagesService,
   ) {}
 
   // returns conversation ids
@@ -78,57 +77,11 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
       : this.conversationSelect.consumerParticipants[0].participantId;
   }
 
-  // sort chat events
-  prepareChatEvents(conversationChat: ConversationChatModel): any[] {
-    // proceed only if we have data
-    if (!conversationChat || !conversationChat.transcript.lines) {
-      return [];
-    }
-    return conversationChat.transcript.lines.map(item => {
-      return {
-        ...item,
-        eventKey: 'MESSAGE',
-      };
-    });
-  }
-
-  // sort conversation message events
-  prepareMessageEvents(conversationMessage: ConversationMessageModel): any[] {
-    // proceed only if we have data
-    if (!conversationMessage || !conversationMessage.messageRecords) {
-      return [];
-    }
-    // combine all events
-    const events = [
-      ...conversationMessage.messageRecords.map(item => ({
-        ...item,
-        eventKey: 'MESSAGE',
-      })),
-      ...conversationMessage.agentParticipants.map(item => ({
-        ...item,
-        eventKey: 'PARTICIPANT',
-      })),
-      ...conversationMessage.transfers.map(item => ({
-        ...item,
-        eventKey: 'TRANSFER',
-      })),
-    ];
-    return _.orderBy(events, 'timeL', 'asc');
-  }
-
-  // update message events according to type
-  updateMessageEvents(): any[] {
-    const { isChat } = this.conversationSelect;
-    return isChat
-      ? this.prepareChatEvents(this.conversationSelect)
-      : this.prepareMessageEvents(this.conversationSelect);
-  }
-
   ngOnInit(): void {}
 
   ngOnChanges(): void {
     if (this.currentId !== this.conversationState.selectedId) {
-      this.messageEvents = this.updateMessageEvents();
+      this.messageEvents = this.messagesService.updateMessageEvents(this.conversationSelect);
       this.currentId = this.conversationState.selectedId;
     }
   }

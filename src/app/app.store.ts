@@ -9,6 +9,7 @@ import * as fromConversation from './shared/store/conversation/conversation.redu
 import { StatsReducer } from './shared/store/stats/stats.reducer';
 import { ListReducer } from './shared/store/list/list.reducer';
 import { FilterReducer } from './shared/store/filter/filter.reducer';
+import { ExporterReducer } from './shared/store/exporter/exporter.reducer';
 
 // models
 import { AfLoginModel } from './shared/store/af-login/af-login.model';
@@ -19,6 +20,7 @@ import { ConversationModel } from './shared/store/conversation/conversation.mode
 import { StatsModel } from './shared/store/stats/stats.model';
 import { ListModel } from './shared/store/list/list.model';
 import { FilterModel } from './shared/store/filter/filter.model';
+import { ExporterModel } from './shared/store/exporter/exporter.model';
 
 /**
  * combineReducers is another useful metareducer that takes a map of reducer
@@ -52,6 +54,7 @@ export interface StoreModel {
   stats: StatsModel;
   list: ListModel;
   filter: FilterModel;
+  exporter: ExporterModel;
 }
 
 // store reducers
@@ -64,6 +67,7 @@ export const reducers: ActionReducerMap<StoreModel> = {
   stats: StatsReducer,
   list: ListReducer,
   filter: FilterReducer,
+  exporter: ExporterReducer,
 };
 
 // declare metaReducers
