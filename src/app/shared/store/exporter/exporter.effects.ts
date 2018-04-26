@@ -244,7 +244,7 @@ export class ExporterEffects {
     const domain = messagingMode ? msgHist : engHistDomain;
     return messagingMode
       ? `https://${domain}/messaging_history/api/account/${account}/conversations/conversation/search`
-      : `https://${domain}/interaction_history/api/account/${account}/interaction/search`;
+      : `https://${domain}/interaction_history/api/account/${account}/interactions/search`;
   }
 
   /**
