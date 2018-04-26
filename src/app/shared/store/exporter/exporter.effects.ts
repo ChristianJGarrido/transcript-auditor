@@ -45,6 +45,7 @@ import * as _ from 'lodash';
 import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import * as jsPDF from 'jspdf';
+import * as html2canvas from 'html2canvas';
 
 @Injectable()
 export class ExporterEffects {
@@ -124,6 +125,8 @@ export class ExporterEffects {
           'note',
         ];
         const convGrid = this.buildConversationGrid(store);
+        const pdf = new jsPDF();
+
         this.writeToTemplate(convGrid, convFields);
         return new exporterActions.Complete();
       })
