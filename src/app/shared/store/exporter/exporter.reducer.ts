@@ -18,7 +18,7 @@ export function ExporterReducer(
     case exporterActions.EXPORT_IDS:
       return {
         ...state,
-        exportIds: action.ids
+        assessmentIds: action.ids
       };
     case exporterActions.COMPLETE:
       return {

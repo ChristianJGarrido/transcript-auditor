@@ -46,6 +46,8 @@ import * as FileSaver from 'file-saver';
 import * as XLSX from 'xlsx';
 import * as jsPDF from 'jspdf';
 import * as html2canvas from 'html2canvas';
+import { QaService } from '../../services/qa.service';
+import { ExportGrids, ExportFields } from './exporter.model';
 
 @Injectable()
 export class ExporterEffects {
@@ -149,30 +151,16 @@ export class ExporterEffects {
     .pipe(
       withLatestFrom(this.store),
       map(([action, store]) => {
-        const convFields = [
-          'assessmentId',
-          'createdBy',
-          'conversationId',
-          'isChat',
-          'eventKey',
-          'text',
-          'mcsRawScore',
-          'sentBy',
-          'userType',
-          'sentName',
-          'time',
-          'note',
-        ];
-        const convGrid = this.buildConversationGrid(store);
-        const pdf = new jsPDF();
-
-        this.writeToTemplate(convGrid, convFields);
+        const fields = new ExportFields();
+        const grids = this.buildGrids(store);
+        this.writeToTemplate(grids, fields);
         return new exporterActions.Complete();
       })
     );
 
   constructor(
     private utilityService: UtilityService,
+    private qaService: QaService,
     private messagesService: MessagesService,
     private notifcationService: NotificationService,
     private http: HttpClient,
@@ -202,26 +190,59 @@ export class ExporterEffects {
   }
 
   /**
-   *
+   * builds the grids for export
    * @param {StoreModel} store
    * @param {string[]} idsToExport
+   * @return {ExportGrids}
    */
-  buildConversationGrid(store: StoreModel) {
+  buildGrids(store: StoreModel): ExportGrids {
     const { assessment, conversation, exporter, list } = store;
-    const assessmentGrid = exporter.exportIds.reduce((prev, id) => {
+    // iterate over each assessment to be exported
+    const grids = exporter.assessmentIds.reduce((prev, id) => {
+      // pick the assessment from the store
       const currAssessment = assessment.entities[id];
-      const { conversationId } = currAssessment;
+      // pick the conversation from the store
+      const {
+        conversationId,
+        qa,
+        note,
+        recommend,
+        rating,
+        createdBy,
+      } = currAssessment;
       const currConversation = conversation.entities[conversationId];
       const { isChat } = currConversation;
-      const currMessages = this.messagesService.updateMessageEvents(
-        currConversation
-      );
+      // get the qa scores
+      const { score, group } = this.qaService.calculateQaTotalScore(qa);
+      const sScore = group.botSet && group.botSet.score;
+      const uScore = group.botUnderstand && group.botUnderstand.score;
+      const rScore = group.botRelay && group.botRelay.score;
+      const aScore = group.botAchieve && group.botAchieve.score;
+      // create assessment grid
+      const assessments = [
+        ...prev.assessments,
+        {
+          assessmentId: id,
+          createdBy,
+          conversationId,
+          isChat,
+          rating,
+          note,
+          recommend,
+          suraScore: score,
+          sScore,
+          uScore,
+          rScore,
+          aScore,
+        },
+      ];
+      // process messages and create conversation grid
+      const currMessages = this.messagesService.getEvents(currConversation);
       const msgIdProp = this.messagesService.getMessageIdProp(isChat);
       const agentIdProp = this.messagesService.getAgentIdProp(isChat);
-
-      return [
-        ...prev,
-        ...currMessages.map(message => {
+      const conversations = [
+        ...prev.conversations,
+        ...currMessages.map((message, sequence) => {
           const { time, mcsRawScore, eventKey } = message;
           const agentId = message[agentIdProp];
           const agent = list.agents.entities[agentId];
@@ -236,10 +257,11 @@ export class ExporterEffects {
               : '';
           return {
             assessmentId: id,
-            createdBy: currAssessment.createdBy,
+            createdBy,
             conversationId,
             isChat,
             eventKey,
+            sequence,
             time,
             mcsRawScore,
             sentBy,
@@ -253,8 +275,10 @@ export class ExporterEffects {
           };
         }),
       ];
-    }, []);
-    return assessmentGrid;
+
+      return { conversations, assessments };
+    }, new ExportGrids());
+    return grids;
   }
 
   /**
@@ -262,17 +286,23 @@ export class ExporterEffects {
    * @param {any[]} rows
    * @param {any[]} header
    */
-  writeToTemplate(rows: any[], header: any[]): void {
+  writeToTemplate(grids: ExportGrids, fields: ExportFields): void {
     const headers = new HttpHeaders().set('Content-Type', 'application/json');
     this.http
       .get('/assets/template.xlsx', { headers, responseType: 'arraybuffer' })
       .subscribe(
         res => {
           const wb: XLSX.WorkBook = XLSX.read(res, { type: 'array' });
-          const ws: XLSX.WorkSheet = wb.Sheets['Conversations'];
-          XLSX.utils.sheet_add_json(ws, rows, { header });
+          const wsConv: XLSX.WorkSheet = wb.Sheets['Conversations'];
+          const wsAssess: XLSX.WorkSheet = wb.Sheets['Assessments'];
+          XLSX.utils.sheet_add_json(wsConv, grids.conversations, {
+            header: fields.conversation,
+          });
+          XLSX.utils.sheet_add_json(wsAssess, grids.assessments, {
+            header: fields.assessment,
+          });
           const date = new Date().toISOString().slice(0, 19);
-          XLSX.writeFile(wb, `Assessments-${date}.xlsx`);
+          XLSX.writeFile(wb, `AssessmentsExport-${date}.xlsx`);
         },
         error => console.log(error)
       );

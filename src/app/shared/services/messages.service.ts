@@ -13,7 +13,7 @@ export class MessagesService {
   constructor() {}
 
   // sort chat events
-  prepareChatEvents(conversationChat: ConversationChatModel): any[] {
+  getChatEvents(conversationChat: ConversationChatModel): any[] {
     // proceed only if we have data
     if (!conversationChat || !conversationChat.transcript.lines) {
       return [];
@@ -32,7 +32,7 @@ export class MessagesService {
   }
 
   // sort conversation message events
-  prepareMessageEvents(conversationMessage: ConversationMessageModel): any[] {
+  getMessageEvents(conversationMessage: ConversationMessageModel): any[] {
     // proceed only if we have data
     if (!conversationMessage || !conversationMessage.messageRecords) {
       return [];
@@ -64,11 +64,11 @@ export class MessagesService {
   }
 
   // update message events according to type
-  updateMessageEvents(conversationSelect: any): any[] {
+  getEvents(conversationSelect: any): any[] {
     const { isChat } = conversationSelect;
     return isChat
-      ? this.prepareChatEvents(conversationSelect)
-      : this.prepareMessageEvents(conversationSelect);
+      ? this.getChatEvents(conversationSelect)
+      : this.getMessageEvents(conversationSelect);
   }
 
   // retrieve message note

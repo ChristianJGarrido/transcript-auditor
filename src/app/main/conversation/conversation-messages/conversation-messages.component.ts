@@ -81,7 +81,7 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
 
   ngOnChanges(): void {
     if (this.currentId !== this.conversationState.selectedId) {
-      this.messageEvents = this.messagesService.updateMessageEvents(this.conversationSelect);
+      this.messageEvents = this.messagesService.getEvents(this.conversationSelect);
       this.currentId = this.conversationState.selectedId;
     }
   }
