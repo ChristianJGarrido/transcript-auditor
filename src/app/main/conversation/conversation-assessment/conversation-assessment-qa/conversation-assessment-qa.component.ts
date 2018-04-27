@@ -12,6 +12,7 @@ import { UtilityService } from '../../../../shared/services/utility.service';
 import { MatDialogRef, MatDialog } from '@angular/material';
 import { NoteModalComponent } from '../../../../shared/components/note-modal/note-modal.component';
 import { NoteModalData } from '../../../../shared/interfaces/interfaces';
+import { QaService } from '../../../../shared/services/qa.service';
 
 @Component({
   selector: 'app-conversation-assessment-qa',
@@ -28,6 +29,7 @@ export class ConversationAssessmentQaComponent implements OnInit {
   constructor(
     private store: Store<StoreModel>,
     private utilityService: UtilityService,
+    private qaService: QaService,
     public dialog: MatDialog
   ) {}
 
@@ -50,7 +52,7 @@ export class ConversationAssessmentQaComponent implements OnInit {
    * @return {number}
    */
   calculateGroupScore(group: AssessmentQaModel): number {
-    const { score } = this.utilityService.calculateQaGroupScore(group);
+    const { score } = this.qaService.calculateQaGroupScore(group);
     return score;
   }
 
@@ -60,7 +62,7 @@ export class ConversationAssessmentQaComponent implements OnInit {
    * @return {number}
    */
   calculateTotalScore(qa: AssessmentQaModel[]): number {
-    const { score } = this.utilityService.calculateQaTotalScore(qa);
+    const { score } = this.qaService.calculateQaTotalScore(qa);
     return score;
   }
 

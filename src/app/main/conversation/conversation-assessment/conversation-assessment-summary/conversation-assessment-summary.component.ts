@@ -15,6 +15,7 @@ import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../../app.store';
 import { AssessmentModel } from '../../../../shared/store/assessment/assessment.model';
 import { UtilityService } from '../../../../shared/services/utility.service';
+import { QaService } from '../../../../shared/services/qa.service';
 /* tslint:enable:max-line-length */
 
 @Component({
@@ -33,7 +34,8 @@ export class ConversationAssessmentSummaryComponent
   constructor(
     public dialog: MatDialog,
     private store: Store<StoreModel>,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private qaService: QaService
   ) {}
 
   /**
@@ -59,7 +61,7 @@ export class ConversationAssessmentSummaryComponent
    * @return {string}
    */
   calculatePersonality(): string {
-    return this.utilityService.calculatePersonality(
+    return this.qaService.calculatePersonality(
       this.assessmentSelect.personality
     );
   }

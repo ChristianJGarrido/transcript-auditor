@@ -66,6 +66,7 @@ import { FirestoreService } from './shared/services/firestore.service';
 import { UtilityService } from './shared/services/utility.service';
 import { NotificationService } from './shared/services/notification.service';
 import { MessagesService } from './shared/services/messages.service';
+import { QaService } from './shared/services/qa.service';
 
 // routing
 import { AppRoutingModule } from './app-routing.module';
@@ -214,6 +215,7 @@ import 'hammerjs';
     UtilityService,
     NotificationService,
     MessagesService,
+    QaService,
   ],
   entryComponents: [
     ModalComponent,

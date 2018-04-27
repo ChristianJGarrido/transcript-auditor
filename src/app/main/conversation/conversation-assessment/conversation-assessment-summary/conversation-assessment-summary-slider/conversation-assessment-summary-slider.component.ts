@@ -6,6 +6,7 @@ import { StoreModel } from '../../../../../app.store';
 import * as AssessmentActions from '../../../../../shared/store/assessment/assessment.actions';
 import { Subscription } from 'rxjs/Subscription';
 import { UtilityService } from '../../../../../shared/services/utility.service';
+import { QaService } from '../../../../../shared/services/qa.service';
 
 @Component({
   selector: 'app-conversation-assessment-summary-slider',
@@ -17,6 +18,7 @@ export class ConversationAssessmentSummarySliderComponent
   afterCloseSub: Subscription;
   constructor(
     private utilityService: UtilityService,
+    private qaService: QaService,
     private store: Store<StoreModel>,
     public dialogRef: MatDialogRef<
       ConversationAssessmentSummarySliderComponent
@@ -40,7 +42,7 @@ export class ConversationAssessmentSummarySliderComponent
    * @return {string}
    */
   calculatePersonality(): string {
-    return this.utilityService.calculatePersonality(
+    return this.qaService.calculatePersonality(
       this.data.personality
     );
   }

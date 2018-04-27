@@ -22,6 +22,7 @@ import { AssessmentModel } from '../assessment/assessment.model';
 import { Dictionary } from '@ngrx/entity/src/models';
 
 import * as _ from 'lodash';
+import { QaService } from '../../services/qa.service';
 
 @Injectable()
 export class StatsEffects {
@@ -83,7 +84,8 @@ export class StatsEffects {
   constructor(
     private store: Store<StoreModel>,
     private actions$: Actions,
-    private utilityService: UtilityService
+    private utilityService: UtilityService,
+    private qaService: QaService,
   ) {}
 
   /**
@@ -105,8 +107,8 @@ export class StatsEffects {
       (prev, id) => {
         const assessment = entities[id];
         const { qa, rating, personality, createdBy } = assessment;
-        const qaScore = this.utilityService.aggregateQaTotal(prev.qaScore, qa);
-        const person = this.utilityService.calculatePersonality(personality);
+        const qaScore = this.qaService.aggregateQaTotal(prev.qaScore, qa);
+        const person = this.qaService.calculatePersonality(personality);
         return {
           ...prev,
           qaScore,

@@ -28,6 +28,7 @@ import {
 } from '../../../shared/store/assessment/assessment.model';
 import { Router } from '@angular/router';
 import { UtilityService } from '../../../shared/services/utility.service';
+import { QaService } from '../../../shared/services/qa.service';
 
 @Component({
   selector: 'app-assessments-grid',
@@ -64,6 +65,7 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
     private store: Store<StoreModel>,
     private router: Router,
     private utilityService: UtilityService,
+    private qaService: QaService,
   ) {}
 
   /**
@@ -117,13 +119,13 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
 
   // returns qa score
   getQaScore(qa: AssessmentQaModel[]): number {
-    const { score } = this.utilityService.calculateQaTotalScore(qa);
+    const { score } = this.qaService.calculateQaTotalScore(qa);
     return score;
   }
 
   // returns qa score
   getPersonality(personality: AssessmentPersonalityModel[]): string {
-    return this.utilityService.calculatePersonality(personality);
+    return this.qaService.calculatePersonality(personality);
   }
 
   /**
@@ -201,10 +203,7 @@ export class AssessmentsGridComponent implements OnInit, OnChanges {
           break;
         case this.ASSESSMENT:
           row.qaScore =
-            this.utilityService.calculateQaTotalScore(row.qa).score || null;
-          // row.personalityScore = this.utilityService.calculatePersonality(
-          //   row.personality
-          // );
+            this.qaService.calculateQaTotalScore(row.qa).score || null;
           row.messagesCount =
             (row.messages && Object.keys(row.messages).length) || 0;
           break;
