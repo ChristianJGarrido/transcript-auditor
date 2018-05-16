@@ -90,7 +90,9 @@ export class UtilityService {
   convertDateToMs(): { from: number; to: number } {
     const now = new Date();
     const dateTo = new Date(now.setDate(now.getDate() - 1));
+    dateTo.setHours(23, 59, 59, 999);
     const dateFrom = new Date(now.setDate(now.getDate() - 7));
+    dateFrom.setHours(0, 0, 0, 0);
     const from: number = Math.round(dateFrom.getTime());
     const to: number = Math.round(dateTo.getTime());
     return { from, to };

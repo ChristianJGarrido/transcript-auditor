@@ -348,9 +348,13 @@ export class ConversationsListFilterComponent implements OnInit {
     }
 
     // attach time
+    const from = new Date(this.dateFrom.value);
+    from.setHours(0, 0, 0, 0);
+    const to = new Date(this.dateTo.value);
+    to.setHours(23, 59, 59, 999);
     const start = {
-      from: new Date(this.dateFrom.value).getTime(),
-      to: new Date(this.dateTo.value).getTime(),
+      from: from.getTime(),
+      to: to.getTime(),
     };
     this.optionsMsg = {
       ...this.optionsMsg,
