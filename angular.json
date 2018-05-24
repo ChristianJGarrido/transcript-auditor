@@ -22,13 +22,15 @@
             ],
             "styles": [
               "node_modules/angular-star-rating/assets/scss/star-rating.scss",
+              "node_modules/json-pollock/dist/json-pollock.min.css",
               "src/styles.css"
             ],
             "scripts": [
               "node_modules/jquery/dist/jquery.min.js",
               "node_modules/popper.js/dist/umd/popper.min.js",
               "node_modules/bootstrap/dist/js/bootstrap.min.js",
-              "node_modules/chart.js/dist/Chart.js"
+              "node_modules/chart.js/dist/Chart.js",
+              "node_modules/json-pollock/dist/json-pollock.global.min.js"
             ]
           },
           "configurations": {

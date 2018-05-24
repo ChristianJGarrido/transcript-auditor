@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material';
 import { AssessmentModel } from '../../../../shared/store/assessment/assessment.model';
 import { ApiConversationMessageRecord } from '../../../../shared/interfaces/conversation';
@@ -6,6 +6,8 @@ import { ApiChatTranscript } from '../../../../shared/interfaces/chat';
 import { NoteModalComponent } from '../../../../shared/components/note-modal/note-modal.component';
 import { NoteModalData } from '../../../../shared/interfaces/interfaces';
 import { MessagesService } from '../../../../shared/services/messages.service';
+
+declare var JsonPollock;
 
 @Component({
   selector: 'app-conversation-message-text',
@@ -17,6 +19,9 @@ export class ConversationMessageTextComponent implements OnInit {
   @Input() assessmentSelect: AssessmentModel;
   @Input() isChat: boolean;
   @Input() conversation: any;
+  @ViewChild('richContent') richContent: ElementRef;
+
+  hasRichContent = false;
 
   dialogRef: MatDialogRef<NoteModalComponent>;
 
@@ -94,5 +99,17 @@ export class ConversationMessageTextComponent implements OnInit {
       : false;
   }
 
-  ngOnInit() {}
+  // inject structed content
+  getRichContent() {
+    if (this.message.json) {
+      const element = JsonPollock.render(this.message.json);
+      this.richContent.nativeElement.appendChild(element);
+      return true;
+    }
+    return false;
+  }
+
+  ngOnInit() {
+    this.hasRichContent = this.getRichContent();
+  }
 }

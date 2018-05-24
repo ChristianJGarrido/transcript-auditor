@@ -7,6 +7,9 @@
         </div>
       </div>
       <div class="card-body p-2" [ngClass]="getClass(false)" [innerHTML]="getMessageText()"></div>
+      <div [hidden]="!hasRichContent" class="row justify-content-center mb-2">
+        <div class="col-8" #richContent></div>
+      </div>
     </div>
   </div>
 
@@ -15,7 +18,8 @@
     <table style="height: 100%;">
       <tbody>
         <tr>
-          <td *ngIf="!hasMessageNote(getMessageId())" class="align-middle" (click)="openDialog($event)" matTooltip="Add note" matTooltipClass="material-tooltip" matTooltipPosition="right">
+          <td *ngIf="!hasMessageNote(getMessageId())" class="align-middle" (click)="openDialog($event)" matTooltip="Add note" matTooltipClass="material-tooltip"
+            matTooltipPosition="right">
             <i class="fal fa-plus-circle fa-2x"></i>
           </td>
           <td *ngIf="hasMessageNote(getMessageId())" class="align-middle" (click)="openDialog($event)" [matTooltip]="getMessageNote(getMessageId())"

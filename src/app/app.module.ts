@@ -111,6 +111,8 @@ import { ListEffects } from './shared/store/list/list.effects';
 import { FilterEffects } from './shared/store/filter/filter.effects';
 import { ExporterEffects } from './shared/store/exporter/exporter.effects';
 
+import { SafePipe } from './shared/pipes/safe.pipe';
+
 // 3rd party
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
@@ -158,6 +160,7 @@ import 'hammerjs';
     AssessmentsStatsComponent,
     TranscriptControlComponent,
     NoteModalComponent,
+    SafePipe,
   ],
   imports: [
     StarRatingModule.forRoot(),

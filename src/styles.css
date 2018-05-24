@@ -170,6 +170,14 @@ body {
   border-color: #ced4db;
 }
 
+
+/*************************/
+/* JSON POLLOCK OVERRIDE */
+/*************************/
+.lp-json-pollock .lp-json-pollock-layout {
+  max-width: none;
+}
+
 /***********************/
 /* FILTERS & DROPDOWNS */
 /***********************/
