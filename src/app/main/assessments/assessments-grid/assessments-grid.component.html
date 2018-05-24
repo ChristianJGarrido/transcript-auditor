@@ -48,7 +48,7 @@
 
 <!-- template for dates -->
 <ng-template #dateCell let-value="value">
-  {{ value | date:'short'}}
+  {{ value.toDate() | date:'short'}}
 </ng-template>
 
 <!-- cell for percents -->

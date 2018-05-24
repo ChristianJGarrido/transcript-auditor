@@ -1,22 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Effect, Actions } from '@ngrx/effects';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { map, switchMap, first, catchError } from 'rxjs/operators';
 
 import * as AfLoginActions from './af-login.actions';
 import * as ApiLoginActions from '../api-login/api-login.actions';
 import { AfLoginState } from './af-login.model';
 
-import {
-  AngularFirestore,
-  AngularFirestoreCollection,
-} from 'angularfire2/firestore';
+import { AngularFirestoreCollection } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase/app';
 import { NotificationService } from '../../services/notification.service';
 import { FirebaseError } from '@firebase/util';
+import { FirestoreService } from '../../services/firestore.service';
 
 @Injectable()
 export class AfLoginEffects {
@@ -52,7 +49,7 @@ export class AfLoginEffects {
     .pipe(
       switchMap(action => {
         const { uid, email, displayName } = action.user;
-        const docRef = this.afStore.doc(`users/${uid}`);
+        const docRef = this.afService.getUser(uid);
         return docRef.valueChanges().pipe(
           first(),
           switchMap(async user => {
@@ -88,7 +85,7 @@ export class AfLoginEffects {
     .pipe(
       switchMap(action => {
         this.router.navigate(['/login']);
-        return Observable.of(null);
+        return of(null);
       })
     );
 
@@ -96,7 +93,7 @@ export class AfLoginEffects {
   googleLogin$: Observable<any> = this.actions$
     .ofType<AfLoginActions.GoogleLogin>(AfLoginActions.GOOGLE_LOGIN)
     .pipe(
-      switchMap(action => Observable.fromPromise(this.googleLogin())),
+      switchMap(action => this.googleLogin()),
       map(auth => new AfLoginActions.GetUser())
     );
 
@@ -104,16 +101,16 @@ export class AfLoginEffects {
   logout$: Observable<any> = this.actions$
     .ofType<AfLoginActions.Logout>(AfLoginActions.LOGOUT)
     .pipe(
-      switchMap(action => Observable.fromPromise(this.logout())),
+      switchMap(action => this.logout()),
       map(auth => new AfLoginActions.GetUser())
     );
 
   constructor(
     private actions$: Actions,
-    public afStore: AngularFirestore,
+    private afService: FirestoreService,
     public afAuth: AngularFireAuth,
     private router: Router,
-    private notificationService: NotificationService,
+    private notificationService: NotificationService
   ) {}
 
   googleLogin(): Promise<any> {

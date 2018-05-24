@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { Observable } from 'rxjs/Observable';
+import { Observable ,  Subscription } from 'rxjs';
 import { MatDialogRef } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../app.store';
 import * as ApiLoginActions from '../../shared/store/api-login/api-login.actions';

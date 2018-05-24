@@ -5,7 +5,7 @@ import {
   Input,
   HostBinding,
 } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import * as AssessmentActions from '../../../../shared/store/assessment/assessment.actions';
 import * as fromAssessment from '../../../../shared/store/assessment/assessment.reducer';

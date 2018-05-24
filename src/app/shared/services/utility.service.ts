@@ -8,8 +8,7 @@ import {
   AssessmentQaGroupKey,
 } from '../store/assessment/assessment.model';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
+import { Observable, of } from 'rxjs';
 import { Action, Store } from '@ngrx/store';
 import { NotificationService } from './notification.service';
 import { StoreModel } from '../../app.store';

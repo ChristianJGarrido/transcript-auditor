@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../app.store';
 import * as ApiLoginActions from '../shared/store/api-login/api-login.actions';

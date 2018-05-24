@@ -5,7 +5,7 @@
         <span class="text-muted">({{findIndex() + 1}} of {{assessmentState.idsByConversation.length | number:'1.0-0'}})</span>
         <span class="font-tertiary">By
             <strong>{{assessmentSelect.createdBy}}</strong> on
-            <strong>{{assessmentSelect.createdAt | date:'short'}}</strong>
+            <strong>{{assessmentSelect.createdAt.toDate() | date:'short'}}</strong>
         </span>
       </h5>
       <app-save-notification [updating]="assessmentState.updating"></app-save-notification>
@@ -23,7 +23,7 @@
         </span>
         <span *ngIf="isUpdated()">&nbsp; | &nbsp;Updated:
           <strong>{{assessmentSelect.lastUpdateBy}}</strong> on
-          <strong>{{assessmentSelect.lastUpdateAt | date:'short'}}</strong>
+          <strong>{{assessmentSelect.lastUpdateAt.toDate() | date:'short'}}</strong>
         </span>
       </div>
     </div>

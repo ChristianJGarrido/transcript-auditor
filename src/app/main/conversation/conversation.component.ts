@@ -1,5 +1,5 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AfLoginModel } from '../../shared/store/af-login/af-login.model';
 import { ApiLoginModel } from '../../shared/store/api-login/api-login.model';
 import { Store } from '@ngrx/store';

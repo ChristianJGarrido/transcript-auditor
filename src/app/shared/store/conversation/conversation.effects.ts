@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of, forkJoin } from 'rxjs';
 import {
   switchMap,
   mergeMap,
@@ -11,8 +11,6 @@ import {
   combineLatest,
   merge,
 } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 import {
   HttpClient,
   HttpHeaders,

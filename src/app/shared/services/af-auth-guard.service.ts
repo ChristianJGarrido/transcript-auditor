@@ -9,6 +9,7 @@ import { AfLoginState } from '../store/af-login/af-login.model';
 
 // 3rd party
 import { AngularFireAuth } from 'angularfire2/auth';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class AfAuthGuardService implements CanActivate {
@@ -16,15 +17,17 @@ export class AfAuthGuardService implements CanActivate {
 
   // return login status: true / false
   canActivate() {
-    return this.afAuth.authState.map(auth => {
-      if (auth) {
-        const user = new AfLoginState(auth.uid, auth.displayName, auth.email);
-        this.store.dispatch(new AfLoginActions.Authenticated(user, false));
-        return true;
-      } else {
-        this.store.dispatch(new AfLoginActions.NotAuthenticated());
-        return false;
-      }
-    });
+    return this.afAuth.authState.pipe(
+      map(auth => {
+        if (auth) {
+          const user = new AfLoginState(auth.uid, auth.displayName, auth.email);
+          this.store.dispatch(new AfLoginActions.Authenticated(user, false));
+          return true;
+        } else {
+          this.store.dispatch(new AfLoginActions.NotAuthenticated());
+          return false;
+        }
+      })
+    );
   }
 }

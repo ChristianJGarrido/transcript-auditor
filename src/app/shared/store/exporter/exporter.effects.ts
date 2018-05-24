@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, forkJoin, of, from } from 'rxjs';
 import {
   switchMap,
   map,
@@ -9,9 +9,6 @@ import {
   flatMap,
   bufferCount,
 } from 'rxjs/operators';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { of } from 'rxjs/observable/of';
-import { from } from 'rxjs/observable/from';
 import {
   HttpClient,
   HttpHeaders,

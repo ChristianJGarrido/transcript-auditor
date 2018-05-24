@@ -2,11 +2,16 @@ import { Injectable } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { AssessmentModel } from '../store/assessment/assessment.model';
 import { PlaylistModel } from '../store/playlist/playlist.model';
+import { AfUser } from '../store/af-login/af-login.model';
 
 @Injectable()
 export class FirestoreService {
 
-  constructor(public afStore: AngularFirestore) { }
+  constructor(public afStore: AngularFirestore) {}
+
+  getUser(uid: string): AngularFirestoreDocument<AfUser> {
+    return this.afStore.doc(`users/${uid}`);
+  }
 
   getAssessments(account: string): AngularFirestoreCollection<AssessmentModel> {
     return this.getCollection(account, 'assessments');

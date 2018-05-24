@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable, forkJoin } from 'rxjs';
 import {
   switchMap,
   mergeMap,
@@ -19,7 +19,6 @@ import { Actions, Effect } from '@ngrx/effects';
 import { StoreModel } from '../../../app.store';
 import * as listActions from './list.actions';
 import { ListModel, ListAgent, ListSkill, ListGroup } from './list.model';
-import { forkJoin } from 'rxjs/observable/forkJoin';
 
 @Injectable()
 export class ListEffects {

@@ -4,7 +4,7 @@ import { AssessmentPersonalityModel } from '../../../../../shared/store/assessme
 import { Store } from '@ngrx/store';
 import { StoreModel } from '../../../../../app.store';
 import * as AssessmentActions from '../../../../../shared/store/assessment/assessment.actions';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 import { UtilityService } from '../../../../../shared/services/utility.service';
 import { QaService } from '../../../../../shared/services/qa.service';
 

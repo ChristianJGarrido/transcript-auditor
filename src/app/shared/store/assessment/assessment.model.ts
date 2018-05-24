@@ -1,9 +1,9 @@
 export interface AssessmentModel {
   id: string;
   createdBy: string;
-  createdAt: Date;
+  createdAt: any;
   lastUpdateBy: string;
-  lastUpdateAt: Date;
+  lastUpdateAt: any;
   isPrivate: boolean;
   conversationId: string;
   note: string;

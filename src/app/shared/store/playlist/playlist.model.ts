@@ -2,9 +2,9 @@ export interface PlaylistModel {
   id: string;
   name: string;
   createdBy: string;
-  createdAt: Date;
+  createdAt: any;
   lastUpdateBy: string;
-  lastUpdateAt: Date;
+  lastUpdateAt: any;
   isPrivate: boolean;
   conversationIds: string[];
 }
@@ -17,8 +17,8 @@ export class Playlist implements PlaylistModel {
     public lastUpdateBy: string,
     public conversationIds: string[] = [],
     public isPrivate: boolean = false,
-    public createdAt: Date = new Date(),
-    public lastUpdateAt: Date = new Date(),
+    public createdAt: any = new Date(),
+    public lastUpdateAt: any = new Date(),
   ) {}
 }
 
