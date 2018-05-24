@@ -1,5 +1,5 @@
 <div class="row no-gutters">
-  <div *ngFor="let metric of metrics" class="col-3 pr-1 pb-1">
+  <div *ngFor="let metric of metrics" class="col-12 pr-1 pb-1">
     <app-conversation-stats-widget [name]="metric.name" [value]="metric.value" [format]="metric.format"></app-conversation-stats-widget>
   </div>
 </div>

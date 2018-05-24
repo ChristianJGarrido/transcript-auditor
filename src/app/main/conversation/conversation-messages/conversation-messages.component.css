@@ -2,7 +2,7 @@
 #message-container {
   overflow: auto;
   overflow-x: hidden;
-  height: calc(100vh - 422px);
+  height: calc(100vh - 233px);
   -webkit-box-shadow: inset 0 24px 5px -22px rgba(0,0,0,0.2);
   -moz-box-shadow: inset 0 24px 5px -22px rgba(0,0,0,0.2);
   box-shadow: inset 0 24px 5px -22px rgba(0,0,0,0.2);

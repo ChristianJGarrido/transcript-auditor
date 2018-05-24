@@ -1,4 +1,4 @@
-import { Component, OnChanges, Input, HostBinding } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { ConversationModel } from '../../../shared/store/conversation/conversation.model';
 import { ApiConversationHistoryRecord } from '../../../shared/interfaces/conversation';
 import { StatsWidget } from '../../../shared/interfaces/interfaces';
@@ -11,7 +11,6 @@ import { ApiChatHistoryRecord } from '../../../shared/interfaces/chat';
   styleUrls: ['./conversation-stats.component.css'],
 })
 export class ConversationStatsComponent implements OnChanges {
-  @HostBinding('class') class = 'col-12';
   @Input() conversationSelect: any;
 
   metrics: StatsWidget[] = [];

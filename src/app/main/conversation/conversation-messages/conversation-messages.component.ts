@@ -3,7 +3,6 @@ import {
   OnInit,
   Output,
   Input,
-  HostBinding,
   OnChanges,
 } from '@angular/core';
 import { UtilityService } from '../../../shared/services/utility.service';
@@ -25,7 +24,6 @@ import { MessagesService } from '../../../shared/services/messages.service';
   styleUrls: ['./conversation-messages.component.css'],
 })
 export class ConversationMessagesComponent implements OnInit, OnChanges {
-  @HostBinding('class') class = 'col-12';
   @Input() conversationState: fromConversation.State;
   @Input() conversationSelect: any;
   @Input() assessmentSelect: AssessmentModel;
