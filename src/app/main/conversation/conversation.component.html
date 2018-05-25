@@ -8,11 +8,11 @@
     <!-- Conversation view -->
     <ng-container *ngIf="(conversationSelect$ | async)">
       <app-conversation-stats class="col-1 pr-1" [conversationSelect]="(conversationSelect$ | async)"></app-conversation-stats>
-      <app-conversation-messages class="col-5 pr-1" [playlists]="(playlists$ | async)" [playlistState]="(playlistState$ | async)" [playlistSelect]="(playlistSelect$ | async)" [assessmentSelect]="(assessmentSelect$ | async)" [conversationState]="(conversationState$ | async)" [conversationSelect]="(conversationSelect$ | async)"></app-conversation-messages>
+      <app-conversation-messages class="col-4 pr-1" [playlists]="(playlists$ | async)" [playlistState]="(playlistState$ | async)" [playlistSelect]="(playlistSelect$ | async)" [assessmentSelect]="(assessmentSelect$ | async)" [conversationState]="(conversationState$ | async)" [conversationSelect]="(conversationSelect$ | async)"></app-conversation-messages>
     </ng-container>
 
     <!-- No results -->
-    <div *ngIf="!(conversationSelect$ | async)" class="col-6 pr-2">
+    <div *ngIf="!(conversationSelect$ | async)" class="col-5 pr-2">
       <div class="card no-assessment" id="no-results-container">
         <app-no-results *ngIf="!(conversationState$ | async).loading" messageSecondary="No conversation selected"></app-no-results>
         <app-loading-results *ngIf="(conversationState$ | async).loading" messagePrimary="Loading your conversation..."></app-loading-results>
@@ -20,7 +20,7 @@
     </div>
 
     <!-- Assessment view -->
-    <div class="col-6">
+    <div class="col-7">
       <div class="row no-gutters">
         <app-conversation-assessment [assessmentState]="(assessmentState$ | async)" [assessmentSelect]="(assessmentSelect$ | async)"></app-conversation-assessment>
       </div>
