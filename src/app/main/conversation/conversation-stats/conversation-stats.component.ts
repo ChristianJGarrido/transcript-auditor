@@ -53,6 +53,26 @@ export class ConversationStatsComponent implements OnChanges {
   }
 
   /**
+   * Gets the latest purchase event if it exists
+   * returns null or the orderId and total
+   * @param {ApiChatHistoryRecord} record
+   */
+  getPurchaseEvent(record: ApiChatHistoryRecord) {
+    const sdeEvents = record.sdes && record.sdes.events && record.sdes.events.reverse();
+    if (sdeEvents) {
+      const purchase = sdeEvents.find(sdeEvent => sdeEvent.sdeType === 'PURCHASE');
+      if (purchase) {
+        const { orderId, total } = purchase.purchase;
+        return {
+          orderId,
+          total,
+        };
+      }
+    }
+    return null;
+  }
+
+  /**
    * returns array of conversation widgets
    * @param {ApiConversationHistoryRecord} record
    */
@@ -87,14 +107,19 @@ export class ConversationStatsComponent implements OnChanges {
    * @param {ApiChatHistoryRecord} record
    */
   getChatMetrics(record: ApiChatHistoryRecord): StatsWidget[] {
+    const purchase = this.getPurchaseEvent(record);
     return record
       ? [
           {
-            name: 'Start Reason',
-            value: record.info.startReasonDesc,
+            name: 'Order ID',
+            value: purchase && purchase.orderId || ' ',
             format: 'string'
           },
-          { name: 'End Reason', value: record.info.endReasonDesc, format: 'string' },
+          {
+            name: 'Order Total',
+            value: purchase && purchase.total || ' ',
+            format: 'string'
+          },
           {
             name: 'Duration Min',
             value: record.info.duration / 1000 / 3600 || 0,
