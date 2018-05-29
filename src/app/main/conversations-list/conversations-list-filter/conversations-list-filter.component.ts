@@ -240,7 +240,12 @@ export class ConversationsListFilterComponent implements OnInit {
     this.sdesChat = [];
 
     // assign search params to options
-    if (this.searchKeyword) {
+    if (this.searchKeyword && this.searchSelect.length) {
+      // if keyword exists, add keyword prop to chat options
+      this.optionsChat = {
+        ...this.optionsChat,
+        keyword: this.searchKeyword
+      };
       this.searchSelect.forEach(key => {
         switch (this.searchSchema[key]) {
           case 'sdeChat':
@@ -272,13 +277,9 @@ export class ConversationsListFilterComponent implements OnInit {
             };
             break;
           case 'bodyKeyword':
-            this.optionsChat = {
-              ...this.optionsChat,
-              [key]: this.searchKeyword,
-            };
             this.optionsMsg = {
               ...this.optionsMsg,
-              [key]: this.searchKeyword,
+              keyword: this.searchKeyword
             };
             this.sdesChat = [...this.sdesChat, 'chatLine'];
             break;
