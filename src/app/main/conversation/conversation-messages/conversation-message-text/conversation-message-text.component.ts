@@ -22,6 +22,7 @@ export class ConversationMessageTextComponent implements OnInit {
   @ViewChild('richContent') richContent: ElementRef;
 
   hasRichContent = false;
+  mcs = null;
 
   dialogRef: MatDialogRef<NoteModalComponent>;
 
@@ -123,5 +124,6 @@ export class ConversationMessageTextComponent implements OnInit {
 
   ngOnInit() {
     this.hasRichContent = this.getRichContent();
+    this.mcs = this.getMcs();
   }
 }
