@@ -118,4 +118,17 @@ export class MessagesService {
     return participant ? participant.userTypeName : '';
   }
 
+  // returns the mcs score
+  getMcs(id: string, isChat: boolean, conversation: any): number {
+    const mcsScores = isChat
+      ? conversation.lineScores
+      : conversation.messageScores;
+    const prop = isChat ? 'lineSeq' : 'messageId';
+    const score = mcsScores.find(item => item[prop] === id);
+    if (score) {
+      return score.mcs;
+    }
+    return null;
+  }
+
 }

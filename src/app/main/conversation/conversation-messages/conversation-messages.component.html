@@ -13,7 +13,6 @@
       </div>
     </div>
 
-
     <!-- Conversation + Consumer ID -->
     <div class="row">
       <span class="col-auto font-tertiary">
@@ -29,7 +28,7 @@
     <!-- Message rows -->
     <div class="container-fluid p-0" id="message-container">
       <div class="row" *ngFor="let event of messageEvents" [ngSwitch]="event.eventKey">
-        <div class="col-12 pt-2">
+        <div class="col-12 mt-2">
           <app-conversation-message-text *ngSwitchCase="'MESSAGE'" [isChat]="conversationSelect.isChat" [conversation]="conversationSelect" [message]="event" [assessmentSelect]="assessmentSelect"></app-conversation-message-text>
           <app-conversation-message-interaction *ngSwitchCase="'INTERACTION'" [interaction]="event"></app-conversation-message-interaction>
           <app-conversation-message-link *ngSwitchCase="'LINK'" [message]="event"></app-conversation-message-link>

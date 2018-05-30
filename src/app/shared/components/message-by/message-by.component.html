@@ -1,11 +1,7 @@
-<div class="row no-gutters font-by" [ngClass]="by">
-  <div class="col-auto mr-2">
-    {{time | date:'shortTime'}}
-  </div>
-  <div class="col-auto mr-1">
-    {{by}}
-  </div>
-  <div *ngIf="userType" class="col-auto">
+<div class="font-by" [ngClass]="by">
+  <span class="pr-2">{{time | date:'shortTime'}} </span>
+  <span class="pr-2">{{by}} </span>
+  <span *ngIf="userType">
     ({{userType.toLowerCase()}})
-  </div>
+  </span>
 </div>

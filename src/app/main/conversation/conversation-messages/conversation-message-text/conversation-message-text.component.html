@@ -1,9 +1,12 @@
 <div class="row no-gutters">
   <div class="col font-primary mr-2">
     <div class="card" [ngClass]="getClass(true)">
-      <div class="row no-gutters pt-1 pl-2">
+      <div class="row no-gutters pt-1 pl-2 justify-content-around">
         <div class="col">
           <app-message-by [by]="getSource()" [userType]="getUserType()" [time]="message.time"></app-message-by>
+        </div>
+        <div class="col-auto pr-2" [ngClass]="getClass(false)">
+          {{getMcs()}}
         </div>
       </div>
       <div class="card-body p-2" [ngClass]="getClass(false)" [innerHTML]="getMessageText()"></div>

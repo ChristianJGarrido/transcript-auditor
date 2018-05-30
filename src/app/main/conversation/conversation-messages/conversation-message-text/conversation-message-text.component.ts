@@ -106,7 +106,19 @@ export class ConversationMessageTextComponent implements OnInit {
       this.richContent.nativeElement.appendChild(element);
       return true;
     }
+    if (this.message.type === 'RICH_CONTENT') {
+      const { content } = this.message.messageData.richContent;
+      const element = JsonPollock.render(content);
+      this.richContent.nativeElement.appendChild(element);
+      return true;
+    }
     return false;
+  }
+
+  // returns mcs score
+  getMcs() {
+    const id = this.getMessageId();
+    return this.messagesService.getMcs(id, this.isChat, this.conversation);
   }
 
   ngOnInit() {
