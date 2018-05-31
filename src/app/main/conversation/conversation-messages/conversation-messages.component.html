@@ -1,14 +1,14 @@
 <div class="card mr-md-1" [class.loading-opacity]="conversationState.loading">
   <div class="card-body">
     <div class="row no-gutters justify-content-between">
-      <h5 class="card-title col-auto m-0 mr-2">{{getType()}} Transcript
-        <span class="text-muted">({{findIndex() + 1}} of {{getIds().length | number:'1.0-0'}})</span>
+      <h5 class="card-title col-auto m-0 mr-2">{{type}} Transcript
+        <span class="text-muted">({{index + 1}} of {{ids.length | number:'1.0-0'}})</span>
       </h5>
       <div class="col-auto">
         <div class="row no-gutters">
           <app-transcript-control class="col-auto mr-2" [playlists]="playlists" [playlistState]="playlistState" [messageEvents]="messageEvents"
             [playlistSelect]="playlistSelect" [conversationSelect]="conversationSelect"></app-transcript-control>
-          <app-cycle-items *ngIf="conversationSelect" class="col-auto" [type]="'conversation'" [index]="findIndex()" [items]="getIds()"></app-cycle-items>
+          <app-cycle-items *ngIf="conversationSelect" class="col-auto" [type]="'conversation'" [index]="index" [items]="ids"></app-cycle-items>
         </div>
       </div>
     </div>
@@ -17,11 +17,15 @@
     <div class="row">
       <span class="col-auto font-tertiary">
         <span matTooltip="Conversation ID" matTooltipClass="material-tooltip">ID:</span>
-        <span> {{getId()}}</span>
+        <span (mouseenter)="hoverId = true" (mouseleave)="hoverId = false"> {{showId(false)}}</span>
       </span>
       <span class="col-auto font-tertiary">
         <span matTooltip="Consumer ID" matTooltipClass="material-tooltip">CID:</span>
-        <span> {{getConId()}}</span>
+        <span (mouseenter)="hoverConId = true" (mouseleave)="hoverConId = false"> {{showId(true)}}</span>
+      </span>
+      <span class="col text-right font-tertiary">
+        <span matTooltip="Start Date" matTooltipClass="material-tooltip"></span>
+        <span>{{start | date:'shortDate'}}</span>
       </span>
     </div>
 
@@ -29,7 +33,8 @@
     <div class="container-fluid p-0" id="message-container">
       <div class="row" *ngFor="let event of messageEvents" [ngSwitch]="event.eventKey">
         <div class="col-12 mt-2">
-          <app-conversation-message-text *ngSwitchCase="'MESSAGE'" [isChat]="conversationSelect.isChat" [conversation]="conversationSelect" [message]="event" [assessmentSelect]="assessmentSelect"></app-conversation-message-text>
+          <app-conversation-message-text *ngSwitchCase="'MESSAGE'" [isChat]="conversationSelect.isChat" [conversation]="conversationSelect"
+            [message]="event" [assessmentSelect]="assessmentSelect"></app-conversation-message-text>
           <app-conversation-message-interaction *ngSwitchCase="'INTERACTION'" [interaction]="event"></app-conversation-message-interaction>
           <app-conversation-message-link *ngSwitchCase="'LINK'" [message]="event"></app-conversation-message-link>
           <app-conversation-message-participant *ngSwitchCase="'PARTICIPANT'" [participant]="event"></app-conversation-message-participant>

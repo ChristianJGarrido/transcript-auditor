@@ -33,6 +33,8 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
 
   currentId: string = null;
   messageEvents = [];
+  hoverConId = false;
+  hoverId = false;
 
   constructor(
     private utilityService: UtilityService,
@@ -40,7 +42,7 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
   ) {}
 
   // returns conversation ids
-  getIds(): any[] {
+  get ids(): any[] {
     if (this.conversationState.playlistIds.length) {
       return this.conversationState.playlistIds;
     }
@@ -48,31 +50,46 @@ export class ConversationMessagesComponent implements OnInit, OnChanges {
   }
 
   // get conversation index
-  findIndex(): number {
+  get index(): number {
     return this.utilityService.findIndex(
       this.conversationSelect.id,
-      this.getIds()
+      this.ids
     );
   }
 
   // get conversation type
-  getType(): string {
+  get type(): string {
     return this.conversationSelect.isChat ? 'Chat' : 'Conversation';
   }
 
   // get conversation id
-  getId(): string {
+  get id(): string {
     const { isChat } = this.conversationSelect;
     const param = isChat ? 'engagementId' : 'conversationId';
     return this.conversationSelect.info[param];
   }
 
   // get consumer id
-  getConId(): string {
+  get conId(): string {
     const { isChat } = this.conversationSelect;
     return isChat
       ? this.conversationSelect.info.visitorId
       : this.conversationSelect.consumerParticipants[0].participantId;
+  }
+
+  // slices long id/conId if not hovering
+  showId(conId: boolean): string {
+    const hover = conId ? this.hoverConId : this.hoverId;
+    const id = conId ? this.conId : this.id;
+    if (hover) {
+      return id;
+    }
+    return id.length > 15 ? `${id.slice(0, 15)}...` : id;
+  }
+
+
+  get start(): string {
+    return this.conversationSelect.info.startTime;
   }
 
   ngOnInit(): void {}
